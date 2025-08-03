@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-primary: #C9011E;
+  /* --color-secondary: #FAF9F6;
+  --color-accent: #FFC107;
+  --color-text: #212121; */
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Exo 2", sans-serif;
+}
+
+.scroll-none {
+  overflow: auto;         /* yoki overflow: scroll; */
+  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.scroll-none::-webkit-scrollbar {
+  display: none; /* Chrome, Safari va boshqa WebKit asosidagi brauzerlar */
+}
+
