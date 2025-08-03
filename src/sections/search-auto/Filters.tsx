@@ -10,6 +10,11 @@ import { IoShareSocialSharp } from "react-icons/io5";
 import Pagination from "@/components/ui/Pagination";
 import CarCard from "./CarCard";
 
+type Option = {
+  label: string;
+  value: string;
+};
+
 const Filters = () => {
   const [page, setPage] = useState(1);
   const brandOptions = [
@@ -92,7 +97,7 @@ const Filters = () => {
     { label: "Год ↓", value: "year_down" },
   ];
 
-  const handleSelectChange = (option: any) => {
+  const handleSelectChange = (option: Option | null) => {
     console.log("Selected option:", option);
   };
   return (

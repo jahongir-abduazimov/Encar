@@ -4,6 +4,11 @@ import React, { useState } from "react";
 import Container from "@/components/Container";
 import Select from "@/components/ui/Select";
 
+type Option = {
+  label: string;
+  value: string;
+};
+
 const Intro = () => {
   const brandOptions = [
     { label: "Hyundai", value: "hyundai" },
@@ -74,7 +79,7 @@ const Intro = () => {
       value: price.toString(),
     };
   });
-  const handleSelectChange = (option: any) => {
+  const handleSelectChange = (option: Option | null) => {
     console.log("Selected option:", option);
   };
   const [lang, setLang] = useState<{ label: string; value: string } | null>(
