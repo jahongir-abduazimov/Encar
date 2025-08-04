@@ -162,25 +162,25 @@ const Intro = () => {
                       options={yearOptions}
                       placeholder="Начальный год выпуска"
                       searchable={true}
-                      className="w-full md:w-64"
+                      className="w-full lg:w-64"
                     />
                     <Select
                       options={monthOptions}
                       placeholder="Начальный месяц выпуска"
                       searchable={true}
-                      className="w-full md:w-64"
+                      className="w-full lg:w-64"
                     />
                     <Select
                       options={yearOptions}
                       placeholder="Конечный год выпуска"
                       searchable={true}
-                      className="w-full md:w-64"
+                      className="w-full lg:w-64"
                     />
                     <Select
                       options={monthOptions}
                       placeholder="Конечный месяц выпуска"
                       searchable={true}
-                      className="w-full md:w-64"
+                      className="w-full lg:w-64"
                     />
                   </div>
                 </div>
@@ -193,13 +193,13 @@ const Intro = () => {
                       options={mileageOptions}
                       placeholder="Мин. пробег"
                       searchable={true}
-                      className="w-full md:w-64"
+                      className="w-full lg:w-64"
                     />
                     <Select
                       options={mileageOptions}
                       placeholder="Макс. пробег"
                       searchable={true}
-                      className="w-full md:w-64"
+                      className="w-full lg:w-64"
                     />
                   </div>
                 </div>

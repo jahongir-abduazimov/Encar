@@ -24,25 +24,25 @@ const Seats = () => {
               <p className="border-b border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Кожаные сиденья
               </p>
-              <p className="border-b text-gray-400/70 hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
+              <p className="border-b text-gray-400/70 md:hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Электрорегулировка сидений (водитель/пассажир)
               </p>
-              <p className="border-b text-gray-400/70 hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
+              <p className="border-b text-gray-400/70 md:hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Электрорегулировка сидений (задний ряд)
               </p>
-              <p className="border-b text-gray-400/70 hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
+              <p className="border-b text-gray-400/70 md:hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Подогрев сидений (передних/задних)
               </p>
-              <p className="border-b text-gray-400/70 hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
+              <p className="border-b text-gray-400/70 md:hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Память сидений (водитель/пассажир)
               </p>
-              <p className="border-b text-gray-400/70 hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
+              <p className="border-b text-gray-400/70 md:hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Вентилируемые сиденья (водитель/пассажир)
               </p>
-              <p className="border-b text-gray-400/70 hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
+              <p className="border-b text-gray-400/70 md:hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Вентилируемые сиденья (задний ряд)
               </p>
-              <p className="border-b text-gray-400/70 hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
+              <p className="border-b text-gray-400/70 md:hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Массажные сиденья
               </p>
             </div>

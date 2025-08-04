@@ -24,23 +24,23 @@ const CarCard = () => {
         <div className="w-full">
           <div className="flex flex-col gap-1.5">
             <div className="border-b border-gray-300 flex items-end justify-between pb-1">
-              <p className="text-sm text-gray-500">Год:</p>
+              <p className="text-sm text-gray-400 font-medium">Год:</p>
               <p>2018</p>
             </div>
             <div className="border-b border-gray-300 flex items-end justify-between pb-1">
-              <p className="text-sm text-gray-500">Топливо::</p>
+              <p className="text-sm text-gray-400 font-medium">Топливо::</p>
               <p>Дизель</p>
             </div>
             <div className="border-b border-gray-300 flex items-end justify-between pb-1">
-              <p className="text-sm text-gray-500">Пробег:</p>
+              <p className="text-sm text-gray-400 font-medium">Пробег:</p>
               <p>89 451 km</p>
             </div>
             <div className="border-b border-gray-300 flex items-end justify-between pb-1">
-              <p className="text-sm text-gray-500">Цвет:</p>
+              <p className="text-sm text-gray-400 font-medium">Цвет:</p>
               <p>Белый</p>
             </div>
             <div className="border-b border-gray-300 flex items-end justify-between pb-1 mt-3">
-              <p className="text-sm text-gray-500">Цена:</p>
+              <p className="text-sm text-gray-400 font-medium">Цена:</p>
               <p className="text-[30px] leading-[110%]">2 341 226 ₽</p>
             </div>
           </div>

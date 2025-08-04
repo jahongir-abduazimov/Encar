@@ -24,7 +24,7 @@ const ExteriorInterior = () => {
               <p className="border-b border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Люк
               </p>
-              <p className="border-b text-gray-400/70 hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
+              <p className="border-b text-gray-400/70 md:hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Подушка безопасности (водитель/пассажир)
               </p>
               <p className="border-b border-gray-300 px-3 py-2 hover:bg-gray-100">
@@ -48,10 +48,10 @@ const ExteriorInterior = () => {
               <p className="border-b border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Система предупреждения о выходе из полосы (LDWS)
               </p>
-              <p className="border-b text-gray-400/70 hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
+              <p className="border-b text-gray-400/70 md:hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Электронная система управления подвеской (ECS)
               </p>
-              <p className="border-b text-gray-400/70 hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
+              <p className="border-b text-gray-400/70 md:hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Датчик парковки (передний/задний)
               </p>
               <p className="border-b border-gray-300 px-3 py-2 hover:bg-gray-100">
@@ -60,7 +60,7 @@ const ExteriorInterior = () => {
               <p className="border-b border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Камера заднего вида
               </p>
-              <p className="border-b text-gray-400/70 hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
+              <p className="border-b text-gray-400/70 md:hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Камера 360 градусов
               </p>
               <p className="border-b border-gray-300 px-3 py-2 hover:bg-gray-100">

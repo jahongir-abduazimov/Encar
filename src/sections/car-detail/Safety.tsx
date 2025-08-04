@@ -24,7 +24,7 @@ const Safety = () => {
               <p className="border-b border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Проекционный дисплей (HUD)
               </p>
-              <p className="border-b text-gray-400/70 hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
+              <p className="border-b text-gray-400/70 md:hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Электронный стояночный тормоз (EPB)
               </p>
               <p className="border-b border-gray-300 px-3 py-2 hover:bg-gray-100">
@@ -42,7 +42,7 @@ const Safety = () => {
               <p className="border-b border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Автоматический свет
               </p>
-              <p className="border-b text-gray-400/70 hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
+              <p className="border-b text-gray-400/70 md:hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Шторка/жалюзи (для задних сидений)
               </p>
               <p className="border-b border-gray-300 px-3 py-2 hover:bg-gray-100">
@@ -51,7 +51,7 @@ const Safety = () => {
               <p className="border-b border-gray-300 px-3 py-2 hover:bg-gray-100">
                 Навигация
               </p>
-              <p className="border-b text-gray-400/70 hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
+              <p className="border-b text-gray-400/70 md:hover:text-black border-gray-300 px-3 py-2 hover:bg-gray-100">
                 AV-монитор задних сидений
               </p>
               <p className="border-b border-gray-300 px-3 py-2 hover:bg-gray-100">

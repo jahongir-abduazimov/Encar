@@ -11,11 +11,11 @@ const Footer = () => {
   return (
     <footer className="bg-[#282828] py-10">
       <Container>
-        <div className="flex items-start justify-between">
+        <div className="flex md:flex-row flex-col gap-y-14 items-start justify-between">
           <Link href={"/"}>
-            <Image src={Logo} alt="Logo" width={300} height={100} />
+            <Image src={Logo} alt="Logo" className="md:w-[300px]" />
           </Link>
-          <div>
+          <div className="ml-5">
             <p className="text-white font-medium text-xl">
               Каталог авто из Кореи
             </p>
@@ -37,7 +37,7 @@ const Footer = () => {
               </Link>
             </div>
           </div>
-          <div className="flex flex-col gap-1.5 max-w-[250px]">
+          <div className="flex flex-col gap-1.5 max-w-[250px] ml-5">
             <Link
               href={"/"}
               className="text-white hover:text-primary font-medium text-xl"
@@ -117,7 +117,7 @@ const Footer = () => {
               Toyota
             </Link>
           </div>
-          <div className="max-w-[230px]">
+          <div className="max-w-[230px] ml-5">
             <p className="text-white font-medium text-xl">Социальные сети</p>
             <div className="flex flex-col gap-3 mt-4">
               <div className="flex items-start gap-3">

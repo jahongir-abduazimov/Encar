@@ -25,14 +25,14 @@ const FilterPrice = () => {
               key={type.name}
               className="h-[270px] border border-gray-300 flex flex-col transition-colors hover:shadow-[0_0_10px_4px_rgba(0,0,0,0.1)]"
             >
-              <div className="h-[55%]">
+              <div className="h-[60%]">
                 <Image
                   src={type.image}
                   alt={`${type.name} type`}
                   className="h-full w-full object-cover"
                 />
               </div>
-              <div className="flex flex-col justify-end h-[45%] p-4">
+              <div className="flex flex-col justify-end h-[40%] p-4">
                 <span className="text-black/80 text-[26px] uppercase">{type.name}</span>
                 <span className="font-semibold text-lg text-gray-500">
                   {type.from ? `от ${type.from} млн ₽` : `до ${type.to} млн ₽`}

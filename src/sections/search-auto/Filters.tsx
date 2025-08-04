@@ -101,9 +101,10 @@ const Filters = () => {
     console.log("Selected option:", option);
   };
   return (
-    <section className="py-14">
+    <section className="py-10 md:py-14">
       <Container>
-        <div className="grid grid-cols-4 items-start gap-8">
+        {/* Desktop */}
+        <div className="hidden md:grid grid-cols-4 items-start gap-8">
           <div className="flex flex-col gap-6">
             <Select
               options={brandOptions}
@@ -245,27 +246,168 @@ const Filters = () => {
             </div>
           </div>
         </div>
-        <div className="w-full my-7 flex items-center justify-between gap-8">
-          <div className="flex items-center gap-2">
-            <p>Сортировать по:</p>
-            <Select options={sortOption} value={sortOption[0]} />
+
+        {/* Mobile */}
+        <div className="md:hidden">
+          <div className="flex flex-col md:flex-row gap-2.5 mb-5">
+            <Select
+              options={brandOptions}
+              placeholder="Бренд"
+              searchable={true}
+              className="w-full md:w-64"
+              onChange={handleSelectChange}
+            />
+            <Select
+              options={modelOptions}
+              placeholder="Модель"
+              searchable={true}
+              className="w-full md:w-64"
+            />
+            <Select
+              options={generationOptions}
+              placeholder="Поколение"
+              searchable={true}
+              className="w-full md:w-64"
+            />
           </div>
-          <div className="flex gap-4">
-            <button className="cursor-pointer">
-              <BsGrid3X3GapFill className="text-[40px] text-primary" />
+          <div className="flex flex-col md:flex-row gap-2.5 mb-5">
+            <div className="flex flex-col gap-2.5">
+              <h2 className="text-xl font-medium text-primary">
+                Характеристики
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-1 gap-2.5">
+                <Select
+                  options={fuelOptions}
+                  placeholder="Тип топлива"
+                  searchable={true}
+                  className="w-full md:w-64"
+                />
+                <Select
+                  options={transmissionOptions}
+                  placeholder="Трансмиссия"
+                  searchable={true}
+                  className="w-full md:w-64"
+                />
+                <Select
+                  options={bodyTypeOptions}
+                  placeholder="Тип кузова"
+                  searchable={true}
+                  className="w-full md:w-64"
+                />
+                <Select
+                  options={colorOptions}
+                  placeholder="Цвет"
+                  searchable={true}
+                  className="w-full md:w-64"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-5.5">
+              <div>
+                <h2 className="text-xl font-medium text-primary mb-2.5">
+                  Год выпуска
+                </h2>
+                <div className="grid grid-cols-2 gap-2.5">
+                  <Select
+                    options={yearOptions}
+                    placeholder="Начальный год выпуска"
+                    searchable={true}
+                    className="w-full lg:w-64"
+                  />
+                  <Select
+                    options={monthOptions}
+                    placeholder="Начальный месяц выпуска"
+                    searchable={true}
+                    className="w-full lg:w-64"
+                  />
+                  <Select
+                    options={yearOptions}
+                    placeholder="Конечный год выпуска"
+                    searchable={true}
+                    className="w-full lg:w-64"
+                  />
+                  <Select
+                    options={monthOptions}
+                    placeholder="Конечный месяц выпуска"
+                    searchable={true}
+                    className="w-full lg:w-64"
+                  />
+                </div>
+              </div>
+              <div>
+                <h2 className="text-xl font-medium text-primary md:mb-2.5">
+                  Пробег
+                </h2>
+                <div className="grid grid-cols-2 gap-2.5">
+                  <Select
+                    options={mileageOptions}
+                    placeholder="Мин. пробег"
+                    searchable={true}
+                    className="w-full lg:w-64"
+                  />
+                  <Select
+                    options={mileageOptions}
+                    placeholder="Макс. пробег"
+                    searchable={true}
+                    className="w-full lg:w-64"
+                  />
+                  <Select
+                    options={priceOptions}
+                    placeholder="Мин. стоимость"
+                    searchable={true}
+                    className="w-full md:w-64"
+                  />
+                  <Select
+                    options={priceOptions}
+                    placeholder="Макс. стоимость"
+                    searchable={true}
+                    className="w-full md:w-64"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-x-2.5 gap-y-5 mb-5">
+            <button className="w-full md:w-64 text-sm py-1.5 border-2 bg-white border-primary hover:bg-white/80 text-primary duration-200 rounded-lg cursor-pointer">
+              Очистить
             </button>
-            <button className="cursor-pointer">
-              <FaThList className="text-[40px] text-gray-500" />
+            <button className="w-full md:w-64 text-sm py-1.5 bg-primary hover:bg-primary/80 text-white duration-200 rounded-lg cursor-pointer">
+              Показать
             </button>
+            <button className="w-full md:w-64 text-sm py-1.5 border-2 border-primary text-black duration-200 rounded-lg cursor-pointer">
+              Подписаться
+            </button>
+            <button className="w-full flex gap-2 items-center justify-center md:w-64 text-sm py-1.5 border-2 duration-200 rounded-lg cursor-pointer">
+              <IoShareSocialSharp size={20} />
+              <span>Поделиться</span>
+              <HiOutlineArrowLongRight size={20} />
+            </button>
+          </div>
+        </div>
+
+        <div className="w-full my-7 flex flex-col lg:flex-row items-center justify-between gap-0 lg:gap-8 mt-15">
+          <div className="w-full flex items-center gap-10">
+            <div className="w-full flex flex-col md:flex-row items-start md:items-center gap-2">
+              <p>Сортировать по:</p>
+              <Select options={sortOption} value={sortOption[0]} className="w-full lg:w-64" />
+            </div>
+            <div className="hidden md:flex gap-4">
+              <button className="cursor-pointer">
+                <BsGrid3X3GapFill className="text-[40px] text-primary" />
+              </button>
+              <button className="cursor-pointer">
+                <FaThList className="text-[40px] text-gray-500" />
+              </button>
+            </div>
           </div>
           <Pagination
             currentPage={page}
             totalPages={100}
             onPageChange={(page) => setPage(page)}
-            className="max-w-[50%]"
+            className="w-full lg:max-w-[50%]"
           />
         </div>
-        <div className="grid grid-cols-4 gap-8">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           <CarCard />
           <CarCard />
           <CarCard />

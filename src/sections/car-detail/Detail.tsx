@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import CarImage from "../../../public/images/car.jpg";
 import Container from "@/components/Container";
 import Image from "next/image";
@@ -8,22 +8,75 @@ import { IoShareSocialSharp } from "react-icons/io5";
 import { FaRegHeart } from "react-icons/fa6";
 import { MdCompareArrows } from "react-icons/md";
 import { PiRectangleFill } from "react-icons/pi";
+import CarImage2 from "../../../public/images/car-2.jpg";
+import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 
 const Detail = () => {
   const [priceVisable, setPriceVisable] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -100, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 100, behavior: "smooth" });
+    }
+  };
   return (
-    <section className="py-12">
+    <section className="py-10 md:py-12">
       <Container>
-        <div className="flex items-start gap-5">
-          <div className="w-[60%] h-auto">
-            <Image className="w-full h-auto" src={CarImage} alt="bmw" />
+        <div className="flex flex-col lg:flex-row items-start gap-5">
+          <div className="w-full lg:w-[60%] h-auto">
+            <div className="mb-3">
+              <Image className="w-full h-auto" src={CarImage} alt="bmw" />
+            </div>
+            <div className="relative">
+              {/* Scrollable thumbnails */}
+              <div
+                ref={scrollRef}
+                className="flex overflow-x-auto scroll-none gap-2 px-9 scrollbar-hide"
+              >
+                {[...Array(10)].map((_, idx) => (
+                  <button
+                    key={idx}
+                    className="cursor-pointer outline-none max-w-[100px] min-w-[100px] h-[100px] border p-1.5 border-gray-300"
+                  >
+                    <Image
+                      className="w-full h-full object-cover"
+                      src={CarImage2}
+                      alt="bmw"
+                    />
+                  </button>
+                ))}
+              </div>
+
+              {/* Left Arrow */}
+              <button
+                onClick={scrollLeft}
+                className="absolute top-1/2 left-0 -translate-y-1/2 z-10 bg-white shadow-md hover:bg-gray-100 h-full px-1"
+              >
+                <BsChevronLeft size={24} />
+              </button>
+
+              {/* Right Arrow */}
+              <button
+                onClick={scrollRight}
+                className="absolute top-1/2 right-0 -translate-y-1/2 z-10 bg-white shadow-md hover:bg-gray-100 h-full px-1"
+              >
+                <BsChevronRight size={24} />
+              </button>
+            </div>
           </div>
-          <div className="w-[40%]">
-            <h2 className="text-[35px] leading-[110%] mb-5">
+          <div className="w-full lg:w-[40%]">
+            <h2 className="text-3xl md:text-[35px] leading-[110%] mb-5">
               BMW 4-Series 420d M Sport Coupe
             </h2>
-            <div className="flex items-center justify-between mb-3">
-              <div>
+            <div className="flex flex-col sm:flex-row gap-3 items-center justify-between mb-3">
+              <div className="flex flex-col items-center sm:items-start">
                 <p className="text-xs text-gray-400">Дата объявления: МСК</p>
                 <p className="text-xs text-gray-400">
                   Дата проверки цены: 02-08-2025 14:19 МСК
@@ -60,10 +113,10 @@ const Detail = () => {
                 <p className="text-xl font-medium">Белый</p>
               </div>
             </div>
-            <div className="flex justify-between mt-5">
+            <div className="flex flex-col-reverse gap-3 items-center sm:flex-row justify-between mt-5">
               <button
                 onClick={() => setPriceVisable(!priceVisable)}
-                className="font-medium py-[5px] px-10 rounded-lg cursor-pointer border-2 border-primary duration-200 hover:shadow-[3px_3px_6px_silver]"
+                className="w-full sm:w-auto font-medium py-2 px-10 rounded-lg cursor-pointer border-2 border-primary duration-200 hover:shadow-[3px_3px_6px_silver]"
               >
                 Показать расчет цены
               </button>

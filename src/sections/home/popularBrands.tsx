@@ -39,10 +39,10 @@ const PopularBrands = () => {
     { name: "Ford", logo: FordLogo },
   ];
   return (
-    <section className="py-20">
+    <section className="py-12 md:py-20">
       <Container>
-        <h2 className="text-4xl font-medium mb-4">Популярные автомобили</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-4">
+        <h2 className="text-2xl md:text-4xl font-medium mb-4">Популярные автомобили</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
           {brands.map((brand) => (
             <Link href={"/"} key={brand.name} className="min-w-30 h-30 border border-gray-300 flex-col flex items-center justify-end p-4 transition-colors hover:shadow-[0_0_10px_4px_rgba(0,0,0,0.1)]">
               <Image
