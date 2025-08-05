@@ -12,4 +12,14 @@ request.interceptors.request.use((config) => {
   return config;
 });
 
+request.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem("auth");
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default request;

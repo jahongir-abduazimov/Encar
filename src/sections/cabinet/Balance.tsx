@@ -4,7 +4,7 @@ const Balance = () => {
   return (
     <div>
       <p className="text-xl mb-4">Баланс</p>
-      <div className="flex items-end justify-between mb-8">
+      <div className="flex flex-col md:flex-row gap-5 md:items-end justify-between mb-8">
         <div>
           <p className="text-2xl">Ваш баланс</p>
           <p className="text-5xl">

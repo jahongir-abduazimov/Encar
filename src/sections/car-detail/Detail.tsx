@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CarImage from "../../../public/images/car.jpg";
 import Container from "@/components/Container";
 import Image from "next/image";
@@ -8,12 +8,58 @@ import { IoShareSocialSharp } from "react-icons/io5";
 import { FaRegHeart } from "react-icons/fa6";
 import { MdCompareArrows } from "react-icons/md";
 import { PiRectangleFill } from "react-icons/pi";
-import CarImage2 from "../../../public/images/car-2.jpg";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
+import request from "@/components/config";
+import { useParams } from "next/navigation";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 
-const Detail = () => {
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+type Car = {
+  id: string;
+  name: string;
+  body_type: {
+    id: string;
+    name: string;
+  };
+  car_inspections: any | null;
+  car_interyer: any | null;
+  car_medias: any[];
+  car_multimedia: any | null;
+  car_pricing: any | null;
+  car_safety: any | null;
+  car_seats: any | null;
+  color: {
+    id: string;
+    name: string;
+  };
+  engine_capacity: number;
+  fuel_type: {
+    id: string;
+    name: string;
+  };
+  miliage: number;
+  month: string;
+  price: number;
+  transmission: {
+    id: string;
+    name: string;
+  };
+  updated_at: string;
+  year: string;
+};
+
+const Detail = ({data}:Car | any) => {
   const [priceVisable, setPriceVisable] = useState(false);
+  const [mainImage, setMainImage] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { id } = useParams();
+  const formatted =
+    dayjs(data?.updated_at).tz("Europe/Moscow").format("DD-MM-YYYY HH:mm") +
+    " МСК";
 
   const scrollLeft = () => {
     if (scrollRef.current) {
@@ -26,29 +72,54 @@ const Detail = () => {
       scrollRef.current.scrollBy({ left: 100, behavior: "smooth" });
     }
   };
+
+  useEffect(() => {
+    if (data?.car_medias?.length) {
+      setMainImage(data.car_medias[0].media); // bu yerda image field nomi sizda qanday bo‘lsa shunga qarab sozlang
+    }
+  }, [data]);
+
   return (
     <section className="py-10 md:py-12">
       <Container>
         <div className="flex flex-col lg:flex-row items-start gap-5">
           <div className="w-full lg:w-[60%] h-auto">
             <div className="mb-3">
-              <Image className="w-full h-auto" src={CarImage} alt="bmw" />
+              {mainImage ? (
+                <Image
+                  className="w-full h-auto"
+                  src={mainImage}
+                  alt="main-car"
+                  width={800}
+                  height={600}
+                />
+              ) : (
+                <Image
+                  className="w-full h-auto"
+                  src={CarImage}
+                  alt="default-car"
+                />
+              )}
             </div>
-            <div className="relative">
+            {data?.car_medias.length ? (
+              <div className="relative">
               {/* Scrollable thumbnails */}
               <div
                 ref={scrollRef}
                 className="flex overflow-x-auto scroll-none gap-2 px-9 scrollbar-hide"
               >
-                {[...Array(10)].map((_, idx) => (
+                {data?.car_medias?.map((media:any, idx:number) => (
                   <button
                     key={idx}
+                    onClick={() => setMainImage(media.media)}
                     className="cursor-pointer outline-none max-w-[100px] min-w-[100px] h-[100px] border p-1.5 border-gray-300"
                   >
                     <Image
                       className="w-full h-full object-cover"
-                      src={CarImage2}
-                      alt="bmw"
+                      src={media.media}
+                      alt={`thumbnail-${idx}`}
+                      width={100}
+                      height={100}
                     />
                   </button>
                 ))}
@@ -70,18 +141,23 @@ const Detail = () => {
                 <BsChevronRight size={24} />
               </button>
             </div>
+            ) : (
+              null
+            )}
           </div>
           <div className="w-full lg:w-[40%]">
             <h2 className="text-3xl md:text-[35px] leading-[110%] mb-5">
-              BMW 4-Series 420d M Sport Coupe
+              {data?.name}
             </h2>
             <div className="flex flex-col sm:flex-row gap-3 items-center justify-between mb-3">
               <div className="flex flex-col items-center sm:items-start">
-                <p className="text-xs text-gray-400">Дата объявления: МСК</p>
                 <p className="text-xs text-gray-400">
+                  Дата объявления: <br /> {formatted}
+                </p>
+                {/* <p className="text-xs text-gray-400">
                   Дата проверки цены: 02-08-2025 14:19 МСК
                 </p>
-                <p className="text-xs text-gray-400">Просмотров авто: 608</p>
+                <p className="text-xs text-gray-400">Просмотров авто: 608</p> */}
               </div>
               <div className="flex gap-4">
                 <button className="w-[45px] h-[45px] rounded-md border hover:border-primary cursor-pointer text-2xl flex items-center justify-center">
@@ -98,19 +174,19 @@ const Detail = () => {
             <div className="flex flex-col gap-1.5">
               <div className="border-b border-gray-200 flex items-end justify-between pb-1">
                 <p className="text-xl font-medium text-gray-400">Год:</p>
-                <p className="text-xl font-medium">2018</p>
+                <p className="text-xl font-medium">{data?.year}</p>
               </div>
               <div className="border-b border-gray-200 flex items-end justify-between pb-1">
                 <p className="text-xl font-medium text-gray-400">Топливо::</p>
-                <p className="text-xl font-medium">Дизель</p>
+                <p className="text-xl font-medium">{data?.fuel_type.name}</p>
               </div>
               <div className="border-b border-gray-200 flex items-end justify-between pb-1">
                 <p className="text-xl font-medium text-gray-400">Пробег:</p>
-                <p className="text-xl font-medium">89 451 km</p>
+                <p className="text-xl font-medium">{data?.miliage} km</p>
               </div>
               <div className="border-b border-gray-200 flex items-end justify-between pb-1">
                 <p className="text-xl font-medium text-gray-400">Цвет:</p>
-                <p className="text-xl font-medium">Белый</p>
+                <p className="text-xl font-medium">{data?.color.name}</p>
               </div>
             </div>
             <div className="flex flex-col-reverse gap-3 items-center sm:flex-row justify-between mt-5">
@@ -120,7 +196,9 @@ const Detail = () => {
               >
                 Показать расчет цены
               </button>
-              <p className="text-[30px] font-medium">2 341 226 ₽</p>
+              <p className="text-[30px] font-medium">
+                {data?.price.toLocaleString()} ₽
+              </p>
             </div>
             {priceVisable && (
               <div className="mt-3 bg-gray-50 border-2 rounded-lg border-gray-300 p-5 flex flex-col gap-2">
