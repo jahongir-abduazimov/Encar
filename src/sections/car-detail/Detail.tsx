@@ -9,7 +9,6 @@ import { FaRegHeart } from "react-icons/fa6";
 import { MdCompareArrows } from "react-icons/md";
 import { PiRectangleFill } from "react-icons/pi";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import request from "@/components/config";
 import { useParams } from "next/navigation";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -18,6 +17,11 @@ import timezone from "dayjs/plugin/timezone";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+type CarMedia = {
+  id: string;
+  media: string; // yoki `url` bo'lishi mumkin sizdagi API'ga qarab
+};
+
 type Car = {
   id: string;
   name: string;
@@ -25,13 +29,13 @@ type Car = {
     id: string;
     name: string;
   };
-  car_inspections: any | null;
-  car_interyer: any | null;
-  car_medias: any[];
-  car_multimedia: any | null;
-  car_pricing: any | null;
-  car_safety: any | null;
-  car_seats: any | null;
+  car_inspections: unknown | null;
+  car_interyer: unknown | null;
+  car_medias: CarMedia[];
+  car_multimedia: unknown | null;
+  car_pricing: unknown | null;
+  car_safety: unknown | null;
+  car_seats: unknown | null;
   color: {
     id: string;
     name: string;
@@ -52,7 +56,11 @@ type Car = {
   year: string;
 };
 
-const Detail = ({data}:Car | any) => {
+interface DetailProps {
+  data: Car;
+}
+
+const Detail = ({ data }: DetailProps) => {
   const [priceVisable, setPriceVisable] = useState(false);
   const [mainImage, setMainImage] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -103,47 +111,45 @@ const Detail = ({data}:Car | any) => {
             </div>
             {data?.car_medias.length ? (
               <div className="relative">
-              {/* Scrollable thumbnails */}
-              <div
-                ref={scrollRef}
-                className="flex overflow-x-auto scroll-none gap-2 px-9 scrollbar-hide"
-              >
-                {data?.car_medias?.map((media:any, idx:number) => (
-                  <button
-                    key={idx}
-                    onClick={() => setMainImage(media.media)}
-                    className="cursor-pointer outline-none max-w-[100px] min-w-[100px] h-[100px] border p-1.5 border-gray-300"
-                  >
-                    <Image
-                      className="w-full h-full object-cover"
-                      src={media.media}
-                      alt={`thumbnail-${idx}`}
-                      width={100}
-                      height={100}
-                    />
-                  </button>
-                ))}
+                {/* Scrollable thumbnails */}
+                <div
+                  ref={scrollRef}
+                  className="flex overflow-x-auto scroll-none gap-2 px-9 scrollbar-hide"
+                >
+                  {data?.car_medias?.map((media, idx: number) => (
+                    <button
+                      key={idx}
+                      onClick={() => setMainImage(media.media)}
+                      className="cursor-pointer outline-none max-w-[100px] min-w-[100px] h-[100px] border p-1.5 border-gray-300"
+                    >
+                      <Image
+                        className="w-full h-full object-cover"
+                        src={media.media}
+                        alt={`thumbnail-${idx}`}
+                        width={100}
+                        height={100}
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                {/* Left Arrow */}
+                <button
+                  onClick={scrollLeft}
+                  className="absolute top-1/2 left-0 -translate-y-1/2 z-10 bg-white shadow-md hover:bg-gray-100 h-full px-1"
+                >
+                  <BsChevronLeft size={24} />
+                </button>
+
+                {/* Right Arrow */}
+                <button
+                  onClick={scrollRight}
+                  className="absolute top-1/2 right-0 -translate-y-1/2 z-10 bg-white shadow-md hover:bg-gray-100 h-full px-1"
+                >
+                  <BsChevronRight size={24} />
+                </button>
               </div>
-
-              {/* Left Arrow */}
-              <button
-                onClick={scrollLeft}
-                className="absolute top-1/2 left-0 -translate-y-1/2 z-10 bg-white shadow-md hover:bg-gray-100 h-full px-1"
-              >
-                <BsChevronLeft size={24} />
-              </button>
-
-              {/* Right Arrow */}
-              <button
-                onClick={scrollRight}
-                className="absolute top-1/2 right-0 -translate-y-1/2 z-10 bg-white shadow-md hover:bg-gray-100 h-full px-1"
-              >
-                <BsChevronRight size={24} />
-              </button>
-            </div>
-            ) : (
-              null
-            )}
+            ) : null}
           </div>
           <div className="w-full lg:w-[40%]">
             <h2 className="text-3xl md:text-[35px] leading-[110%] mb-5">

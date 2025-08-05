@@ -26,11 +26,5 @@
     "eslint-config-next": "15.4.5",
     "tailwindcss": "^4",
     "typescript": "^5"
-  },
-  "eslintConfig": {
-    "extends": "next/core-web-vitals",
-    "rules": {
-      "@typescript-eslint/no-explicit-any": "off"
-    }
   }
 }

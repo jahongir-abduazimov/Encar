@@ -51,12 +51,27 @@ interface FilterForm {
   max_price: string;
 }
 
+interface FilterItem {
+  id: string;
+  name: string;
+}
+
+interface Brand extends FilterItem {
+  models?: Model[];
+}
+
+interface Model extends FilterItem {
+  generations?: Generation[];
+}
+
+interface Generation extends FilterItem { }
+
 interface FilterData {
-  brands: any[];
-  fuelType: any[];
-  transmission: any[];
-  bodyType: any[];
-  color: any[];
+  brands: Brand[];
+  fuelType: FilterItem[];
+  transmission: FilterItem[];
+  bodyType: FilterItem[];
+  color: FilterItem[];
 }
 
 interface SelectOption {
@@ -101,7 +116,7 @@ const Filters = () => {
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState(1)
   const [page, setPage] = useState(1);
   const [filterData, setFilterData] = useState<FilterData>({
     brands: [],
@@ -110,66 +125,57 @@ const Filters = () => {
     bodyType: [],
     color: [],
   });
-  const [modelOptions, setModelOptions] = useState<any[]>([]);
-  const [generationOptions, setGenerationOptions] = useState<any[]>([]);
+  const [modelOptions, setModelOptions] = useState<Model[]>([]);
+  const [generationOptions, setGenerationOptions] = useState<Generation[]>([]);
   const [sortBy, setSortBy] = useState("updated_at");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [form, setForm] = useState<FilterForm>(INITIAL_FORM);
 
   // Memoized values
-  const yearOptions = useMemo(
-    () =>
-      Array.from({ length: 30 }, (_, i) => {
-        const year = new Date().getFullYear() - i;
-        return { label: year.toString(), value: year.toString() };
-      }),
-    []
+  const yearOptions = useMemo(() =>
+    Array.from({ length: 30 }, (_, i) => {
+      const year = new Date().getFullYear() - i;
+      return { label: year.toString(), value: year.toString() };
+    }), []
   );
 
-  const monthOptions = useMemo(
-    () =>
-      Array.from({ length: 12 }, (_, i) => ({
-        label: `${i + 1}`,
-        value: (i + 1).toString(),
-      })),
-    []
+  const monthOptions = useMemo(() =>
+    Array.from({ length: 12 }, (_, i) => ({
+      label: `${i + 1}`,
+      value: (i + 1).toString(),
+    })), []
   );
 
-  const mileageOptions = useMemo(
-    () =>
-      Array.from({ length: 11 }, (_, i) => {
-        const mileage = i * 20000;
-        return {
-          label: mileage.toLocaleString(),
-          value: mileage.toString(),
-        };
-      }),
-    []
+  const mileageOptions = useMemo(() =>
+    Array.from({ length: 11 }, (_, i) => {
+      const mileage = i * 20000;
+      return {
+        label: mileage.toLocaleString(),
+        value: mileage.toString(),
+      };
+    }), []
   );
 
-  const priceOptions = useMemo(
-    () =>
-      Array.from({ length: 20 }, (_, i) => {
-        const price = (i + 1) * 500000;
-        return {
-          label: price.toLocaleString(),
-          value: price.toString(),
-        };
-      }),
-    []
+  const priceOptions = useMemo(() =>
+    Array.from({ length: 20 }, (_, i) => {
+      const price = (i + 1) * 500000;
+      return {
+        label: price.toLocaleString(),
+        value: price.toString(),
+      };
+    }), []
   );
 
   // API functions
   const fetchFilterData = useCallback(async () => {
     try {
-      const [brandsRes, fuelTypeRes, transmissionRes, bodyTypeRes, colorRes] =
-        await Promise.all([
-          request.get("/cars/brand/list/"),
-          request.get("/cars/fuel_type/list/"),
-          request.get("/cars/transmission/list/"),
-          request.get("/cars/body_type/list/"),
-          request.get("/cars/color/list/"),
-        ]);
+      const [brandsRes, fuelTypeRes, transmissionRes, bodyTypeRes, colorRes] = await Promise.all([
+        request.get("/cars/brand/list/"),
+        request.get("/cars/fuel_type/list/"),
+        request.get("/cars/transmission/list/"),
+        request.get("/cars/body_type/list/"),
+        request.get("/cars/color/list/"),
+      ]);
 
       setFilterData({
         brands: brandsRes.data,
@@ -183,105 +189,89 @@ const Filters = () => {
     }
   }, []);
 
-  const getCars = useCallback(
-    async (filters: FilterForm = form, pageNum: number = page) => {
-      try {
-        setLoading(true);
+  const getCars = useCallback(async (filters: FilterForm = form, pageNum: number = page) => {
+    try {
+      setLoading(true);
 
-        const params = new URLSearchParams();
-        params.set("page", pageNum.toString());
-        params.set("page_size", PAGE_SIZE.toString());
-        params.set("ordering", sortBy);
+      const params = new URLSearchParams();
+      params.set("page", pageNum.toString());
+      params.set("page_size", PAGE_SIZE.toString());
+      params.set("ordering", sortBy);
 
-        Object.entries(filters).forEach(([key, value]) => {
-          if (value && value !== "") {
-            params.set(key, value.toString());
-          }
-        });
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value && value !== "") {
+          params.set(key, value.toString());
+        }
+      });
 
-        const res = await request.get(`/cars/car/list/?${params.toString()}`);
-        setCars(res.data.results || []);
-        setTotalCount(res.data.total || 0);
-        setTotalPages(res.data.total_pages);
-      } catch (error) {
-        console.error("Error fetching cars:", error);
-        setCars([]);
-        setTotalCount(0);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [form, page, sortBy]
-  );
+      const res = await request.get(`/cars/car/list/?${params.toString()}`);
+      setCars(res.data.results || []);
+      setTotalCount(res.data.total || 0);
+      setTotalPages(res.data.total_pages)
+    } catch (error) {
+      console.error("Error fetching cars:", error);
+      setCars([]);
+      setTotalCount(0);
+    } finally {
+      setLoading(false);
+    }
+  }, [form, page, sortBy]);
 
   // Event handlers
-  const selectBrand = useCallback(
-    (brandId: string) => {
-      const brand = filterData.brands.find((item: any) => item.id === brandId);
+  const selectBrand = useCallback((brandId: string) => {
+    const brand = filterData.brands.find((item: Brand) => item.id === brandId);
 
-      if (!brand) {
-        setModelOptions([]);
-        setGenerationOptions([]);
-        return;
-      }
-
-      setModelOptions(brand.models || []);
+    if (!brand) {
+      setModelOptions([]);
       setGenerationOptions([]);
-    },
-    [filterData.brands]
-  );
+      return;
+    }
 
-  const selectModel = useCallback(
-    (modelId: string) => {
-      const model = modelOptions.find((item: any) => item.id === modelId);
+    setModelOptions(brand.models || []);
+    setGenerationOptions([]);
+  }, [filterData.brands]);
 
-      if (!model) {
-        setGenerationOptions([]);
-        return;
-      }
+  const selectModel = useCallback((modelId: string) => {
+    const model = modelOptions.find((item: Model) => item.id === modelId);
 
-      setGenerationOptions(model.generations || []);
-    },
-    [modelOptions]
-  );
+    if (!model) {
+      setGenerationOptions([]);
+      return;
+    }
 
-  const handleFormChange = useCallback(
-    (field: keyof FilterForm, value: string) => {
-      setForm((prev) => ({ ...prev, [field]: value }));
-    },
-    []
-  );
+    setGenerationOptions(model.generations || []);
+  }, [modelOptions]);
 
-  const handleBrandChange = useCallback(
-    (e: any) => {
-      if (!e) {
-        setForm((prev) => ({ ...prev, brand: "", model: "", generation: "" }));
-        setModelOptions([]);
-        setGenerationOptions([]);
-        return;
-      }
+  const handleFormChange = useCallback((field: keyof FilterForm, value: string) => {
+    setForm(prev => ({ ...prev, [field]: value }));
+  }, []);
 
-      setForm((prev) => ({
-        ...prev,
-        brand: e.value,
-        model: "",
-        generation: "",
-      }));
-      selectBrand(e.value);
-    },
-    [selectBrand]
-  );
+  const handleBrandChange = useCallback((e: SelectOption | null) => {
+    if (!e) {
+      setForm(prev => ({ ...prev, brand: "", model: "", generation: "" }));
+      setModelOptions([]);
+      setGenerationOptions([]);
+      return;
+    }
 
-  const handleModelChange = useCallback(
-    (e: any) => {
-      setForm((prev) => ({ ...prev, model: e?.value || "" }));
-      selectModel(e?.value);
-    },
-    [selectModel]
-  );
+    setForm(prev => ({
+      ...prev,
+      brand: e.value,
+      model: "",
+      generation: "",
+    }));
+    selectBrand(e.value);
+  }, [selectBrand]);
 
-  const handleGenerationChange = useCallback((e: any) => {
-    setForm((prev) => ({ ...prev, generation: e?.value || "" }));
+  const handleModelChange = useCallback((e: SelectOption | null) => {
+    setForm(prev => ({ ...prev, model: e?.value || "" }));
+    if (e?.value) {
+      selectModel(e.value);
+    }
+  }, [selectModel]);
+
+  const handleGenerationChange = useCallback((e: SelectOption | null) => {
+    setForm(prev => ({ ...prev, generation: e?.value || "" }));
   }, []);
 
   const handleSubmit = useCallback(() => {
@@ -354,132 +344,109 @@ const Filters = () => {
   }, [form.model, modelOptions, selectModel]);
 
   // Render functions
-  const renderSelect = useCallback(
-    (
-      options: any[],
-      placeholder: string,
-      value: string,
-      onChange: (e: any) => void,
-      disabled = false,
-      className = "w-full"
-    ) => (
-      <Select
-        options={options.map((item: any) => ({
-          label: item.name,
-          value: item.id,
-        }))}
-        placeholder={placeholder}
-        searchable={true}
-        className={className}
-        value={value}
-        onChange={onChange}
-        disabled={disabled}
-      />
-    ),
-    []
-  );
+  const renderSelect = useCallback((
+    options: FilterItem[],
+    placeholder: string,
+    value: string,
+    onChange: (e: SelectOption | null) => void,
+    disabled = false,
+    className = "w-full"
+  ) => (
+    <Select
+      options={options.map((item: FilterItem) => ({
+        label: item.name,
+        value: item.id,
+      }))}
+      placeholder={placeholder}
+      searchable={true}
+      className={className}
+      value={value}
+      onChange={onChange}
+      disabled={disabled}
+    />
+  ), []);
 
-  const renderYearMonthSection = useCallback(
-    (
-      title: string,
-      startYear: string,
-      startMonth: string,
-      endYear: string,
-      endMonth: string
-    ) => (
-      <div>
-        <h2 className="text-xl font-medium text-primary mb-2.5">{title}</h2>
-        <div className="grid grid-cols-2 gap-y-2.5 gap-x-5">
-          <Select
-            options={yearOptions}
-            placeholder="Начальный год выпуска"
-            searchable={true}
-            className="w-full"
-            value={startYear}
-            onChange={(e: any) => handleFormChange("start_year", e.value)}
-          />
-          <Select
-            options={monthOptions}
-            placeholder="Начальный месяц выпуска"
-            searchable={true}
-            disabled={!startYear}
-            className="w-full"
-            value={startMonth}
-            onChange={(e: any) => handleFormChange("start_month", e.value)}
-          />
-          <Select
-            options={yearOptions}
-            placeholder="Конечный год выпуска"
-            searchable={true}
-            className="w-full"
-            value={endYear}
-            onChange={(e: any) => handleFormChange("end_year", e.value)}
-          />
-          <Select
-            options={monthOptions}
-            placeholder="Конечный месяц выпуска"
-            searchable={true}
-            disabled={!endYear}
-            className="w-full"
-            value={endMonth}
-            onChange={(e: any) => handleFormChange("end_month", e.value)}
-          />
-        </div>
+  const renderYearMonthSection = useCallback((title: string, startYear: string, startMonth: string, endYear: string, endMonth: string) => (
+    <div>
+      <h2 className="text-xl font-medium text-primary mb-2.5">{title}</h2>
+      <div className="grid grid-cols-2 gap-y-2.5 gap-x-5">
+        <Select
+          options={yearOptions}
+          placeholder="Начальный год выпуска"
+          searchable={true}
+          className="w-full"
+          value={startYear}
+          onChange={(e: SelectOption | null) => handleFormChange("start_year", e?.value || "")}
+        />
+        <Select
+          options={monthOptions}
+          placeholder="Начальный месяц выпуска"
+          searchable={true}
+          disabled={!startYear}
+          className="w-full"
+          value={startMonth}
+          onChange={(e: SelectOption | null) => handleFormChange("start_month", e?.value || "")}
+        />
+        <Select
+          options={yearOptions}
+          placeholder="Конечный год выпуска"
+          searchable={true}
+          className="w-full"
+          value={endYear}
+          onChange={(e: SelectOption | null) => handleFormChange("end_year", e?.value || "")}
+        />
+        <Select
+          options={monthOptions}
+          placeholder="Конечный месяц выпуска"
+          searchable={true}
+          disabled={!endYear}
+          className="w-full"
+          value={endMonth}
+          onChange={(e: SelectOption | null) => handleFormChange("end_month", e?.value || "")}
+        />
       </div>
-    ),
-    [yearOptions, monthOptions, handleFormChange]
-  );
+    </div>
+  ), [yearOptions, monthOptions, handleFormChange]);
 
-  const renderMileagePriceSection = useCallback(
-    (title: string) => (
-      <div>
-        <h2 className="text-xl font-medium text-primary mb-2.5">{title}</h2>
-        <div className="grid grid-cols-2 gap-y-2.5 gap-x-5">
-          <Select
-            options={mileageOptions}
-            placeholder="Мин. пробег"
-            searchable={true}
-            className="w-full"
-            value={form.min_miliage}
-            onChange={(e: any) => handleFormChange("min_miliage", e.value)}
-          />
-          <Select
-            options={mileageOptions}
-            placeholder="Макс. пробег"
-            searchable={true}
-            className="w-full"
-            value={form.max_miliage}
-            onChange={(e: any) => handleFormChange("max_miliage", e.value)}
-          />
-          <Select
-            options={priceOptions}
-            placeholder="Мин. стоимость"
-            searchable={true}
-            className="w-full"
-            value={form.min_price}
-            onChange={(e: any) => handleFormChange("min_price", e.value)}
-          />
-          <Select
-            options={priceOptions}
-            placeholder="Макс. стоимость"
-            searchable={true}
-            className="w-full"
-            value={form.max_price}
-            onChange={(e: any) => handleFormChange("max_price", e.value)}
-          />
-        </div>
+  const renderMileagePriceSection = useCallback((title: string) => (
+    <div>
+      <h2 className="text-xl font-medium text-primary mb-2.5">{title}</h2>
+      <div className="grid grid-cols-2 gap-y-2.5 gap-x-5">
+        <Select
+          options={mileageOptions}
+          placeholder="Мин. пробег"
+          searchable={true}
+          className="w-full"
+          value={form.min_miliage}
+          onChange={(e: SelectOption | null) => handleFormChange("min_miliage", e?.value || "")}
+        />
+        <Select
+          options={mileageOptions}
+          placeholder="Макс. пробег"
+          searchable={true}
+          className="w-full"
+          value={form.max_miliage}
+          onChange={(e: SelectOption | null) => handleFormChange("max_miliage", e?.value || "")}
+        />
+        <Select
+          options={priceOptions}
+          placeholder="Мин. стоимость"
+          searchable={true}
+          className="w-full"
+          value={form.min_price}
+          onChange={(e: SelectOption | null) => handleFormChange("min_price", e?.value || "")}
+        />
+        <Select
+          options={priceOptions}
+          placeholder="Макс. стоимость"
+          searchable={true}
+          className="w-full"
+          value={form.max_price}
+          onChange={(e: SelectOption | null) => handleFormChange("max_price", e?.value || "")}
+        />
       </div>
-    ),
-    [
-      mileageOptions,
-      priceOptions,
-      form.min_miliage,
-      form.max_miliage,
-      form.min_price,
-      form.max_price,
-      handleFormChange,
-    ]
-  );
+    </div>
+  ), [mileageOptions, priceOptions, form.min_miliage, form.max_miliage, form.min_price, form.max_price, handleFormChange]);
 
   return (
     <section className="py-10 md:py-14">
@@ -488,7 +455,7 @@ const Filters = () => {
         <div className="hidden md:grid grid-cols-4 items-start gap-8">
           <div className="flex flex-col gap-6">
             <Select
-              options={filterData.brands.map((brand: any) => ({
+              options={filterData.brands.map((brand: Brand) => ({
                 label: brand.name,
                 value: brand.id,
               }))}
@@ -499,30 +466,11 @@ const Filters = () => {
               onChange={handleBrandChange}
             />
             <div className="flex flex-col gap-2.5">
-              <h2 className="text-xl font-medium text-primary">
-                Характеристики
-              </h2>
-              {renderSelect(
-                filterData.fuelType,
-                "Тип топлива",
-                form.fuel_type,
-                (e: any) => handleFormChange("fuel_type", e.value)
-              )}
-              {renderSelect(
-                filterData.transmission,
-                "Трансмиссия",
-                form.transmission,
-                (e: any) => handleFormChange("transmission", e.value)
-              )}
-              {renderSelect(
-                filterData.bodyType,
-                "Тип кузова",
-                form.body_type,
-                (e: any) => handleFormChange("body_type", e.value)
-              )}
-              {renderSelect(filterData.color, "Цвет", form.color, (e: any) =>
-                handleFormChange("color", e.value)
-              )}
+              <h2 className="text-xl font-medium text-primary">Характеристики</h2>
+              {renderSelect(filterData.fuelType, "Тип топлива", form.fuel_type, (e: SelectOption | null) => handleFormChange("fuel_type", e?.value || ""))}
+              {renderSelect(filterData.transmission, "Трансмиссия", form.transmission, (e: SelectOption | null) => handleFormChange("transmission", e?.value || ""))}
+              {renderSelect(filterData.bodyType, "Тип кузова", form.body_type, (e: SelectOption | null) => handleFormChange("body_type", e?.value || ""))}
+              {renderSelect(filterData.color, "Цвет", form.color, (e: SelectOption | null) => handleFormChange("color", e?.value || ""))}
               <button className="text-lg bg-black text-white font-medium py-[5px] w-full rounded-lg cursor-pointer border-2 border-black duration-200 hover:shadow-[3px_3px_6px_silver]">
                 Инструкция
               </button>
@@ -531,7 +479,7 @@ const Filters = () => {
 
           <div className="col-span-2 flex flex-col gap-6">
             <Select
-              options={modelOptions.map((model: any) => ({
+              options={modelOptions.map((model: Model) => ({
                 label: model.name,
                 value: model.id,
               }))}
@@ -543,20 +491,14 @@ const Filters = () => {
               onChange={handleModelChange}
             />
             <div className="flex flex-col gap-5.5">
-              {renderYearMonthSection(
-                "Год выпуска",
-                form.start_year,
-                form.start_month,
-                form.end_year,
-                form.end_month
-              )}
+              {renderYearMonthSection("Год выпуска", form.start_year, form.start_month, form.end_year, form.end_month)}
               {renderMileagePriceSection("Пробег")}
             </div>
           </div>
 
           <div className="flex flex-col gap-15">
             <Select
-              options={generationOptions.map((generation: any) => ({
+              options={generationOptions.map((generation: Generation) => ({
                 label: generation.name,
                 value: generation.id,
               }))}
@@ -599,7 +541,7 @@ const Filters = () => {
         <div className="md:hidden">
           <div className="flex flex-col md:flex-row gap-2.5 mb-5">
             <Select
-              options={filterData.brands.map((brand: any) => ({
+              options={filterData.brands.map((brand: Brand) => ({
                 label: brand.name,
                 value: brand.id,
               }))}
@@ -610,7 +552,7 @@ const Filters = () => {
               onChange={handleBrandChange}
             />
             <Select
-              options={modelOptions.map((model: any) => ({
+              options={modelOptions.map((model: Model) => ({
                 label: model.name,
                 value: model.id,
               }))}
@@ -622,7 +564,7 @@ const Filters = () => {
               onChange={handleModelChange}
             />
             <Select
-              options={generationOptions.map((generation: any) => ({
+              options={generationOptions.map((generation: Generation) => ({
                 label: generation.name,
                 value: generation.id,
               }))}
@@ -637,52 +579,16 @@ const Filters = () => {
 
           <div className="flex flex-col md:flex-row gap-2.5 mb-5">
             <div className="flex flex-col gap-2.5">
-              <h2 className="text-xl font-medium text-primary">
-                Характеристики
-              </h2>
+              <h2 className="text-xl font-medium text-primary">Характеристики</h2>
               <div className="grid grid-cols-2 md:grid-cols-1 gap-2.5">
-                {renderSelect(
-                  filterData.fuelType,
-                  "Тип топлива",
-                  form.fuel_type,
-                  (e: any) => handleFormChange("fuel_type", e.value),
-                  false,
-                  "w-full md:w-64"
-                )}
-                {renderSelect(
-                  filterData.transmission,
-                  "Трансмиссия",
-                  form.transmission,
-                  (e: any) => handleFormChange("transmission", e.value),
-                  false,
-                  "w-full md:w-64"
-                )}
-                {renderSelect(
-                  filterData.bodyType,
-                  "Тип кузова",
-                  form.body_type,
-                  (e: any) => handleFormChange("body_type", e.value),
-                  false,
-                  "w-full md:w-64"
-                )}
-                {renderSelect(
-                  filterData.color,
-                  "Цвет",
-                  form.color,
-                  (e: any) => handleFormChange("color", e.value),
-                  false,
-                  "w-full md:w-64"
-                )}
+                {renderSelect(filterData.fuelType, "Тип топлива", form.fuel_type, (e: SelectOption | null) => handleFormChange("fuel_type", e?.value || ""), false, "w-full md:w-64")}
+                {renderSelect(filterData.transmission, "Трансмиссия", form.transmission, (e: SelectOption | null) => handleFormChange("transmission", e?.value || ""), false, "w-full md:w-64")}
+                {renderSelect(filterData.bodyType, "Тип кузова", form.body_type, (e: SelectOption | null) => handleFormChange("body_type", e?.value || ""), false, "w-full md:w-64")}
+                {renderSelect(filterData.color, "Цвет", form.color, (e: SelectOption | null) => handleFormChange("color", e?.value || ""), false, "w-full md:w-64")}
               </div>
             </div>
             <div className="flex flex-col gap-5.5">
-              {renderYearMonthSection(
-                "Год выпуска",
-                form.start_year,
-                form.start_month,
-                form.end_year,
-                form.end_month
-              )}
+              {renderYearMonthSection("Год выпуска", form.start_year, form.start_month, form.end_year, form.end_month)}
               {renderMileagePriceSection("Пробег")}
             </div>
           </div>
@@ -709,38 +615,28 @@ const Filters = () => {
               <HiOutlineArrowLongRight size={20} />
             </button>
           </div>
-          <p className="text-xl text-center text-gray-500 font-medium py-[5px] w-full">
-            Всего найдено: {totalCount.toLocaleString()}
-          </p>
         </div>
 
-        <div className="w-full my-7 flex flex-col lg:flex-row items-center justify-between gap-0 lg:gap-8 mt-5">
+        <div className="w-full my-7 flex flex-col lg:flex-row items-center justify-between gap-0 lg:gap-8 mt-15">
           <div className="w-full flex items-center gap-10">
             <div className="w-full flex flex-col md:flex-row items-start md:items-center gap-2">
               <p>Сортировать по:</p>
               <Select
                 options={SORT_OPTIONS}
-                value={
-                  SORT_OPTIONS.find((option) => option.value === sortBy) ||
-                  SORT_OPTIONS[0]
-                }
+                value={SORT_OPTIONS.find((option) => option.value === sortBy) || SORT_OPTIONS[0]}
                 className="w-full lg:w-64"
-                onChange={(e: any) => setSortBy(e.value)}
+                onChange={(e: SelectOption | null) => setSortBy(e?.value || "")}
               />
             </div>
             <div className="hidden md:flex gap-4">
               <button
-                className={`cursor-pointer ${
-                  viewMode === "grid" ? "text-primary" : "text-gray-500"
-                }`}
+                className={`cursor-pointer ${viewMode === "grid" ? "text-primary" : "text-gray-500"}`}
                 onClick={() => setViewMode("grid")}
               >
                 <BsGrid3X3GapFill className="text-[40px]" />
               </button>
               <button
-                className={`cursor-pointer ${
-                  viewMode === "list" ? "text-primary" : "text-gray-500"
-                }`}
+                className={`cursor-pointer ${viewMode === "list" ? "text-primary" : "text-gray-500"}`}
                 onClick={() => setViewMode("list")}
               >
                 <FaThList className="text-[40px]" />
@@ -765,11 +661,10 @@ const Filters = () => {
         {/* Car grid/list */}
         {!loading && (
           <div
-            className={`grid gap-8 ${
-              viewMode === "grid"
-                ? "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-                : "grid-cols-1"
-            }`}
+            className={`grid gap-8 ${viewMode === "grid"
+              ? "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+              : "grid-cols-1"
+              }`}
           >
             {cars.map((car: Car) => (
               <CarCard key={car.id} data={car} viewMode={viewMode} />
