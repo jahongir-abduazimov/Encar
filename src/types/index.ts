@@ -162,5 +162,18 @@ export interface ApiError {
     detail?: string;
 }
 
+// HTTP Error Response type for axios/fetch errors
+export interface HttpErrorResponse {
+    response?: {
+        status: number;
+        data?: {
+            errors?: Record<string, string[]>;
+            message?: string;
+            detail?: string;
+        };
+    };
+    message?: string;
+}
+
 // Loading states
 export type LoadingState = "idle" | "loading" | "success" | "error"; 

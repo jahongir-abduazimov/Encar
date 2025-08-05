@@ -10,7 +10,7 @@ import Seats from "@/sections/car-detail/Seats";
 import SimilarCars from "@/sections/car-detail/SimilarCars";
 import request from "@/components/config";
 import { useParams } from "next/navigation";
-import { CarDetail as CarDetailType, LoadingState, ApiError } from "@/types";
+import { CarDetail as CarDetailType, LoadingState, ApiError, HttpErrorResponse } from "@/types";
 
 const CarDetail = () => {
   const [data, setData] = useState<CarDetailType | null>(null);
@@ -29,10 +29,11 @@ const CarDetail = () => {
       setData(res.data);
       setLoading("success");
     } catch (e) {
+      const errorResponse = e as HttpErrorResponse;
       const apiError: ApiError = {
         message: e instanceof Error ? e.message : "Failed to fetch car details",
-        status: (e as any)?.response?.status || 500,
-        errors: (e as any)?.response?.data?.errors
+        status: errorResponse?.response?.status || 500,
+        errors: errorResponse?.response?.data?.errors
       };
       setError(apiError);
       setLoading("error");
