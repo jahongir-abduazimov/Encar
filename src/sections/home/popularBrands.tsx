@@ -5,36 +5,50 @@ import Container from "@/components/Container";
 import Image from "next/image";
 import Link from "next/link";
 import request from "@/components/config";
+import { Brand, LoadingState } from "@/types";
 
-interface Brands {
-  id: string;
-  name: string;
+interface BrandWithIcon extends Brand {
   icon: string;
 }
 
 const PopularBrands = () => {
-  const [brands, setBrands] = useState([]);
+  const [brands, setBrands] = useState<BrandWithIcon[]>([]);
+  const [loading, setLoading] = useState<LoadingState>("idle");
+
   const getBrands = async () => {
+    setLoading("loading");
     try {
-      const res = await request.get("/cars/brand/list/");
+      const res = await request.get<BrandWithIcon[]>("/cars/brand/list/");
       setBrands(res.data);
+      setLoading("success");
     } catch (e) {
       console.error(e);
+      setLoading("error");
     }
   };
 
   useEffect(() => {
     getBrands();
   }, []);
+
   return (
     <section className="py-12 md:py-20">
       <Container>
         <h2 className="text-2xl md:text-4xl font-medium mb-4">
           Популярные автомобили
         </h2>
-        {brands.length > 0 ? (
+        {loading === "loading" ? (
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
-            {brands.map((brand: Brands) => (
+            {Array.from({ length: 8 }).map((_, index) => (
+              <div
+                key={index}
+                className="min-w-30 h-30 border bg-gray-300 border-gray-300 flex-col flex items-center justify-end p-4 transition-colors animate-pulse"
+              />
+            ))}
+          </div>
+        ) : brands.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
+            {brands.map((brand: BrandWithIcon) => (
               <Link
                 href={`/search-auto?brand=${brand.id}`}
                 key={brand.name}
@@ -52,15 +66,8 @@ const PopularBrands = () => {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
-            <div className="min-w-30 h-30 border bg-gray-300 border-gray-300 flex-col flex items-center justify-end p-4 transition-colors animate-pulse" />
-            <div className="min-w-30 h-30 border bg-gray-300 border-gray-300 flex-col flex items-center justify-end p-4 transition-colors animate-pulse" />
-            <div className="min-w-30 h-30 border bg-gray-300 border-gray-300 flex-col flex items-center justify-end p-4 transition-colors animate-pulse" />
-            <div className="min-w-30 h-30 border bg-gray-300 border-gray-300 flex-col flex items-center justify-end p-4 transition-colors animate-pulse" />
-            <div className="min-w-30 h-30 border bg-gray-300 border-gray-300 flex-col flex items-center justify-end p-4 transition-colors animate-pulse" />
-            <div className="min-w-30 h-30 border bg-gray-300 border-gray-300 flex-col flex items-center justify-end p-4 transition-colors animate-pulse" />
-            <div className="min-w-30 h-30 border bg-gray-300 border-gray-300 flex-col flex items-center justify-end p-4 transition-colors animate-pulse" />
-            <div className="min-w-30 h-30 border bg-gray-300 border-gray-300 flex-col flex items-center justify-end p-4 transition-colors animate-pulse" />
+          <div className="text-center py-8">
+            <p className="text-gray-500">No brands available</p>
           </div>
         )}
       </Container>

@@ -13,52 +13,10 @@ import { useParams } from "next/navigation";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import { CarDetail as CarDetailType, DetailProps } from "@/types";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
-type CarMedia = {
-  id: string;
-  media: string; // yoki `url` bo'lishi mumkin sizdagi API'ga qarab
-};
-
-type Car = {
-  id: string;
-  name: string;
-  body_type: {
-    id: string;
-    name: string;
-  };
-  car_inspections: unknown | null;
-  car_interyer: unknown | null;
-  car_medias: CarMedia[];
-  car_multimedia: unknown | null;
-  car_pricing: unknown | null;
-  car_safety: unknown | null;
-  car_seats: unknown | null;
-  color: {
-    id: string;
-    name: string;
-  };
-  engine_capacity: number;
-  fuel_type: {
-    id: string;
-    name: string;
-  };
-  miliage: number;
-  month: string;
-  price: number;
-  transmission: {
-    id: string;
-    name: string;
-  };
-  updated_at: string;
-  year: string;
-};
-
-interface DetailProps {
-  data: Car;
-}
 
 const Detail = ({ data }: DetailProps) => {
   const [priceVisable, setPriceVisable] = useState(false);

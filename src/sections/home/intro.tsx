@@ -5,36 +5,14 @@ import Container from "@/components/Container";
 import Select from "@/components/ui/Select";
 import request from "@/components/config";
 import { useRouter } from "next/navigation";
-
-interface Option {
-  id: string;
-  name: string;
-  models?: Option[];
-  generations?: Option[];
-}
-
-interface SelectOption {
-  label: string;
-  value: string;
-}
-
-interface FilterForm {
-  brand: string;
-  model: string;
-  generation: string;
-  fuel_type: string;
-  transmission: string;
-  body_type: string;
-  color: string;
-  start_year: string;
-  start_month: string;
-  end_year: string;
-  end_month: string;
-  min_miliage: string;
-  max_miliage: string;
-  min_price: string;
-  max_price: string;
-}
+import {
+  FilterForm,
+  SelectOption,
+  Brand,
+  Model,
+  Generation,
+  FilterItem
+} from "@/types";
 
 const defaultForm: FilterForm = {
   brand: "",
@@ -57,14 +35,14 @@ const defaultForm: FilterForm = {
 const Intro = () => {
   const router = useRouter();
 
-  const [brands, setBrands] = useState<Option[]>([]);
-  const [fuelType, setFuelType] = useState<Option[]>([]);
-  const [transmission, setTransmission] = useState<Option[]>([]);
-  const [bodyType, setBodyType] = useState<Option[]>([]);
-  const [color, setColor] = useState<Option[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [fuelType, setFuelType] = useState<FilterItem[]>([]);
+  const [transmission, setTransmission] = useState<FilterItem[]>([]);
+  const [bodyType, setBodyType] = useState<FilterItem[]>([]);
+  const [color, setColor] = useState<FilterItem[]>([]);
 
-  const [modelOptions, setModelOptions] = useState<Option[]>([]);
-  const [generationOptions, setGenerationOptions] = useState<Option[]>([]);
+  const [modelOptions, setModelOptions] = useState<Model[]>([]);
+  const [generationOptions, setGenerationOptions] = useState<Generation[]>([]);
   const [form, setForm] = useState<FilterForm>(defaultForm);
 
   const fetchOptions = async () => {
@@ -156,7 +134,7 @@ const Intro = () => {
     );
   };
 
-  const toSelectOptions = (data: Option[]): SelectOption[] =>
+  const toSelectOptions = (data: FilterItem[]): SelectOption[] =>
     data.map((item) => ({ label: item.name, value: item.id }));
 
   return (

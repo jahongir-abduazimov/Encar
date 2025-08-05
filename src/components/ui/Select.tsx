@@ -2,21 +2,17 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { IoIosArrowDown } from "react-icons/io";
-
-interface Option {
-  label: string;
-  value: string;
-}
+import { SelectOption } from "@/types";
 
 interface SelectProps {
-  options: Option[];
+  options: SelectOption[];
   placeholder?: string;
   searchable?: boolean;
   disabled?: boolean;
   className?: string;
-  // value could be either the whole Option or just its value string (id)
-  value?: Option | string | null;
-  onChange?: (selected: Option | null) => void;
+  // value could be either the whole SelectOption or just its value string (id)
+  value?: SelectOption | string | null;
+  onChange?: (selected: SelectOption | null) => void;
 }
 
 const Select = ({
@@ -30,10 +26,10 @@ const Select = ({
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
-  const [selected, setSelected] = useState<Option | null>(null);
+  const [selected, setSelected] = useState<SelectOption | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-  // sync when incoming value changes (could be Option or string)
+  // sync when incoming value changes (could be SelectOption or string)
   useEffect(() => {
     if (value === null) {
       setSelected(null);
@@ -43,7 +39,7 @@ const Select = ({
       const found = options.find((o) => o.value === value) || null;
       setSelected(found);
     } else {
-      // assume it's a full Option
+      // assume it's a full SelectOption
       setSelected(value);
     }
   }, [value, options]);
@@ -78,7 +74,7 @@ const Select = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSelect = (option: Option) => {
+  const handleSelect = (option: SelectOption) => {
     if (disabled) return;
     setSelected(option);
     setIsOpen(false);
@@ -111,9 +107,8 @@ const Select = ({
           {selected ? selected.label : placeholder}
         </p>
         <IoIosArrowDown
-          className={`text-gray-600 transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`text-gray-600 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+            }`}
         />
       </div>
 
@@ -142,11 +137,10 @@ const Select = ({
                   role="option"
                   aria-selected={selected?.value === option.value}
                   onClick={() => handleSelect(option)}
-                  className={`px-4 py-1 hover:bg-primary hover:text-white cursor-pointer ${
-                    selected?.value === option.value
-                      ? "bg-primary text-white"
-                      : ""
-                  }`}
+                  className={`px-4 py-1 hover:bg-primary hover:text-white cursor-pointer ${selected?.value === option.value
+                    ? "bg-primary text-white"
+                    : ""
+                    }`}
                 >
                   {option.label}
                 </li>

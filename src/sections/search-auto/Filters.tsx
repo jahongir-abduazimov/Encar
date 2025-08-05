@@ -11,73 +11,19 @@ import { IoShareSocialSharp } from "react-icons/io5";
 import Pagination from "@/components/ui/Pagination";
 import CarCard from "./CarCard";
 import { useSearchParams } from "next/navigation";
-
-// Types
-interface Car {
-  id: string;
-  name: string;
-  image: string;
-  miliage: number;
-  price: number;
-  year: string;
-  updated_at: string;
-  comparison: boolean;
-  like: boolean;
-  color: {
-    id: string;
-    name: string;
-  };
-  fuel_type: {
-    id: string;
-    name: string;
-  };
-}
-
-interface FilterForm {
-  brand: string;
-  model: string;
-  generation: string;
-  fuel_type: string;
-  transmission: string;
-  body_type: string;
-  color: string;
-  start_year: string;
-  start_month: string;
-  end_year: string;
-  end_month: string;
-  min_miliage: string;
-  max_miliage: string;
-  min_price: string;
-  max_price: string;
-}
-
-interface FilterItem {
-  id: string;
-  name: string;
-}
-
-interface Brand extends FilterItem {
-  models?: Model[];
-}
-
-interface Model extends FilterItem {
-  generations?: Generation[];
-}
-
-type Generation = FilterItem;
-
-interface FilterData {
-  brands: Brand[];
-  fuelType: FilterItem[];
-  transmission: FilterItem[];
-  bodyType: FilterItem[];
-  color: FilterItem[];
-}
-
-interface SelectOption {
-  label: string;
-  value: string;
-}
+import {
+  CarListItem,
+  FilterForm,
+  FilterData,
+  SelectOption,
+  PaginatedResponse,
+  ApiError,
+  LoadingState,
+  Brand,
+  Model,
+  Generation,
+  FilterItem
+} from "@/types";
 
 // Constants
 const PAGE_SIZE = 24;
@@ -113,7 +59,7 @@ const Filters = () => {
   const searchParams = useSearchParams();
 
   // State
-  const [cars, setCars] = useState<Car[]>([]);
+  const [cars, setCars] = useState<CarListItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
@@ -807,11 +753,11 @@ const Filters = () => {
         {!loading && (
           <div
             className={`grid gap-8 ${viewMode === "grid"
-                ? "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-                : "grid-cols-1"
+              ? "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+              : "grid-cols-1"
               }`}
           >
-            {cars.map((car: Car) => (
+            {cars.map((car: CarListItem) => ( // Changed to CarListItem as Car type is removed
               <CarCard key={car.id} data={car} viewMode={viewMode} />
             ))}
           </div>

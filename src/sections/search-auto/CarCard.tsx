@@ -10,34 +10,12 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import request from "@/components/config";
+import { CarListItem, CarCardProps } from "@/types";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-type Car = {
-  data: {
-    id: string;
-    name: string;
-    image: string;
-    miliage: number;
-    price: number;
-    year: string;
-    updated_at: string;
-    comparison: boolean;
-    like: boolean;
-    color: {
-      id: string;
-      name: string;
-    };
-    fuel_type: {
-      id: string;
-      name: string;
-    };
-  };
-  viewMode?: "grid" | "list";
-};
-
-const CarCard = ({ data, viewMode = "grid" }: Car) => {
+const CarCard = ({ data, viewMode = "grid" }: CarCardProps) => {
   const [isLiked, setIsLiked] = useState(data.like);
   const [comparison, setComparison] = useState(data.comparison);
   const formatted =
@@ -183,17 +161,15 @@ const CarCard = ({ data, viewMode = "grid" }: Car) => {
           <div className="mt-5 mb-2 flex gap-2">
             <button
               onClick={() => handleLike(data.id)}
-              className={`min-w-[30px] h-[30px] rounded-md border border-primary flex items-center justify-center cursor-pointer duration-200 hover:shadow-[3px_3px_6px_silver] ${
-                isLiked ? "bg-primary text-white" : "text-gray-400"
-              }`}
+              className={`min-w-[30px] h-[30px] rounded-md border border-primary flex items-center justify-center cursor-pointer duration-200 hover:shadow-[3px_3px_6px_silver] ${isLiked ? "bg-primary text-white" : "text-gray-400"
+                }`}
             >
               <FaHeart className="text-lg" />
             </button>
             <button
               onClick={() => handleCompare(data.id)}
-              className={`min-w-[30px] h-[30px] rounded-md border border-primary flex items-center justify-center cursor-pointer duration-200 hover:shadow-[3px_3px_6px_silver] ${
-                comparison ? "bg-primary text-white" : "text-gray-400"
-              }`}
+              className={`min-w-[30px] h-[30px] rounded-md border border-primary flex items-center justify-center cursor-pointer duration-200 hover:shadow-[3px_3px_6px_silver] ${comparison ? "bg-primary text-white" : "text-gray-400"
+                }`}
             >
               <MdCompareArrows className="text-xl" />
             </button>

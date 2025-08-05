@@ -8,20 +8,15 @@ import { FaEye, FaEyeSlash, FaKey, FaUserPlus } from "react-icons/fa6";
 import { LuAtSign } from "react-icons/lu";
 import request from "@/components/config";
 import { useRouter } from "next/navigation";
+import { ApiError } from "@/types";
 
 type LoginModalProps = {
   isOpen: boolean;
   handleClose: () => void;
 };
 
-interface ErrorResponse {
-  email?: string[];
-  non_field_errors?: string[];
-  detail?: string;
-}
-
 const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
-  const router = useRouter();
+
   const [inType, setInType] = useState("login");
   const [isError, setIsError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -112,7 +107,7 @@ const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
       localStorage.setItem("auth", res.data.access);
       window.location.reload();
     } catch (error) {
-      const err = error as AxiosError<ErrorResponse>; 
+      const err = error as AxiosError<ApiError>;
       if (err.response?.data?.email) {
         setIsError(
           "Пользователь с таким адресом электронной почты уже существует"
@@ -146,17 +141,15 @@ const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
         <div className="flex w-full border rounded-md my-5 overflow-hidden">
           <button
             onClick={() => setInType("login")}
-            className={`w-[50%] cursor-pointer ${
-              inType === "login" && "bg-black text-white py-2"
-            }`}
+            className={`w-[50%] cursor-pointer ${inType === "login" && "bg-black text-white py-2"
+              }`}
           >
             Вход на сайт
           </button>
           <button
             onClick={() => setInType("register")}
-            className={`w-[50%] cursor-pointer ${
-              inType === "register" && "bg-black text-white py-2"
-            }`}
+            className={`w-[50%] cursor-pointer ${inType === "register" && "bg-black text-white py-2"
+              }`}
           >
             Регистрация
           </button>
@@ -227,11 +220,10 @@ const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
             <button
               type="submit"
               disabled={loading}
-              className={`duration-200 text-white rounded-md py-2 mt-2 ${
-                loading
-                  ? "bg-gray-400"
-                  : "bg-primary cursor-pointer hover:bg-primary/70"
-              }`}
+              className={`duration-200 text-white rounded-md py-2 mt-2 ${loading
+                ? "bg-gray-400"
+                : "bg-primary cursor-pointer hover:bg-primary/70"
+                }`}
             >
               Войти
             </button>
@@ -308,11 +300,10 @@ const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
             <button
               type="submit"
               disabled={registerLoading}
-              className={`duration-200 text-white rounded-md py-2 mt-2 ${
-                registerLoading
-                  ? "bg-gray-400"
-                  : "bg-primary cursor-pointer hover:bg-primary/70"
-              }`}
+              className={`duration-200 text-white rounded-md py-2 mt-2 ${registerLoading
+                ? "bg-gray-400"
+                : "bg-primary cursor-pointer hover:bg-primary/70"
+                }`}
             >
               Зарегистрироваться
             </button>
