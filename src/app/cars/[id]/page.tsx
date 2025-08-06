@@ -4,7 +4,7 @@ import CarDetail from "@/sections/car-detail";
 import request from "@/components/config";
 import { CarDetail as CarDetailType } from "@/types";
 
-export interface PageProps {
+interface PageProps {
   params: {
     id: string;
   };
