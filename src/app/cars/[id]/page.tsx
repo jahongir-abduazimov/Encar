@@ -48,7 +48,7 @@ const getRussianTransmission = (transmission: string): string => {
 // Generate dynamic metadata for each car with Russian SEO optimization
 export async function generateMetadata({
   params,
-}: { params: { id: string } }): Promise<Metadata> {
+}: { params: any }): Promise<Metadata> {
   try {
     const res = await request.get<CarDetailType>(`/cars/car/${params.id}/`);
     const car = res.data;
@@ -303,7 +303,7 @@ function generateBreadcrumbData(car: CarDetailType) {
   };
 }
 
-const DetailPage = async ({ params }: { params: { id: string } }) => {
+const DetailPage = async ({ params }: any) => {
   let car: CarDetailType | null = null;
 
   try {
