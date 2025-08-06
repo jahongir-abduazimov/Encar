@@ -4,6 +4,12 @@ import CarDetail from "@/sections/car-detail";
 import request from "@/components/config";
 import { CarDetail as CarDetailType } from "@/types";
 
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
 // Russian SEO helper functions
 const getRussianBodyType = (bodyType: string): string => {
   const bodyTypeMap: Record<string, string> = {
@@ -46,9 +52,7 @@ const getRussianTransmission = (transmission: string): string => {
 // Generate dynamic metadata for each car with Russian SEO optimization
 export async function generateMetadata({
   params,
-}: {
-  params: { id: string };
-}): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
   try {
     const res = await request.get<CarDetailType>(`/cars/car/${params.id}/`);
     const car = res.data;
@@ -60,13 +64,11 @@ export async function generateMetadata({
     // Russian SEO optimized description
     const russianFuelType = getRussianFuelType(car.fuel_type.name);
     const russianTransmission = getRussianTransmission(car.transmission.name);
-    const description = `${car.name} ${
-      car.year
-    } года выпуска, ${russianBodyType}. ${russianFuelType} двигатель, ${russianTransmission} коробка передач, пробег ${car.miliage.toLocaleString(
-      "ru-RU"
-    )} км. Цена: ${car.price.toLocaleString("ru-RU")} ${
-      car.car_pricing?.currency || "USD"
-    }. Купить ${car.name.toLowerCase()} в России.`;
+    const description = `${car.name} ${car.year
+      } года выпуска, ${russianBodyType}. ${russianFuelType} двигатель, ${russianTransmission} коробка передач, пробег ${car.miliage.toLocaleString(
+        "ru-RU"
+      )} км. Цена: ${car.price.toLocaleString("ru-RU")} ${car.car_pricing?.currency || "USD"
+      }. Купить ${car.name.toLowerCase()} в России.`;
 
     // Russian SEO keywords
     const keywords = [
@@ -92,13 +94,11 @@ export async function generateMetadata({
 
     // Russian Open Graph data
     const openGraphTitle = `${car.name} ${car.year} - ${russianBodyType} | Купить автомобиль`;
-    const openGraphDescription = `${car.name} ${
-      car.year
-    } года, ${russianBodyType}. ${russianFuelType} двигатель, ${car.miliage.toLocaleString(
-      "ru-RU"
-    )} км пробега. Цена ${car.price.toLocaleString("ru-RU")} ${
-      car.car_pricing?.currency || "USD"
-    }.`;
+    const openGraphDescription = `${car.name} ${car.year
+      } года, ${russianBodyType}. ${russianFuelType} двигатель, ${car.miliage.toLocaleString(
+        "ru-RU"
+      )} км пробега. Цена ${car.price.toLocaleString("ru-RU")} ${car.car_pricing?.currency || "USD"
+      }.`;
 
     return {
       title,
@@ -128,14 +128,14 @@ export async function generateMetadata({
         images:
           car.car_medias.length > 0
             ? [
-                {
-                  url: car.car_medias[0].media,
-                  width: 1200,
-                  height: 630,
-                  alt: `${car.name} ${car.year} - ${russianBodyType}`,
-                  type: "image/jpeg",
-                },
-              ]
+              {
+                url: car.car_medias[0].media,
+                width: 1200,
+                height: 630,
+                alt: `${car.name} ${car.year} - ${russianBodyType}`,
+                type: "image/jpeg",
+              },
+            ]
             : [],
       },
       twitter: {
@@ -237,13 +237,11 @@ function generateStructuredData(car: CarDetailType) {
       car.car_medias.length > 0
         ? car.car_medias.map((media) => media.media)
         : [],
-    description: `${car.name} ${
-      car.year
-    } года выпуска, ${russianBodyType}. ${russianFuelType} двигатель ${
-      car.engine_capacity
-    }л, ${russianTransmission} коробка передач. Пробег: ${car.miliage.toLocaleString(
-      "ru-RU"
-    )} км. Цвет: ${car.color.name}.`,
+    description: `${car.name} ${car.year
+      } года выпуска, ${russianBodyType}. ${russianFuelType} двигатель ${car.engine_capacity
+      }л, ${russianTransmission} коробка передач. Пробег: ${car.miliage.toLocaleString(
+        "ru-RU"
+      )} км. Цвет: ${car.color.name}.`,
     additionalProperty: [
       {
         "@type": "PropertyValue",
@@ -309,7 +307,7 @@ function generateBreadcrumbData(car: CarDetailType) {
   };
 }
 
-const DetailPage = async ({ params }: { params: { id: string } }) => {
+const DetailPage = async ({ params }: PageProps) => {
   let car: CarDetailType | null = null;
 
   try {
