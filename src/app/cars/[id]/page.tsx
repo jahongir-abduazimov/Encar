@@ -4,12 +4,6 @@ import CarDetail from "@/sections/car-detail";
 import request from "@/components/config";
 import { CarDetail as CarDetailType } from "@/types";
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
-
 // Russian SEO helper functions
 const getRussianBodyType = (bodyType: string): string => {
   const bodyTypeMap: Record<string, string> = {
@@ -52,7 +46,9 @@ const getRussianTransmission = (transmission: string): string => {
 // Generate dynamic metadata for each car with Russian SEO optimization
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
   try {
     const res = await request.get<CarDetailType>(`/cars/car/${params.id}/`);
     const car = res.data;
@@ -313,7 +309,7 @@ function generateBreadcrumbData(car: CarDetailType) {
   };
 }
 
-const DetailPage = async ({ params }: PageProps) => {
+const DetailPage = async ({ params }: { params: { id: string } }) => {
   let car: CarDetailType | null = null;
 
   try {
