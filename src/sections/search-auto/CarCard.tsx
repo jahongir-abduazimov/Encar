@@ -46,13 +46,21 @@ const CarCard = ({ data, viewMode = "grid" }: CarCardProps) => {
       <div className="h-36 flex border gap-10 border-gray-300 rounded-xl overflow-hidden hover:border-primary transition-colors">
         <div className="min-w-[220px]">
           <Link href={`/cars/${data.id}`}>
-            <Image
-              className="w-full h-full object-cover"
-              src={NoImage}
-              width={200}
-              height={200}
-              alt={data.name}
-            />
+            {data.car_medias.length > 0 ? (
+              <Image
+                className="w-full h-full object-cover"
+                src={data.car_medias[0].media}
+                width={200}
+                height={200}
+                alt={data.name}
+              />
+            ) : (
+              <Image
+                className="w-full h-full object-cover"
+                src={NoImage}
+                alt="car placeholder"
+              />
+            )}
           </Link>
         </div>
         <div className="w-full p-4 flex flex-col justify-between">
