@@ -4,7 +4,7 @@ import CarDetail from "@/sections/car-detail";
 import request from "@/components/config";
 import { CarDetail as CarDetailType } from "@/types";
 
-// Removed local PageProps type. Use inline typing for params.
+// Do not define or export your own PageProps type. Use inline typing for params.
 
 // Russian SEO helper functions
 const getRussianBodyType = (bodyType: string): string => {
