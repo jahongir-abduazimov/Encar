@@ -4,6 +4,12 @@ import CarDetail from "@/sections/car-detail";
 import request from "@/components/config";
 import { CarDetail as CarDetailType } from "@/types";
 
+export interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
 // Russian SEO helper functions
 const getRussianBodyType = (bodyType: string): string => {
   const bodyTypeMap: Record<string, string> = {
@@ -304,12 +310,6 @@ function generateBreadcrumbData(car: CarDetailType) {
         item: `https://encar-test.vercel.app/cars/${car.id}`,
       },
     ],
-  };
-}
-
-export interface PageProps {
-  params: {
-    id: string;
   };
 }
 
