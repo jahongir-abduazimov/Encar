@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import CarImage from "../../../public/images/car.jpg";
 import Image from "next/image";
 import Link from "next/link";
 import { FaHeart } from "react-icons/fa6";

@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     title: "EnCar - Купить автомобиль в России",
     description: "EnCar - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты.",
     type: "website",
-    url: "https://encar.com",
+    url: "https://encar-test.vercel.app",
     siteName: "EnCar - Автомобили в России",
     locale: "ru_RU",
     images: [
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     images: ["/images/intro-bg.jpg"],
   },
   alternates: {
-    canonical: "https://encar.com",
+    canonical: "https://encar-test.vercel.app",
     languages: {
       'ru-RU': '/ru',
     },

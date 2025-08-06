@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://encar.com"),
+  metadataBase: new URL("https://encar-test.vercel.app"),
   alternates: {
     canonical: "/",
     languages: {
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ru_RU",
-    url: "https://encar.com",
+    url: "https://encar-test.vercel.app",
     siteName: "EnCar - Автомобили в России",
     title: "EnCar - Купить автомобиль в России",
     description: "EnCar - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты с подробными характеристиками и ценами.",
@@ -142,8 +142,8 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'Organization',
               name: 'EnCar',
-              url: 'https://encar.com',
-              logo: 'https://encar.com/images/logo.png',
+              url: 'https://encar-test.vercel.app',
+              logo: 'https://encar-test.vercel.app/images/logo.png',
               description: 'EnCar - крупнейший автомобильный маркетплейс в России',
               address: {
                 '@type': 'PostalAddress',
@@ -174,14 +174,9 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'WebSite',
               name: 'EnCar',
-              url: 'https://encar.com',
+              url: 'https://encar-test.vercel.app',
               description: 'EnCar - крупнейший автомобильный маркетплейс в России',
               inLanguage: 'ru-RU',
-              potentialAction: {
-                '@type': 'SearchAction',
-                target: 'https://encar.com/search?q={search_term_string}',
-                'query-input': 'required name=search_term_string'
-              }
             })
           }}
         />

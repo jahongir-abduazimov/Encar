@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import CarImage from "../../../public/images/car.jpg";
 import Container from "@/components/Container";
 import Image from "next/image";
 import { IoShareSocialSharp } from "react-icons/io5";
