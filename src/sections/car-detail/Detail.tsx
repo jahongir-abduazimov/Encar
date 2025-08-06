@@ -8,24 +8,62 @@ import { FaRegHeart } from "react-icons/fa6";
 import { MdCompareArrows } from "react-icons/md";
 import { PiRectangleFill } from "react-icons/pi";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import { useParams } from "next/navigation";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { CarDetail as CarDetailType, DetailProps } from "@/types";
+import { DetailProps } from "@/types";
 import NoImage from "../../../public/images/no-image.png"
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+
 const Detail = ({ data }: DetailProps) => {
   const [priceVisable, setPriceVisable] = useState(false);
   const [mainImage, setMainImage] = useState<string | null>(null);
+  const [liked, setLiked] = useState(false);
+  const [compared, setCompared] = useState(false);
+  const [shareBoxVisible, setShareBoxVisible] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { id } = useParams();
+  const shareBtnRef = useRef<HTMLButtonElement>(null);
+  const shareBoxRef = useRef<HTMLDivElement>(null);
   const formatted =
     dayjs(data?.updated_at).tz("Europe/Moscow").format("DD-MM-YYYY HH:mm") +
     " МСК";
+
+  // Get current page URL for sharing
+  const pageUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const carName = data?.name || '';
+
+  // Close share box on outside click
+  useEffect(() => {
+    if (!shareBoxVisible) return;
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node;
+      if (
+        shareBoxRef.current &&
+        !shareBoxRef.current.contains(target) &&
+        shareBtnRef.current &&
+        !shareBtnRef.current.contains(target)
+      ) {
+        setShareBoxVisible(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [shareBoxVisible]);
+
+  const handleLike = () => {
+    setLiked((prev) => !prev);
+    // TODO: Add API call or logic for liking here
+  };
+
+  const handleCompare = () => {
+    setCompared((prev) => !prev);
+    // TODO: Add API call or logic for comparing here
+  };
 
   const scrollLeft = () => {
     if (scrollRef.current) {
@@ -123,14 +161,62 @@ const Detail = ({ data }: DetailProps) => {
                 </p>
                 <p className="text-xs text-gray-400">Просмотров авто: 608</p> */}
               </div>
-              <div className="flex gap-4">
-                <button className="w-[45px] h-[45px] rounded-md border hover:border-primary cursor-pointer text-2xl flex items-center justify-center">
+              <div className="flex gap-4 relative">
+                <button
+                  ref={shareBtnRef}
+                  className="w-[45px] h-[45px] rounded-md border hover:border-primary cursor-pointer text-2xl flex items-center justify-center"
+                  title="Поделиться"
+                  onClick={() => setShareBoxVisible((v) => !v)}
+                >
                   <IoShareSocialSharp />
                 </button>
-                <button className="w-[45px] h-[45px] rounded-md border hover:border-primary cursor-pointer text-2xl flex items-center justify-center">
+                {/* Share Box */}
+                {shareBoxVisible && (
+                  <div
+                    ref={shareBoxRef}
+                    className="absolute top-12 left-0 z-20 bg-white border rounded-lg shadow-lg p-3 flex flex-col gap-2 min-w-[180px] animate-fade-in"
+                  >
+                    <a
+                      href={`https://wa.me/?text=${encodeURIComponent(carName + ' ' + pageUrl)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 hover:bg-gray-100 px-2 py-1 rounded transition"
+                    >
+                      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" className="w-5 h-5" />
+                      <span>WhatsApp</span>
+                    </a>
+                    <a
+                      href={`https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(carName)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 hover:bg-gray-100 px-2 py-1 rounded transition"
+                    >
+                      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg" alt="Telegram" className="w-5 h-5" />
+                      <span>Telegram</span>
+                    </a>
+                    <a
+                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 hover:bg-gray-100 px-2 py-1 rounded transition"
+                    >
+                      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" className="w-5 h-5" />
+                      <span>Facebook</span>
+                    </a>
+                  </div>
+                )}
+                <button
+                  className={`w-[45px] h-[45px] rounded-md border cursor-pointer text-2xl flex items-center justify-center transition-colors duration-200 ${liked ? 'border-primary bg-primary/10 text-primary' : 'hover:border-primary'}`}
+                  title={liked ? "Убрать из избранного" : "Добавить в избранное"}
+                  onClick={handleLike}
+                >
                   <FaRegHeart />
                 </button>
-                <button className="w-[45px] h-[45px] rounded-md border hover:border-primary cursor-pointer text-2xl flex items-center justify-center">
+                <button
+                  className={`w-[45px] h-[45px] rounded-md border cursor-pointer text-2xl flex items-center justify-center transition-colors duration-200 ${compared ? 'border-primary bg-primary/10 text-primary' : 'hover:border-primary'}`}
+                  title={compared ? "Убрать из сравнения" : "Добавить в сравнение"}
+                  onClick={handleCompare}
+                >
                   <MdCompareArrows />
                 </button>
               </div>

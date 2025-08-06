@@ -188,8 +188,13 @@ const Header = () => {
           <div className="shadow-[5px_0_10px_silver] sticky bottom-0 bg-white px-6 py-4">
             <button
               onClick={() => {
-                setIsLoginModalOpen(true);
-                setIsOpenMenu(false);
+                if (!token) {
+                  setIsLoginModalOpen(true)
+                  setIsOpenMenu(false);
+                } else {
+                  router.push("/cabinet")
+                  setIsOpenMenu(false);
+                }
               }}
               className="w-full flex items-center justify-center gap-2 text-sm font-medium text-black"
             >
