@@ -9,6 +9,7 @@ import { FaUserLarge } from "react-icons/fa6";
 import { IoMdMenu, IoMdClose } from "react-icons/io";
 import LoginModal from "./LoginModal";
 import { usePathname, useRouter } from "next/navigation";
+import request from "./config";
 
 const Header = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -16,7 +17,16 @@ const Header = () => {
   const pathname = usePathname();
   const router = useRouter()
   const [token, setToken] = useState<string | null>(null);
-
+  const getProfile = async () => {
+    try {
+      await request.get("/auth/profile/")
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  useEffect(() => {
+    getProfile()
+  }, [])
   useEffect(() => {
     const authToken = localStorage.getItem("auth");
     setToken(authToken);

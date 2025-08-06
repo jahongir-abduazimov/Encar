@@ -151,6 +151,7 @@ export interface DetailProps {
 export interface CarCardProps {
   data: CarListItem;
   viewMode?: "grid" | "list";
+  onUnlike?: (id: any) => void;
 }
 
 // Error types
