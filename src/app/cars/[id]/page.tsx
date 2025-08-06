@@ -63,7 +63,7 @@ export async function generateMetadata({
     const description = `${car.name} ${car.year
       } года выпуска, ${russianBodyType}. ${russianFuelType} двигатель, ${russianTransmission} коробка передач, пробег ${car.miliage.toLocaleString(
         "ru-RU"
-      )} км. Цена: ${car.price.toLocaleString("ru-RU")} ${car.car_pricing?.currency || "USD"
+      )} км. Цена: ${car.price.toLocaleString("ru-RU")} "₽"
       }. Купить ${car.name.toLowerCase()} в России.`;
 
     // Russian SEO keywords
@@ -93,7 +93,7 @@ export async function generateMetadata({
     const openGraphDescription = `${car.name} ${car.year
       } года, ${russianBodyType}. ${russianFuelType} двигатель, ${car.miliage.toLocaleString(
         "ru-RU"
-      )} км пробега. Цена ${car.price.toLocaleString("ru-RU")} ${car.car_pricing?.currency || "USD"
+      )} км пробега. Цена ${car.price.toLocaleString("ru-RU")} "₽"
       }.`;
 
     return {
@@ -211,7 +211,7 @@ function generateStructuredData(car: CarDetailType) {
     offers: {
       "@type": "Offer",
       price: car.price,
-      priceCurrency: car.car_pricing?.currency || "USD",
+      // priceCurrency: car.car_pricing?.currency || "₽",
       availability: "https://schema.org/InStock",
       seller: {
         "@type": "Organization",
@@ -310,7 +310,7 @@ const DetailPage = async ({ params }: any) => {
     const res = await request.get<CarDetailType>(`/cars/car/${params.id}/`);
     car = res.data;
   } catch (error) {
-    console.error("Error fetching car data:", error);
+    console.log("Error fetching car data:", error);
   }
 
   return (

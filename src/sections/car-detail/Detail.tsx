@@ -12,28 +12,33 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { DetailProps } from "@/types";
-import NoImage from "../../../public/images/no-image.png"
+import NoImage from "../../../public/images/no-image.png";
+import request from "@/components/config";
+import dynamic from "next/dynamic";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-
 const Detail = ({ data }: DetailProps) => {
   const [priceVisable, setPriceVisable] = useState(false);
   const [mainImage, setMainImage] = useState<string | null>(null);
-  const [liked, setLiked] = useState(false);
-  const [compared, setCompared] = useState(false);
+  const [liked, setLiked] = useState(data?.like);
+  const [compared, setCompared] = useState(data?.comparison);
   const [shareBoxVisible, setShareBoxVisible] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const shareBtnRef = useRef<HTMLButtonElement>(null);
   const shareBoxRef = useRef<HTMLDivElement>(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const LoginModal = dynamic(() => import("@/components/LoginModal"), { ssr: false });
+  const isLoggedIn =
+    typeof window !== "undefined" && localStorage.getItem("auth");
   const formatted =
     dayjs(data?.updated_at).tz("Europe/Moscow").format("DD-MM-YYYY HH:mm") +
     " МСК";
 
   // Get current page URL for sharing
-  const pageUrl = typeof window !== 'undefined' ? window.location.href : '';
-  const carName = data?.name || '';
+  const pageUrl = typeof window !== "undefined" ? window.location.href : "";
+  const carName = data?.name || "";
 
   // Close share box on outside click
   useEffect(() => {
@@ -49,20 +54,36 @@ const Detail = ({ data }: DetailProps) => {
         setShareBoxVisible(false);
       }
     }
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [shareBoxVisible]);
 
-  const handleLike = () => {
+  const handleLike = async () => {
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true);
+      return;
+    }
     setLiked((prev) => !prev);
-    // TODO: Add API call or logic for liking here
+    try {
+      await request.get(`/cars/like/${data?.id}/`);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
-  const handleCompare = () => {
+  const handleCompare = async () => {
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true);
+      return;
+    }
     setCompared((prev) => !prev);
-    // TODO: Add API call or logic for comparing here
+    try {
+      await request.get(`/cars/comparison/${data?.id}/`);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const scrollLeft = () => {
@@ -86,6 +107,7 @@ const Detail = ({ data }: DetailProps) => {
   return (
     <section className="py-10 md:py-12">
       <Container>
+        <LoginModal isOpen={isLoginModalOpen} handleClose={() => setIsLoginModalOpen(false)} />
         <div className="flex flex-col lg:flex-row items-start gap-5">
           <div className="w-full lg:w-[60%] h-auto">
             <div className="mb-3">
@@ -177,44 +199,74 @@ const Detail = ({ data }: DetailProps) => {
                     className="absolute top-12 left-0 z-20 bg-white border rounded-lg shadow-lg p-3 flex flex-col gap-2 min-w-[180px] animate-fade-in"
                   >
                     <a
-                      href={`https://wa.me/?text=${encodeURIComponent(carName + ' ' + pageUrl)}`}
+                      href={`https://wa.me/?text=${encodeURIComponent(
+                        carName + " " + pageUrl
+                      )}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 hover:bg-gray-100 px-2 py-1 rounded transition"
                     >
-                      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" className="w-5 h-5" />
+                      <img
+                        src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg"
+                        alt="WhatsApp"
+                        className="w-5 h-5"
+                      />
                       <span>WhatsApp</span>
                     </a>
                     <a
-                      href={`https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(carName)}`}
+                      href={`https://t.me/share/url?url=${encodeURIComponent(
+                        pageUrl
+                      )}&text=${encodeURIComponent(carName)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 hover:bg-gray-100 px-2 py-1 rounded transition"
                     >
-                      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg" alt="Telegram" className="w-5 h-5" />
+                      <img
+                        src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg"
+                        alt="Telegram"
+                        className="w-5 h-5"
+                      />
                       <span>Telegram</span>
                     </a>
                     <a
-                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`}
+                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                        pageUrl
+                      )}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 hover:bg-gray-100 px-2 py-1 rounded transition"
                     >
-                      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebook" className="w-5 h-5" />
+                      <img
+                        src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg"
+                        alt="Facebook"
+                        className="w-5 h-5"
+                      />
                       <span>Facebook</span>
                     </a>
                   </div>
                 )}
                 <button
-                  className={`w-[45px] h-[45px] rounded-md border cursor-pointer text-2xl flex items-center justify-center transition-colors duration-200 ${liked ? 'border-primary bg-primary/10 text-primary' : 'hover:border-primary'}`}
-                  title={liked ? "Убрать из избранного" : "Добавить в избранное"}
+                  className={`w-[45px] h-[45px] rounded-md border cursor-pointer text-2xl flex items-center justify-center transition-colors duration-200 ${
+                    liked
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "hover:border-primary"
+                  }`}
+                  title={
+                    liked ? "Убрать из избранного" : "Добавить в избранное"
+                  }
                   onClick={handleLike}
                 >
                   <FaRegHeart />
                 </button>
                 <button
-                  className={`w-[45px] h-[45px] rounded-md border cursor-pointer text-2xl flex items-center justify-center transition-colors duration-200 ${compared ? 'border-primary bg-primary/10 text-primary' : 'hover:border-primary'}`}
-                  title={compared ? "Убрать из сравнения" : "Добавить в сравнение"}
+                  className={`w-[45px] h-[45px] rounded-md border cursor-pointer text-2xl flex items-center justify-center transition-colors duration-200 ${
+                    compared
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "hover:border-primary"
+                  }`}
+                  title={
+                    compared ? "Убрать из сравнения" : "Добавить в сравнение"
+                  }
                   onClick={handleCompare}
                 >
                   <MdCompareArrows />
@@ -240,12 +292,16 @@ const Detail = ({ data }: DetailProps) => {
               </div>
             </div>
             <div className="flex flex-col-reverse gap-3 items-center sm:flex-row justify-between mt-5">
-              <button
-                onClick={() => setPriceVisable(!priceVisable)}
-                className="w-full sm:w-auto font-medium py-2 px-10 rounded-lg cursor-pointer border-2 border-primary duration-200 hover:shadow-[3px_3px_6px_silver]"
-              >
-                Показать расчет цены
-              </button>
+              {data?.car_pricing ? (
+                <button
+                  onClick={() => setPriceVisable(!priceVisable)}
+                  className="w-full sm:w-auto font-medium py-2 px-10 rounded-lg cursor-pointer border-2 border-primary duration-200 hover:shadow-[3px_3px_6px_silver]"
+                >
+                  Показать расчет цены
+                </button>
+              ) : (
+                <p className="text-xl font-medium text-gray-400">Цена:</p>
+              )}
               <p className="text-[30px] font-medium">
                 {data?.price.toLocaleString()} ₽
               </p>
@@ -257,7 +313,13 @@ const Detail = ({ data }: DetailProps) => {
                     size={12}
                     className="text-primary rotate-90"
                   />
-                  <p>Итоговая цена 2 341 226 ₽ состоит из:</p>
+                  <p>
+                    Итоговая цена{" "}
+                    <span className="font-semibold">
+                      {data?.price.toLocaleString()}
+                    </span>{" "}
+                    ₽ состоит из:
+                  </p>
                 </div>
                 <div className="flex items-start gap-2 ml-5">
                   <PiRectangleFill
@@ -266,7 +328,9 @@ const Detail = ({ data }: DetailProps) => {
                   />
                   <p>
                     Услуги агента: <br />{" "}
-                    <span className="font-semibold underline">100 000 ₽</span>
+                    <span className="font-semibold underline">
+                      {data?.car_pricing?.agent_service} ₽
+                    </span>
                   </p>
                 </div>
                 <div className="flex items-start gap-2 ml-5">
@@ -276,7 +340,9 @@ const Detail = ({ data }: DetailProps) => {
                   />
                   <p>
                     Стоимость авто + расходы в Корее: <br />{" "}
-                    <span className="font-semibold underline">1 236 107 ₽</span>
+                    <span className="font-semibold underline">
+                      {data?.car_pricing?.expences_in_korea} ₽
+                    </span>
                   </p>
                 </div>
                 <div className="flex items-start gap-2 ml-5">
@@ -286,7 +352,9 @@ const Detail = ({ data }: DetailProps) => {
                   />
                   <p>
                     Таможенные платежи: <br />{" "}
-                    <span className="font-semibold underline">889 919 ₽</span>
+                    <span className="font-semibold underline">
+                      {data?.car_pricing?.custom_dutie} ₽
+                    </span>
                   </p>
                 </div>
                 <div className="flex items-start gap-2 ml-5">
@@ -296,7 +364,9 @@ const Detail = ({ data }: DetailProps) => {
                   />
                   <p>
                     Утильсбор: <br />{" "}
-                    <span className="font-semibold underline">5 200 ₽</span>
+                    <span className="font-semibold underline">
+                      {data?.car_pricing?.utilsbor} ₽
+                    </span>
                   </p>
                 </div>
                 <div className="flex items-start gap-2 ml-5">
@@ -305,8 +375,10 @@ const Detail = ({ data }: DetailProps) => {
                     className="text-primary rotate-90 mt-1.5"
                   />
                   <p>
-                    СтоиТаможенный брокер: <br />{" "}
-                    <span className="font-semibold underline">110 000 ₽</span>
+                    Таможенный брокер: <br />{" "}
+                    <span className="font-semibold underline">
+                      {data?.car_pricing?.custom_broker} ₽
+                    </span>
                   </p>
                 </div>
                 <div className="flex items-start gap-2 ml-5">
@@ -316,7 +388,7 @@ const Detail = ({ data }: DetailProps) => {
                   />
                   <p>
                     Автовоз: <br />{" "}
-                    <span className="font-semibold underline">0 ₽</span>
+                    <span className="font-semibold underline">{data?.car_pricing?.car_transporter} ₽</span>
                   </p>
                 </div>
                 <p className="text-xs leading-[110%] mt-2">

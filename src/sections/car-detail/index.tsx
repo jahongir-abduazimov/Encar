@@ -85,7 +85,7 @@ const CarDetail = () => {
       <Detail data={data} />
       <Specifications data={data} />
       {/* <CarCheck /> */}
-      <ExteriorInterior />
+      <ExteriorInterior data={data?.car_interyer} />
       <Safety />
       <ConvenienceMultimedia />
       <Seats />

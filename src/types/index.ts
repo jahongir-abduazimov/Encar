@@ -11,8 +11,15 @@ export interface CarMedia {
 
 export interface CarPricing {
   id: string;
-  price: number;
-  currency?: string;
+  agent_service: number;
+  car?: string;
+  car_transporter: number;
+  created_at: string;
+  custom_broker: number;
+  custom_dutie: number;
+  expences_in_korea: number;
+  updated_at: string;
+  utilsbor: number;
 }
 
 export interface CarInspection {
@@ -66,6 +73,8 @@ export interface CarDetail {
   transmission: BaseEntity;
   updated_at: string;
   year: string;
+  comparison: boolean;
+  like: boolean;
 }
 
 // Car type for list/search view
@@ -81,7 +90,7 @@ export interface CarListItem {
   like: boolean;
   color: BaseEntity;
   fuel_type: BaseEntity;
-  car_medias: CarMedia[]
+  car_medias: CarMedia[];
 }
 
 // API Response types
