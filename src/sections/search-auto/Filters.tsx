@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
 import Container from "@/components/Container";
 import Select from "@/components/ui/Select";
 import request from "@/components/config";
@@ -10,19 +16,16 @@ import { HiOutlineArrowLongRight } from "react-icons/hi2";
 import { IoShareSocialSharp } from "react-icons/io5";
 import Pagination from "@/components/ui/Pagination";
 import CarCard from "./CarCard";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import {
   CarListItem,
   FilterForm,
   FilterData,
   SelectOption,
-  PaginatedResponse,
-  ApiError,
-  LoadingState,
   Brand,
   Model,
   Generation,
-  FilterItem
+  FilterItem,
 } from "@/types";
 
 // Constants
@@ -57,6 +60,7 @@ const SORT_OPTIONS: SelectOption[] = [
 
 const Filters = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   // State
   const [cars, setCars] = useState<CarListItem[]>([]);
@@ -76,6 +80,7 @@ const Filters = () => {
   const [sortBy, setSortBy] = useState("updated_at");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [form, setForm] = useState<FilterForm>(INITIAL_FORM);
+  const isInitialized = useRef(false);
 
   // Memoized values
   const yearOptions = useMemo(
@@ -145,16 +150,17 @@ const Filters = () => {
   }, []);
 
   const getCars = useCallback(
-    async (filters: FilterForm = form, pageNum: number = page) => {
+    async (filters?: FilterForm, pageNum?: number, ordering?: string) => {
       try {
         setLoading(true);
 
         const params = new URLSearchParams();
-        params.set("page", pageNum.toString());
+        params.set("page", (pageNum || page).toString());
         params.set("page_size", PAGE_SIZE.toString());
-        params.set("ordering", sortBy);
+        params.set("ordering", ordering || sortBy);
 
-        Object.entries(filters).forEach(([key, value]) => {
+        const filterData = filters || form;
+        Object.entries(filterData).forEach(([key, value]) => {
           if (value && value !== "") {
             params.set(key, value.toString());
           }
@@ -267,8 +273,24 @@ const Filters = () => {
     setModelOptions([]);
     setGenerationOptions([]);
     setPage(1);
-    window.history.pushState({}, "", "/search-auto");
-  }, []);
+    router.push("/search-auto");
+  }, [router]);
+
+  // Function to update URL with filter parameters
+  const updateURLWithFilters = useCallback(
+    (newForm: FilterForm) => {
+      const params = new URLSearchParams();
+      Object.entries(newForm).forEach(([key, value]) => {
+        if (value && value !== "") {
+          params.set(key, value);
+        }
+      });
+
+      const newUrl = `/search-auto?${params.toString()}`;
+      router.push(newUrl);
+    },
+    [router]
+  );
 
   // Effects
   useEffect(() => {
@@ -303,20 +325,36 @@ const Filters = () => {
   }, [searchParams, filterData.brands, selectBrand]);
 
   useEffect(() => {
-    getCars();
-  }, [getCars]);
+    if (!isInitialized.current && filterData.brands.length > 0) {
+      isInitialized.current = true;
+      getCars();
+    }
+  }, [filterData.brands.length, getCars]);
+
+  useEffect(() => {
+    if (isInitialized.current) {
+      getCars();
+    }
+  }, [page, sortBy, getCars]);
+
+  // Separate effect for form changes to avoid double fetching
+  useEffect(() => {
+    if (isInitialized.current) {
+      getCars();
+    }
+  }, [form, getCars]);
 
   useEffect(() => {
     if (form.brand && filterData.brands.length > 0) {
       selectBrand(form.brand);
     }
-  }, [form.brand, filterData.brands, selectBrand]);
+  }, [form.brand, filterData.brands.length, selectBrand]);
 
   useEffect(() => {
     if (form.model && modelOptions.length > 0) {
       selectModel(form.model);
     }
-  }, [form.model, modelOptions, selectModel]);
+  }, [form.model, modelOptions.length, selectModel]);
 
   // Render functions
   const renderSelect = useCallback(
@@ -701,9 +739,12 @@ const Filters = () => {
               <HiOutlineArrowLongRight size={20} />
             </button>
           </div>
+          <p className="text-xl text-center text-gray-500 font-medium py-[5px] w-full">
+            Всего найдено: {totalCount.toLocaleString()}
+          </p>
         </div>
 
-        <div className="w-full my-7 flex flex-col lg:flex-row items-center justify-between gap-0 lg:gap-8 mt-15">
+        <div className="w-full my-7 flex flex-col lg:flex-row items-center justify-between gap-0 lg:gap-8 mt-5">
           <div className="w-full flex items-center gap-10">
             <div className="w-full flex flex-col md:flex-row items-start md:items-center gap-2">
               <p>Сортировать по:</p>
@@ -719,15 +760,17 @@ const Filters = () => {
             </div>
             <div className="hidden md:flex gap-4">
               <button
-                className={`cursor-pointer ${viewMode === "grid" ? "text-primary" : "text-gray-500"
-                  }`}
+                className={`cursor-pointer ${
+                  viewMode === "grid" ? "text-primary" : "text-gray-500"
+                }`}
                 onClick={() => setViewMode("grid")}
               >
                 <BsGrid3X3GapFill className="text-[40px]" />
               </button>
               <button
-                className={`cursor-pointer ${viewMode === "list" ? "text-primary" : "text-gray-500"
-                  }`}
+                className={`cursor-pointer ${
+                  viewMode === "list" ? "text-primary" : "text-gray-500"
+                }`}
                 onClick={() => setViewMode("list")}
               >
                 <FaThList className="text-[40px]" />
@@ -752,14 +795,19 @@ const Filters = () => {
         {/* Car grid/list */}
         {!loading && (
           <div
-            className={`grid gap-8 ${viewMode === "grid"
-              ? "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-              : "grid-cols-1"
-              }`}
+            className={`grid gap-8 ${
+              viewMode === "grid"
+                ? "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+                : "grid-cols-1"
+            }`}
           >
-            {cars.map((car: CarListItem) => ( // Changed to CarListItem as Car type is removed
-              <CarCard key={car.id} data={car} viewMode={viewMode} />
-            ))}
+            {cars.map(
+              (
+                car: CarListItem // Changed to CarListItem as Car type is removed
+              ) => (
+                <CarCard key={car.id} data={car} viewMode={viewMode} />
+              )
+            )}
           </div>
         )}
 

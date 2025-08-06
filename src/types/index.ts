@@ -81,6 +81,7 @@ export interface CarListItem {
   like: boolean;
   color: BaseEntity;
   fuel_type: BaseEntity;
+  car_medias: CarMedia[]
 }
 
 // API Response types

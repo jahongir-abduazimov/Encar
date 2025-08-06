@@ -9,10 +9,34 @@ import Link from "next/link";
 
 const FilterPrice = () => {
   const priceTypes = [
-    { name: "Эконом", image: EcoTypeImage, to: "1,5" },
-    { name: "Комфорт", image: ComfortTypeImage, to: "3" },
-    { name: "Бизнес", image: BiznesTypeImage, to: "6" },
-    { name: "Премиум", image: PremiumTypeImage, from: "6" },
+    {
+      name: "Эконом",
+      image: EcoTypeImage,
+      to: "1,5",
+      min_price: "0",
+      max_price: "1500000",
+    },
+    {
+      name: "Комфорт",
+      image: ComfortTypeImage,
+      to: "3",
+      min_price: "1500000",
+      max_price: "3000000",
+    },
+    {
+      name: "Бизнес",
+      image: BiznesTypeImage,
+      to: "6",
+      min_price: "3000000",
+      max_price: "6000000",
+    },
+    {
+      name: "Премиум",
+      image: PremiumTypeImage,
+      from: "6",
+      min_price: "6000000",
+      max_price: "50000000",
+    },
   ];
   return (
     <section className="pb-24">
@@ -21,7 +45,7 @@ const FilterPrice = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {priceTypes.map((type) => (
             <Link
-              href={"/"}
+              href={`/search-auto?min_price=${type.min_price}&max_price=${type.max_price}`}
               key={type.name}
               className="h-[270px] border border-gray-300 flex flex-col transition-colors hover:shadow-[0_0_10px_4px_rgba(0,0,0,0.1)]"
             >
@@ -33,7 +57,9 @@ const FilterPrice = () => {
                 />
               </div>
               <div className="flex flex-col justify-end h-[40%] p-4">
-                <span className="text-black/80 text-[26px] uppercase">{type.name}</span>
+                <span className="text-black/80 text-[26px] uppercase">
+                  {type.name}
+                </span>
                 <span className="font-semibold text-lg text-gray-500">
                   {type.from ? `от ${type.from} млн ₽` : `до ${type.to} млн ₽`}
                 </span>

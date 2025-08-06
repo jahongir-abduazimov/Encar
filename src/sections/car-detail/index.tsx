@@ -31,7 +31,7 @@ const CarDetail = () => {
     } catch (e) {
       const errorResponse = e as HttpErrorResponse;
       const apiError: ApiError = {
-        message: e instanceof Error ? e.message : "Failed to fetch car details",
+        message: e instanceof Error ? e.message : "Не удалось загрузить данные автомобиля",
         status: errorResponse?.response?.status || 500,
         errors: errorResponse?.response?.data?.errors
       };
@@ -57,24 +57,24 @@ const CarDetail = () => {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <h2 className="text-xl font-semibold text-red-600 mb-2">Error loading car details</h2>
+          <h2 className="text-xl font-semibold text-red-600 mb-2">Ошибка загрузки данных автомобиля</h2>
           <p className="text-gray-600 mb-4">{error.message}</p>
           <button
             onClick={getCar}
             className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
           >
-            Try Again
+            Попробовать снова
           </button>
         </div>
       </div>
     );
   }
 
-  if (!data) {
+  if (!data && !loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <h2 className="text-xl font-semibold text-gray-600 mb-2">No car data found</h2>
+          <h2 className="text-xl font-semibold text-gray-600 mb-2">Данные автомобиля не найдены</h2>
         </div>
       </div>
     );
@@ -83,7 +83,7 @@ const CarDetail = () => {
   return (
     <>
       <Detail data={data} />
-      <Specifications />
+      <Specifications data={data} />
       {/* <CarCheck /> */}
       <ExteriorInterior />
       <Safety />

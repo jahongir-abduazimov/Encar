@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { CarDetail as CarDetailType, DetailProps } from "@/types";
+import NoImage from "../../../public/images/no-image.png"
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -62,7 +63,7 @@ const Detail = ({ data }: DetailProps) => {
               ) : (
                 <Image
                   className="w-full h-auto"
-                  src={CarImage}
+                  src={NoImage}
                   alt="default-car"
                 />
               )}

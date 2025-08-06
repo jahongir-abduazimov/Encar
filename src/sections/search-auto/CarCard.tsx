@@ -11,6 +11,7 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import request from "@/components/config";
 import { CarListItem, CarCardProps } from "@/types";
+import NoImage from "../../../public/images/no-image.png";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -48,7 +49,7 @@ const CarCard = ({ data, viewMode = "grid" }: CarCardProps) => {
           <Link href={`/cars/${data.id}`}>
             <Image
               className="w-full h-full object-cover"
-              src={CarImage}
+              src={NoImage}
               width={200}
               height={200}
               alt={data.name}
@@ -63,7 +64,12 @@ const CarCard = ({ data, viewMode = "grid" }: CarCardProps) => {
             >
               {data.name}
             </Link>
-            <button onClick={() => handleCompare(data.id)} className={`flex items-center gap-3 font-semibold cursor-pointer mt-2 ${comparison ? "text-primary" : "text-black/50"}`}>
+            <button
+              onClick={() => handleCompare(data.id)}
+              className={`flex items-center gap-3 font-semibold cursor-pointer mt-2 ${
+                comparison ? "text-primary" : "text-black/50"
+              }`}
+            >
               <MdCompareArrows size={22} />
               <span>В сравнение</span>
             </button>
@@ -103,7 +109,12 @@ const CarCard = ({ data, viewMode = "grid" }: CarCardProps) => {
                 </Link>
               </div>
             </div>
-            <button onClick={() => handleLike(data.id)} className={`flex items-center gap-3 font-semibold cursor-pointer mt-2 ${isLiked ? "text-primary" : "text-black/50"}`}>
+            <button
+              onClick={() => handleLike(data.id)}
+              className={`flex items-center gap-3 font-semibold cursor-pointer mt-2 ${
+                isLiked ? "text-primary" : "text-black/50"
+              }`}
+            >
               <FaHeart size={22} />
               <span>В избранное</span>
             </button>
@@ -117,13 +128,21 @@ const CarCard = ({ data, viewMode = "grid" }: CarCardProps) => {
     <div className="h-[525px] rounded-xl overflow-hidden border border-gray-300 hover:border-primary">
       <div className="h-[33%]">
         <Link href={`/cars/${data.id}`}>
-          <Image
-            className="w-full h-full object-cover"
-            src={CarImage}
-            width={200}
-            height={200}
-            alt={data.name}
-          />
+          {data.car_medias.length > 0 ? (
+            <Image
+              className="w-full h-full object-cover"
+              src={data.car_medias[0].media}
+              width={200}
+              height={200}
+              alt={data.name}
+            />
+          ) : (
+            <Image
+              className="w-full h-full object-cover"
+              src={NoImage}
+              alt="car placeholder"
+            />
+          )}
         </Link>
       </div>
       <div className="h-[67%] p-2 flex flex-col items-start justify-between">
@@ -161,15 +180,17 @@ const CarCard = ({ data, viewMode = "grid" }: CarCardProps) => {
           <div className="mt-5 mb-2 flex gap-2">
             <button
               onClick={() => handleLike(data.id)}
-              className={`min-w-[30px] h-[30px] rounded-md border border-primary flex items-center justify-center cursor-pointer duration-200 hover:shadow-[3px_3px_6px_silver] ${isLiked ? "bg-primary text-white" : "text-gray-400"
-                }`}
+              className={`min-w-[30px] h-[30px] rounded-md border border-primary flex items-center justify-center cursor-pointer duration-200 hover:shadow-[3px_3px_6px_silver] ${
+                isLiked ? "bg-primary text-white" : "text-gray-400"
+              }`}
             >
               <FaHeart className="text-lg" />
             </button>
             <button
               onClick={() => handleCompare(data.id)}
-              className={`min-w-[30px] h-[30px] rounded-md border border-primary flex items-center justify-center cursor-pointer duration-200 hover:shadow-[3px_3px_6px_silver] ${comparison ? "bg-primary text-white" : "text-gray-400"
-                }`}
+              className={`min-w-[30px] h-[30px] rounded-md border border-primary flex items-center justify-center cursor-pointer duration-200 hover:shadow-[3px_3px_6px_silver] ${
+                comparison ? "bg-primary text-white" : "text-gray-400"
+              }`}
             >
               <MdCompareArrows className="text-xl" />
             </button>
