@@ -73,7 +73,7 @@ const CarCard = ({ data, viewMode = "grid", onUnlike }: CarCardProps) => {
               {data.car_medias.length > 0 ? (
                 <Image
                   className="w-full h-full object-cover"
-                  src={data.car_medias[0].media}
+                  src={data.car_medias[0].media.slice(0, 4) === "http" ? data.car_medias[0].media : `https://api.kasimovstudio.uz${data.car_medias[0].media}`}
                   width={200}
                   height={200}
                   alt={data.name}
@@ -172,7 +172,7 @@ const CarCard = ({ data, viewMode = "grid", onUnlike }: CarCardProps) => {
             {data.car_medias.length > 0 ? (
               <Image
                 className="w-full h-full object-cover"
-                src={data.car_medias[0].media}
+                src={data.car_medias[0].media.slice(0, 4) === "http" ? data.car_medias[0].media : `https://api.kasimovstudio.uz${data.car_medias[0].media}`}
                 width={200}
                 height={200}
                 alt={data.name}
