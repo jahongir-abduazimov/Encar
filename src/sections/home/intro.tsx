@@ -33,8 +33,6 @@ const defaultForm: FilterForm = {
 };
 
 const Intro = () => {
-  const router = useRouter();
-
   const [brands, setBrands] = useState<Brand[]>([]);
   const [fuelType, setFuelType] = useState<FilterItem[]>([]);
   const [transmission, setTransmission] = useState<FilterItem[]>([]);

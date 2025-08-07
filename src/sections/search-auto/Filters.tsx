@@ -356,7 +356,67 @@ const Filters = () => {
     }
   }, [form.model, modelOptions.length, selectModel]);
 
-  // Render functions
+  // Share dropdown state
+  const [shareOpen, setShareOpen] = useState(false);
+  const shareRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        shareRef.current &&
+        !shareRef.current.contains(event.target as Node)
+      ) {
+        setShareOpen(false);
+      }
+    }
+    if (shareOpen) {
+      document.addEventListener("click", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [shareOpen]);
+
+  // Share URLs
+  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
+  const shareLinks = [
+    {
+      name: "WhatsApp",
+      icon: (
+        <img
+          src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg"
+          alt="WhatsApp"
+          className="w-5 h-5"
+        />
+      ),
+      url: `https://wa.me/?text=${encodeURIComponent(currentUrl)}`,
+    },
+    {
+      name: "Telegram",
+      icon: (
+        <img
+          src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg"
+          alt="Telegram"
+          className="w-5 h-5"
+        />
+      ),
+      url: `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}`,
+    },
+    {
+      name: "Facebook",
+      icon: (
+        <img
+          src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg"
+          alt="Facebook"
+          className="w-5 h-5"
+        />
+      ),
+      url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+        currentUrl
+      )}`,
+    },
+  ];
   const renderSelect = useCallback(
     (
       options: FilterItem[],
@@ -549,7 +609,10 @@ const Filters = () => {
                 (e: SelectOption | null) =>
                   handleFormChange("color", e?.value || "")
               )}
-              <button className="text-lg bg-black text-white font-medium py-[5px] w-full rounded-lg cursor-pointer border-2 border-black duration-200 hover:shadow-[3px_3px_6px_silver]">
+              <button
+                onClick={() => router.push("/instrukcziya")}
+                className="text-lg bg-black text-white font-medium py-[5px] w-full rounded-lg cursor-pointer border-2 border-black duration-200 hover:shadow-[3px_3px_6px_silver]"
+              >
                 Инструкция
               </button>
             </div>
@@ -612,11 +675,32 @@ const Filters = () => {
               <p className="text-xl text-center text-gray-500 font-medium py-[5px] w-full">
                 Всего найдено: {totalCount.toLocaleString()}
               </p>
-              <button className="text-lg flex items-center gap-5 justify-center font-medium py-[5px] w-full cursor-pointer">
-                <IoShareSocialSharp className="text-2xl" />
-                <span>Поделиться</span>
-                <HiOutlineArrowLongRight className="text-3xl" />
-              </button>
+              <div className="relative" ref={shareRef}>
+                <button
+                  className="text-lg flex items-center gap-5 justify-center font-medium py-[5px] w-full cursor-pointer"
+                  onClick={() => setShareOpen(true)}
+                >
+                  <IoShareSocialSharp className="text-2xl" />
+                  <span>Поделиться</span>
+                  <HiOutlineArrowLongRight className="text-3xl" />
+                </button>
+                {shareOpen && (
+                  <div className="absolute z-10 top-full left-8 mt-2 w-56 bg-white border border-black rounded-xl shadow-lg flex flex-col p-3 gap-3">
+                    {shareLinks.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 text-lg font-medium hover:bg-gray-100 rounded-lg px-2 py-2 duration-150"
+                      >
+                        {item.icon}
+                        <span>{item.name}</span>
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -733,11 +817,32 @@ const Filters = () => {
             <button className="w-full md:w-64 text-sm py-1.5 border-2 border-primary text-black duration-200 rounded-lg cursor-pointer">
               Подписаться
             </button> */}
-            <button className="w-full flex gap-2 items-center justify-center md:w-64 text-sm py-1.5 border-2 duration-200 rounded-lg cursor-pointer">
-              <IoShareSocialSharp size={20} />
-              <span>Поделиться</span>
-              <HiOutlineArrowLongRight size={20} />
-            </button>
+            <div className="relative" ref={shareRef}>
+              <button
+                className="w-full flex gap-2 items-center justify-center md:w-64 text-sm py-1.5 border-2 duration-200 rounded-lg cursor-pointer"
+                onClick={() => setShareOpen((v) => !v)}
+              >
+                <IoShareSocialSharp size={20} />
+                <span>Поделиться</span>
+                <HiOutlineArrowLongRight size={20} />
+              </button>
+              {shareOpen && (
+                <div className="absolute z-10 top-full left-0 mt-2 bg-white border border-black rounded-xl shadow-lg flex flex-col p-3 gap-3">
+                  {shareLinks.map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 text-lg font-medium hover:bg-gray-100 rounded-lg px-2 py-2 duration-150"
+                    >
+                      {item.icon}
+                      <span>{item.name}</span>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
           <p className="text-xl text-center text-gray-500 font-medium py-[5px] w-full">
             Всего найдено: {totalCount.toLocaleString()}
@@ -760,17 +865,15 @@ const Filters = () => {
             </div>
             <div className="hidden md:flex gap-4">
               <button
-                className={`cursor-pointer ${
-                  viewMode === "grid" ? "text-primary" : "text-gray-500"
-                }`}
+                className={`cursor-pointer ${viewMode === "grid" ? "text-primary" : "text-gray-500"
+                  }`}
                 onClick={() => setViewMode("grid")}
               >
                 <BsGrid3X3GapFill className="text-[40px]" />
               </button>
               <button
-                className={`cursor-pointer ${
-                  viewMode === "list" ? "text-primary" : "text-gray-500"
-                }`}
+                className={`cursor-pointer ${viewMode === "list" ? "text-primary" : "text-gray-500"
+                  }`}
                 onClick={() => setViewMode("list")}
               >
                 <FaThList className="text-[40px]" />
@@ -795,11 +898,10 @@ const Filters = () => {
         {/* Car grid/list */}
         {!loading && (
           <div
-            className={`grid gap-8 ${
-              viewMode === "grid"
+            className={`grid gap-8 ${viewMode === "grid"
                 ? "sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
                 : "grid-cols-1"
-            }`}
+              }`}
           >
             {cars.map(
               (

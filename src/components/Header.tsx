@@ -13,20 +13,20 @@ import request from "./config";
 
 const Header = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const [isOpenMenu, setIsOpenMenu] = useState<boolean | string>(false);
   const pathname = usePathname();
-  const router = useRouter()
+  const router = useRouter();
   const [token, setToken] = useState<string | null>(null);
   const getProfile = async () => {
     try {
-      await request.get("/auth/profile/")
+      await request.get("/auth/profile/");
     } catch (e) {
       console.log(e);
     }
-  }
+  };
   useEffect(() => {
-    getProfile()
-  }, [])
+    getProfile();
+  }, []);
   useEffect(() => {
     const authToken = localStorage.getItem("auth");
     setToken(authToken);
@@ -50,9 +50,9 @@ const Header = () => {
             <button
               onClick={() => {
                 if (!token) {
-                  setIsLoginModalOpen(true)
+                  setIsLoginModalOpen(true);
                 } else {
-                  router.push("/cabinet")
+                  router.push("/cabinet");
                 }
               }}
               className="flex text-start items-center gap-2 cursor-pointer text-white hover:text-primary"
@@ -91,35 +91,92 @@ const Header = () => {
               Каталог авто из Кореи
             </Link>
             <Link
-              href={"/"}
-              className="border-b-2 border-transparent hover:border-white"
+              href={"/poryadok-pokupki-avtomobilya"}
+              className={`${
+                pathname === "/poryadok-pokupki-avtomobilya" && "border-white"
+              } border-b-2 border-transparent hover:border-white`}
             >
               Порядок покупки авто из Кореи
             </Link>
             <Link
-              href={"/"}
-              className="border-b-2 border-transparent hover:border-white"
+              href={"/bezopasnaya-sdelka"}
+              className={`${
+                pathname === "/bezopasnaya-sdelka" && "border-white"
+              } border-b-2 border-transparent hover:border-white`}
             >
               Безопасная сделка
             </Link>
             <Link
-              href={"/"}
-              className="border-b-2 border-transparent hover:border-white"
+              href={"/chasto-zadavaemye-voprosy"}
+              className={`${
+                pathname === "/chasto-zadavaemye-voprosy" && "border-white"
+              } border-b-2 border-transparent hover:border-white`}
             >
               ЧаВо
             </Link>
             <Link
-              href={"/"}
-              className="border-b-2 border-transparent hover:border-white"
+              href={"/partneram"}
+              className={`${
+                pathname === "/partneram" && "border-white"
+              } border-b-2 border-transparent hover:border-white`}
             >
               Партнерам
             </Link>
-            <Link
-              href={"/"}
-              className="border-b-2 border-transparent hover:border-white"
-            >
-              О нас
-            </Link>
+            <div className="relative group">
+              <Link
+                href={"/o-nas"}
+                className={`${
+                  pathname === "/partneram" && "border-white"
+                } border-b-2 border-transparent hover:border-white`}
+              >
+                О нас
+              </Link>
+              <div className="absolute -left-20 top-full w-64 bg-primary text-white rounded-b z-40 shadow-lg py-2 px-4 space-y-2 hidden group-hover:block">
+                <Link
+                  href="/forma-obratnoj-svyazi"
+                  className="block leading-[110%] hover:underline mb-5"
+                >
+                  Форма обратной связи
+                </Link>
+                <Link
+                  href="/contacts"
+                  className="block leading-[110%] hover:underline mb-5"
+                >
+                  Контакты
+                </Link>
+                <Link
+                  href="/dogovor-oferta"
+                  className="block leading-[110%] hover:underline mb-5"
+                >
+                  Договор-оферта
+                </Link>
+                <Link
+                  href="/privacy-policy"
+                  className="block leading-[110%] hover:underline mb-5"
+                >
+                  Политика конфиденциальности
+                </Link>
+                <Link
+                  href="/refund-policy"
+                  className="block leading-[110%] hover:underline mb-5"
+                >
+                  Политика возврата
+                </Link>
+                <Link
+                  href="/disclaimer"
+                  className="block leading-[110%] hover:underline mb-5"
+                >
+                  Отказ от ответственности
+                </Link>
+                <Link
+                  href="/o-nas"
+                  className="block leading-[110%] hover:underline"
+                >
+                  О проекте
+                </Link>
+                {/* <Link href="/reviews" className="block leading-[110%] hover:underline">Отзывы о Encar-Russia.ru</Link> */}
+              </div>
+            </div>
           </div>
         </nav>
       </Container>
@@ -148,40 +205,111 @@ const Header = () => {
               Каталог авто из Кореи
             </Link>
             <Link
-              href="/"
+              href="/poryadok-pokupki-avtomobilya"
               onClick={() => setIsOpenMenu(false)}
-              className="block border px-4 py-3 text-center text-black text-sm font-medium rounded"
+              className={`block border px-4 py-3 text-center text-black text-sm font-medium rounded ${
+                pathname === "/poryadok-pokupki-avtomobilya" &&
+                "bg-primary text-white"
+              }`}
             >
               Порядок покупки авто из Кореи
             </Link>
             <Link
-              href="/"
+              href="/bezopasnaya-sdelka"
               onClick={() => setIsOpenMenu(false)}
-              className="block border px-4 py-3 text-center text-black text-sm font-medium rounded"
+              className={`block border px-4 py-3 text-center text-black text-sm font-medium rounded ${
+                pathname === "/bezopasnaya-sdelka" && "bg-primary text-white"
+              }`}
             >
               Безопасная сделка
             </Link>
             <Link
-              href="/"
+              href="/chasto-zadavaemye-voprosy"
               onClick={() => setIsOpenMenu(false)}
-              className="block border px-4 py-3 text-center text-black text-sm font-medium rounded"
+              className={`block border px-4 py-3 text-center text-black text-sm font-medium rounded ${
+                pathname === "/chasto-zadavaemye-voprosy" &&
+                "bg-primary text-white"
+              }`}
             >
               ЧаВо
             </Link>
             <Link
-              href="/"
+              href="/partneram"
               onClick={() => setIsOpenMenu(false)}
-              className="block border px-4 py-3 text-center text-black text-sm font-medium rounded"
+              className={`block border px-4 py-3 text-center text-black text-sm font-medium rounded ${
+                pathname === "/partneram" && "bg-primary text-white"
+              }`}
             >
               Партнерам
             </Link>
-            <Link
-              href="/"
-              onClick={() => setIsOpenMenu(false)}
-              className="block border px-4 py-3 text-center text-black text-sm font-medium rounded"
-            >
-              О нас
-            </Link>
+            <div className="relative">
+              <button
+                onClick={() =>
+                  setIsOpenMenu(isOpenMenu === "about" ? true : "about")
+                }
+                className="block border px-4 py-3 text-center text-black text-sm font-medium rounded w-full"
+                style={{
+                  background: pathname === "/o-nas" ? "#c8102e" : undefined,
+                  color: pathname === "/o-nas" ? "white" : undefined,
+                }}
+              >
+                О нас
+              </button>
+              {isOpenMenu === "about" && (
+                <div className="flex flex-col items-center w-full rounded-b z-40 py-2 px-4 space-y-2">
+                  <Link
+                    href="/forma-obratnoj-svyazi"
+                    onClick={() => setIsOpenMenu(false)}
+                    className="block mb-2"
+                  >
+                    Форма обратной связи
+                  </Link>
+                  <Link
+                    href="/contacts"
+                    onClick={() => setIsOpenMenu(false)}
+                    className="block mb-2"
+                  >
+                    Контакты
+                  </Link>
+                  <Link
+                    href="/dogovor-oferta"
+                    onClick={() => setIsOpenMenu(false)}
+                    className="block mb-2"
+                  >
+                    Договор-оферта
+                  </Link>
+                  <Link
+                    href="/privacy-policy"
+                    onClick={() => setIsOpenMenu(false)}
+                    className="block mb-2"
+                  >
+                    Политика конфиденциальности
+                  </Link>
+                  <Link
+                    href="/refund-policy"
+                    onClick={() => setIsOpenMenu(false)}
+                    className="block mb-2"
+                  >
+                    Политика возврата
+                  </Link>
+                  <Link
+                    href="/disclaimer"
+                    onClick={() => setIsOpenMenu(false)}
+                    className="block mb-2"
+                  >
+                    Отказ от ответственности
+                  </Link>
+                  <Link
+                    href="/o-nas"
+                    onClick={() => setIsOpenMenu(false)}
+                    className="block mb-2"
+                  >
+                    О проекте
+                  </Link>
+                  {/* <Link href="/reviews" onClick={() => setIsOpenMenu(false)} className="block">Отзывы о Encar-Russia.ru</Link> */}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Sticky Bottom: Личный кабинет */}
@@ -189,10 +317,10 @@ const Header = () => {
             <button
               onClick={() => {
                 if (!token) {
-                  setIsLoginModalOpen(true)
+                  setIsLoginModalOpen(true);
                   setIsOpenMenu(false);
                 } else {
-                  router.push("/cabinet")
+                  router.push("/cabinet");
                   setIsOpenMenu(false);
                 }
               }}

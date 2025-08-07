@@ -1,13 +1,27 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Container from "./Container";
 import Logo from "../../public/images/logo.png";
 import Link from "next/link";
 import Image from "next/image";
-import { GrAnnounce } from "react-icons/gr";
 import { ImBullhorn } from "react-icons/im";
 import { FaCar, FaCircleQuestion, FaComments } from "react-icons/fa6";
+import request from "./config";
 
 const Footer = () => {
+  const [brands, setBrands] = useState([]);
+  const getBrands = async () => {
+    try {
+      let res = await request.get("/cars/brand/list/");
+      setBrands(res.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  useEffect(() => {
+    getBrands();
+  }, []);
   return (
     <footer className="bg-[#282828] py-10">
       <Container>
@@ -20,26 +34,20 @@ const Footer = () => {
               Каталог авто из Кореи
             </p>
             <div className="flex flex-col gap-1.5 mt-4">
-              <Link href={"/"} className="text-white hover:text-primary">
-                Hyundai
-              </Link>
-              <Link href={"/"} className="text-white hover:text-primary">
-                Genesis
-              </Link>
-              <Link href={"/"} className="text-white hover:text-primary">
-                Kia
-              </Link>
-              <Link href={"/"} className="text-white hover:text-primary">
-                Renault
-              </Link>
-              <Link href={"/"} className="text-white hover:text-primary">
-                Ssang Young
-              </Link>
+              {brands.slice(0, 5).map((item: any) => (
+                <Link
+                  key={item.id}
+                  href={"/"}
+                  className="text-white hover:text-primary"
+                >
+                  {item.name}
+                </Link>
+              ))}
             </div>
           </div>
           <div className="flex flex-col gap-1.5 max-w-[250px] ml-5">
             <Link
-              href={"/"}
+              href={"/instrukcziya"}
               className="text-white hover:text-primary font-medium text-xl"
             >
               Инструкция
@@ -63,18 +71,18 @@ const Footer = () => {
               Контакты
             </Link>
             <Link
-              href={"/"}
+              href={"/privacy-policy"}
               className="text-white hover:text-primary font-medium text-xl"
             >
               Политика конфиденциальности
             </Link>
             <Link
-              href={"/"}
+              href={"/search-auto"}
               className="text-white hover:text-primary font-medium text-xl"
             >
               Каталог авто из Кореи
             </Link>
-            <Link
+            {/* <Link
               href={"/"}
               className="text-white hover:text-primary font-medium text-xl"
             >
@@ -115,7 +123,7 @@ const Footer = () => {
               className="text-white hover:text-primary font-medium text-xl"
             >
               Toyota
-            </Link>
+            </Link> */}
           </div>
           <div className="max-w-[230px] ml-5">
             <p className="text-white font-medium text-xl">Социальные сети</p>
