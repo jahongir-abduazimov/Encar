@@ -13,7 +13,7 @@ const Footer = () => {
   const [brands, setBrands] = useState([]);
   const getBrands = async () => {
     try {
-      let res = await request.get("/cars/brand/list/");
+      const res = await request.get("/cars/brand/list/");
       setBrands(res.data);
     } catch (e) {
       console.error(e);
