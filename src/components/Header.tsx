@@ -126,7 +126,7 @@ const Header = () => {
               <Link
                 href={"/o-nas"}
                 className={`${
-                  pathname === "/partneram" && "border-white"
+                  pathname === "/o-nas" && "border-white"
                 } border-b-2 border-transparent hover:border-white`}
               >
                 О нас
