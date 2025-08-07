@@ -186,5 +186,12 @@ export interface HttpErrorResponse {
   message?: string;
 }
 
+export interface ProfileData {
+  id: string;
+  email: string;
+  full_name: string;
+  phone: string;
+}
+
 // Loading states
 export type LoadingState = "idle" | "loading" | "success" | "error";

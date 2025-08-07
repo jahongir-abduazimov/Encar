@@ -20,7 +20,7 @@ const Likes = () => {
     getData();
   }, []);
 
-  const handleUnlike = async (id: number) => {
+  const handleUnlike = async (id: string) => {
     setData((prev) => prev.filter((car: any) => car.id !== id));
     try {
       await request.get(`/cars/like/${id}/`);
