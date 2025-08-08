@@ -125,7 +125,7 @@ const Header = () => {
               >
                 О нас
               </Link>
-              <div className="absolute -left-20 top-full w-64 bg-primary text-white rounded-b z-40 shadow-lg py-2 px-4 space-y-2 hidden group-hover:block">
+              <div className="absolute -left-20 top-full w-64 bg-primary text-white rounded-b z-40 shadow-lg pb-2 pt-5 px-4 space-y-2 hidden group-hover:block">
                 <Link
                   href="/forma-obratnoj-svyazi"
                   className="block leading-[110%] hover:underline mb-5"

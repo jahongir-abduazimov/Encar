@@ -247,7 +247,7 @@ const Detail = ({ data }: DetailProps) => {
                 )}
                 <button
                   className={`w-[45px] h-[45px] rounded-md border cursor-pointer text-2xl flex items-center justify-center transition-colors duration-200 ${liked
-                    ? "border-primary bg-primary/10 text-primary"
+                    ? "border-primary bg-primary/15 text-primary"
                     : "hover:border-primary"
                     }`}
                   title={
@@ -259,7 +259,7 @@ const Detail = ({ data }: DetailProps) => {
                 </button>
                 <button
                   className={`w-[45px] h-[45px] rounded-md border cursor-pointer text-2xl flex items-center justify-center transition-colors duration-200 ${compared
-                    ? "border-primary bg-primary/10 text-primary"
+                    ? "border-primary bg-primary/15 text-primary"
                     : "hover:border-primary"
                     }`}
                   title={

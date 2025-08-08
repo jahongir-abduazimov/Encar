@@ -2,12 +2,11 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import type { FormEvent, MouseEvent as ReactMouseEvent } from "react";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { CgClose } from "react-icons/cg";
 import { FaEye, FaEyeSlash, FaKey, FaUserPlus } from "react-icons/fa6";
 import { LuAtSign } from "react-icons/lu";
 import request from "@/components/config";
-import { useRouter } from "next/navigation";
 import { ApiError } from "@/types";
 
 type LoginModalProps = {
@@ -16,7 +15,6 @@ type LoginModalProps = {
 };
 
 const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
-
   const [inType, setInType] = useState("login");
   const [isError, setIsError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -122,6 +120,11 @@ const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
     }
   };
 
+  const sendEmail = (e:any) => {
+    e.preventDefault()
+    console.log(e);
+  }
+
   if (!isOpen) return null;
 
   return (
@@ -141,15 +144,17 @@ const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
         <div className="flex w-full border rounded-md my-5 overflow-hidden">
           <button
             onClick={() => setInType("login")}
-            className={`w-[50%] cursor-pointer ${inType === "login" && "bg-black text-white py-2"
-              }`}
+            className={`w-[50%] cursor-pointer py-2 ${
+              inType === "login" && "bg-black text-white"
+            }`}
           >
             Вход на сайт
           </button>
           <button
             onClick={() => setInType("register")}
-            className={`w-[50%] cursor-pointer ${inType === "register" && "bg-black text-white py-2"
-              }`}
+            className={`w-[50%] cursor-pointer py-2 ${
+              inType === "register" && "bg-black text-white"
+            }`}
           >
             Регистрация
           </button>
@@ -212,7 +217,11 @@ const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
                 </label>
               </div> */}
               <div className="">
-                <button type="button" className="text-gray-600 cursor-pointer">
+                <button
+                  onClick={() => setInType("forgotPassword")}
+                  type="button"
+                  className="text-gray-600 cursor-pointer"
+                >
                   Забыли пароль?
                 </button>
               </div>
@@ -220,15 +229,16 @@ const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
             <button
               type="submit"
               disabled={loading}
-              className={`duration-200 text-white rounded-md py-2 mt-2 ${loading
-                ? "bg-gray-400"
-                : "bg-primary cursor-pointer hover:bg-primary/70"
-                }`}
+              className={`duration-200 text-white rounded-md py-2 mt-2 ${
+                loading
+                  ? "bg-gray-400"
+                  : "bg-primary cursor-pointer hover:bg-primary/70"
+              }`}
             >
               Войти
             </button>
           </form>
-        ) : (
+        ) : inType === "register" ? (
           <form className="flex flex-col gap-4" onSubmit={handleRegister}>
             <div className="w-full relative">
               <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
@@ -300,12 +310,45 @@ const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
             <button
               type="submit"
               disabled={registerLoading}
-              className={`duration-200 text-white rounded-md py-2 mt-2 ${registerLoading
-                ? "bg-gray-400"
-                : "bg-primary cursor-pointer hover:bg-primary/70"
-                }`}
+              className={`duration-200 text-white rounded-md py-2 mt-2 ${
+                registerLoading
+                  ? "bg-gray-400"
+                  : "bg-primary cursor-pointer hover:bg-primary/70"
+              }`}
             >
               Зарегистрироваться
+            </button>
+          </form>
+        ) : (
+          <form className="flex flex-col gap-4" onSubmit={sendEmail}>
+            <p className="text-sm">
+              Забыли пароль? Пожалуйста, введите ваше адрес
+              электронной почты. Вы получите ссылку для создания нового пароля
+              по электронной почте.
+            </p>
+            <div className="w-full relative">
+              <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                <LuAtSign size={20} />
+              </div>
+              <input
+                type="email"
+                value={registerEmail}
+                onChange={(e) => setRegisterEmail(e.target.value)}
+                required
+                placeholder="Email"
+                className="w-full border border-gray-400 focus:border-black rounded-md pl-11 pr-4 py-2 outline-none"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={registerLoading}
+              className={`duration-200 text-white rounded-md py-2 mt-2 ${
+                registerLoading
+                  ? "bg-gray-400"
+                  : "bg-primary cursor-pointer hover:bg-primary/70"
+              }`}
+            >
+              Отправить
             </button>
           </form>
         )}
