@@ -86,9 +86,9 @@ const CarDetail = () => {
       <Specifications data={data} />
       {/* <CarCheck /> */}
       <ExteriorInterior data={data?.car_interyer} />
-      <Safety />
-      <ConvenienceMultimedia />
-      <Seats />
+      <Safety data={data?.car_safety} />
+      <ConvenienceMultimedia data={data?.car_multimedia} />
+      <Seats data={data?.car_seats} />
       <SimilarCars />
     </>
   );
