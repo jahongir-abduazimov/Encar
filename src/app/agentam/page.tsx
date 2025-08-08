@@ -9,14 +9,14 @@ const Agents = () => {
           Агентам
         </h1>
         <h2 className="text-xl md:text-2xl font-bold mb-4">
-          Заключение агентского договора с Encar Russia
+          Заключение агентского договора с GM CAR Russia
         </h2>
         <h3 className="text-lg md:text-xl font-semibold mb-2">
           Зарабатывайте с каждым клиентом –{" "}
           <span className="font-bold">50 000 рублей за сделку!</span>
         </h3>
         <p className="text-base md:text-lg mb-4">
-          Приводите покупателей в ENCAR Russia и получайте{" "}
+          Приводите покупателей в GM CAR Russia и получайте{" "}
           <span className="font-bold">50 000 рублей</span> за каждого, кто
           приобретёт автомобиль!
         </p>

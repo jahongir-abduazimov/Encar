@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import Filters from "@/sections/search-auto/Filters";
 
 export const metadata: Metadata = {
-  title: "Поиск автомобилей | EnCar - Купить машину в России",
+  title: "Поиск автомобилей | GM CAR - Купить машину в России",
   description: "Поиск и фильтрация автомобилей в России. Найдите автомобиль по марке, модели, году выпуска, цене и другим параметрам. Тысячи предложений от проверенных продавцов.",
   keywords: [
     "поиск автомобилей",
@@ -17,19 +17,19 @@ export const metadata: Metadata = {
     "новые автомобили",
     "автосалон",
     "авторынок",
-    "EnCar"
+    "GM CAR"
   ].join(", "),
   openGraph: {
-    title: "Поиск автомобилей | EnCar",
+    title: "Поиск автомобилей | GM CAR",
     description: "Поиск и фильтрация автомобилей в России. Найдите автомобиль своей мечты по различным параметрам.",
     type: "website",
     url: "https://encar-test.vercel.app/search-auto",
-    siteName: "EnCar - Автомобили в России",
+    siteName: "GM CAR - Автомобили в России",
     locale: "ru_RU",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Поиск автомобилей | EnCar",
+    title: "Поиск автомобилей | GM CAR",
     description: "Поиск и фильтрация автомобилей в России. Найдите автомобиль своей мечты.",
   },
   alternates: {

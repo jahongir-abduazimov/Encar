@@ -246,11 +246,10 @@ const Detail = ({ data }: DetailProps) => {
                   </div>
                 )}
                 <button
-                  className={`w-[45px] h-[45px] rounded-md border cursor-pointer text-2xl flex items-center justify-center transition-colors duration-200 ${
-                    liked
-                      ? "border-primary bg-primary/10 text-primary"
-                      : "hover:border-primary"
-                  }`}
+                  className={`w-[45px] h-[45px] rounded-md border cursor-pointer text-2xl flex items-center justify-center transition-colors duration-200 ${liked
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "hover:border-primary"
+                    }`}
                   title={
                     liked ? "Убрать из избранного" : "Добавить в избранное"
                   }
@@ -259,11 +258,10 @@ const Detail = ({ data }: DetailProps) => {
                   <FaRegHeart />
                 </button>
                 <button
-                  className={`w-[45px] h-[45px] rounded-md border cursor-pointer text-2xl flex items-center justify-center transition-colors duration-200 ${
-                    compared
-                      ? "border-primary bg-primary/10 text-primary"
-                      : "hover:border-primary"
-                  }`}
+                  className={`w-[45px] h-[45px] rounded-md border cursor-pointer text-2xl flex items-center justify-center transition-colors duration-200 ${compared
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "hover:border-primary"
+                    }`}
                   title={
                     compared ? "Убрать из сравнения" : "Добавить в сравнение"
                   }

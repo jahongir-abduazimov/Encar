@@ -97,9 +97,8 @@ const CarCard = ({ data, viewMode = "grid", onUnlike }: CarCardProps) => {
               </Link>
               <button
                 onClick={() => handleCompare(data.id)}
-                className={`flex items-center gap-3 font-semibold cursor-pointer mt-2 ${
-                  comparison ? "text-primary" : "text-black/50"
-                }`}
+                className={`flex items-center gap-3 font-semibold cursor-pointer mt-2 ${comparison ? "text-primary" : "text-black/50"
+                  }`}
               >
                 <MdCompareArrows size={22} />
                 <span>В сравнение</span>
@@ -146,9 +145,8 @@ const CarCard = ({ data, viewMode = "grid", onUnlike }: CarCardProps) => {
               </div>
               <button
                 onClick={() => handleLike(data.id)}
-                className={`flex items-center gap-3 font-semibold cursor-pointer mt-2 ${
-                  isLiked ? "text-primary" : "text-black/50"
-                }`}
+                className={`flex items-center gap-3 font-semibold cursor-pointer mt-2 ${isLiked ? "text-primary" : "text-black/50"
+                  }`}
               >
                 <FaHeart size={22} />
                 <span>В избранное</span>
@@ -227,17 +225,15 @@ const CarCard = ({ data, viewMode = "grid", onUnlike }: CarCardProps) => {
                     handleLike(data.id);
                   }
                 }}
-                className={`min-w-[30px] h-[30px] rounded-md border border-primary flex items-center justify-center cursor-pointer duration-200 hover:shadow-[3px_3px_6px_silver] ${
-                  isLiked ? "bg-primary text-white" : "text-gray-400"
-                }`}
+                className={`min-w-[30px] h-[30px] rounded-md border border-primary flex items-center justify-center cursor-pointer duration-200 hover:shadow-[3px_3px_6px_silver] ${isLiked ? "bg-primary text-white" : "text-gray-400"
+                  }`}
               >
                 <FaHeart className="text-lg" />
               </button>
               <button
                 onClick={() => handleCompare(data.id)}
-                className={`min-w-[30px] h-[30px] rounded-md border border-primary flex items-center justify-center cursor-pointer duration-200 hover:shadow-[3px_3px_6px_silver] ${
-                  comparison ? "bg-primary text-white" : "text-gray-400"
-                }`}
+                className={`min-w-[30px] h-[30px] rounded-md border border-primary flex items-center justify-center cursor-pointer duration-200 hover:shadow-[3px_3px_6px_silver] ${comparison ? "bg-primary text-white" : "text-gray-400"
+                  }`}
               >
                 <MdCompareArrows className="text-xl" />
               </button>

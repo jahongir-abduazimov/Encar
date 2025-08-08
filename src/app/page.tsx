@@ -6,8 +6,8 @@ import PopularBrands from "@/sections/home/popularBrands";
 import FilterPrice from "@/sections/home/FilterPrice";
 
 export const metadata: Metadata = {
-  title: "EnCar - Купить автомобиль в России | Автомобильный маркетплейс",
-  description: "EnCar - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты. Тысячи предложений от проверенных продавцов с подробными характеристиками и ценами.",
+  title: "GM CAR - Купить автомобиль в России | Автомобильный маркетплейс",
+  description: "GM CAR - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты. Тысячи предложений от проверенных продавцов с подробными характеристиками и ценами.",
   keywords: [
     "купить автомобиль",
     "автомобильный маркетплейс",
@@ -19,29 +19,29 @@ export const metadata: Metadata = {
     "авторынок",
     "популярные марки автомобилей",
     "автомобили по цене",
-    "EnCar"
+    "GM CAR"
   ].join(", "),
   openGraph: {
-    title: "EnCar - Купить автомобиль в России",
-    description: "EnCar - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты.",
+    title: "GM CAR - Купить автомобиль в России",
+    description: "GM CAR - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты.",
     type: "website",
     url: "https://encar-test.vercel.app",
-    siteName: "EnCar - Автомобили в России",
+    siteName: "GM CAR - Автомобили в России",
     locale: "ru_RU",
     images: [
       {
         url: "/images/intro-bg.jpg",
         width: 1200,
         height: 630,
-        alt: "EnCar - Автомобильный маркетплейс в России",
+        alt: "GM CAR - Автомобильный маркетплейс в России",
         type: "image/jpeg"
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "EnCar - Купить автомобиль в России",
-    description: "EnCar - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты.",
+    title: "GM CAR - Купить автомобиль в России",
+    description: "GM CAR - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты.",
     images: ["/images/intro-bg.jpg"],
   },
   alternates: {

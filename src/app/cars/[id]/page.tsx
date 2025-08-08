@@ -55,7 +55,7 @@ export async function generateMetadata({
 
     // Russian SEO optimized title
     const russianBodyType = getRussianBodyType(car.body_type.name);
-    const title = `${car.name} ${car.year} - ${russianBodyType} купить в России | EnCar`;
+    const title = `${car.name} ${car.year} - ${russianBodyType} купить в России | GM CAR`;
 
     // Russian SEO optimized description
     const russianFuelType = getRussianFuelType(car.fuel_type.name);
@@ -85,7 +85,7 @@ export async function generateMetadata({
       "автосалон",
       "авторынок",
       "автомобили в России",
-      "EnCar",
+      "GM CAR",
     ].join(", ");
 
     // Russian Open Graph data
@@ -100,9 +100,9 @@ export async function generateMetadata({
       title,
       description,
       keywords,
-      authors: [{ name: "EnCar" }],
-      creator: "EnCar",
-      publisher: "EnCar",
+      authors: [{ name: "GM CAR" }],
+      creator: "GM CAR",
+      publisher: "GM CAR",
       robots: {
         index: true,
         follow: true,
@@ -119,7 +119,7 @@ export async function generateMetadata({
         description: openGraphDescription,
         type: "website",
         url: `https://encar-test.vercel.app/cars/${params.id}`,
-        siteName: "EnCar - Автомобили в России",
+        siteName: "GM CAR - Автомобили в России",
         locale: "ru_RU",
         images:
           car.car_medias.length > 0
@@ -157,17 +157,17 @@ export async function generateMetadata({
         "DC.description": description,
         "DC.subject": keywords,
         "DC.language": "ru",
-        "DC.publisher": "EnCar",
+        "DC.publisher": "GM CAR",
         "DC.coverage": "World",
-        "DC.rights": "Copyright EnCar",
+        "DC.rights": "Copyright GM CAR",
       },
     };
   } catch (error) {
     return {
-      title: "Автомобиль | EnCar - Купить машину в России",
+      title: "Автомобиль | GM CAR - Купить машину в России",
       description:
-        "Подробная информация об автомобиле на EnCar. Купить автомобиль в России.",
-      keywords: "автомобиль, машина, купить авто, продажа автомобилей, EnCar",
+        "Подробная информация об автомобиле на GM CAR. Купить автомобиль в России.",
+      keywords: "автомобиль, машина, купить авто, продажа автомобилей, GM CAR",
       robots: {
         index: true,
         follow: true,
@@ -215,7 +215,7 @@ function generateStructuredData(car: CarDetailType) {
       availability: "https://schema.org/InStock",
       seller: {
         "@type": "Organization",
-        name: "EnCar",
+        name: "GM CAR",
         url: "https://encar-test.vercel.app",
         address: {
           "@type": "PostalAddress",

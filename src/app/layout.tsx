@@ -13,10 +13,10 @@ const exo2 = Exo_2({
 
 export const metadata: Metadata = {
   title: {
-    default: "EnCar - Купить автомобиль в России",
-    template: "%s | EnCar"
+    default: "GM CAR - Купить автомобиль в России",
+    template: "%s | GM CAR"
   },
-  description: "EnCar - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты. Подробные характеристики, цены и отзывы о тысячах автомобилей.",
+  description: "GM CAR - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты. Подробные характеристики, цены и отзывы о тысячах автомобилей.",
   keywords: [
     "купить автомобиль",
     "продажа автомобилей",
@@ -31,11 +31,11 @@ export const metadata: Metadata = {
     "новые автомобили",
     "автосалон",
     "авторынок",
-    "EnCar"
+    "GM CAR"
   ].join(", "),
-  authors: [{ name: "EnCar Team" }],
-  creator: "EnCar",
-  publisher: "EnCar",
+  authors: [{ name: "GM CAR Team" }],
+  creator: "GM CAR",
+  publisher: "GM CAR",
   formatDetection: {
     email: false,
     address: false,
@@ -52,23 +52,23 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ru_RU",
     url: "https://encar-test.vercel.app",
-    siteName: "EnCar - Автомобили в России",
-    title: "EnCar - Купить автомобиль в России",
-    description: "EnCar - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты с подробными характеристиками и ценами.",
+    siteName: "GM CAR - Автомобили в России",
+    title: "GM CAR - Купить автомобиль в России",
+    description: "GM CAR - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты с подробными характеристиками и ценами.",
     images: [
       {
         url: "/images/logo.png",
         width: 1200,
         height: 630,
-        alt: "EnCar - Автомобильный маркетплейс в России",
+        alt: "GM CAR - Автомобильный маркетплейс в России",
         type: "image/png"
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "EnCar - Купить автомобиль в России",
-    description: "EnCar - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты.",
+    title: "GM CAR - Купить автомобиль в России",
+    description: "GM CAR - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты.",
     images: ["/images/logo.png"],
     creator: "@encar",
     site: "@encar"
@@ -94,13 +94,13 @@ export const metadata: Metadata = {
     'geo.placename': 'Russia',
     'geo.position': '55.7558;37.6176',
     'ICBM': '55.7558, 37.6176',
-    'DC.title': 'EnCar - Купить автомобиль в России',
-    'DC.description': 'EnCar - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты.',
+    'DC.title': 'GM CAR - Купить автомобиль в России',
+    'DC.description': 'GM CAR - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты.',
     'DC.subject': 'автомобили, купить автомобиль, продажа автомобилей, автомобильный маркетплейс',
     'DC.language': 'ru',
-    'DC.publisher': 'EnCar',
+    'DC.publisher': 'GM CAR',
     'DC.coverage': 'World',
-    'DC.rights': 'Copyright EnCar',
+    'DC.rights': 'Copyright GM CAR',
   }
 };
 
@@ -117,7 +117,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#000000" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="EnCar" />
+        <meta name="apple-mobile-web-app-title" content="GM CAR" />
 
         {/* Russian language and region specific meta tags */}
         <meta name="language" content="ru" />
@@ -142,10 +142,10 @@ export default function RootLayout({
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'Organization',
-              name: 'EnCar',
+              name: 'GM CAR',
               url: 'https://encar-test.vercel.app',
               logo: 'https://encar-test.vercel.app/images/logo.png',
-              description: 'EnCar - крупнейший автомобильный маркетплейс в России',
+              description: 'GM CAR - крупнейший автомобильный маркетплейс в России',
               address: {
                 '@type': 'PostalAddress',
                 addressCountry: 'RU',
@@ -174,9 +174,9 @@ export default function RootLayout({
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'WebSite',
-              name: 'EnCar',
+              name: 'GM CAR',
               url: 'https://encar-test.vercel.app',
-              description: 'EnCar - крупнейший автомобильный маркетплейс в России',
+              description: 'GM CAR - крупнейший автомобильный маркетплейс в России',
               inLanguage: 'ru-RU',
             })
           }}
