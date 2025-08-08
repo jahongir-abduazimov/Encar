@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { IoIosArrowDown } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 import { SelectOption } from "@/types";
 
 interface SelectProps {
@@ -103,13 +104,28 @@ const Select = ({
           }
         }}
       >
-        <p className="text-sm md:text-base line-clamp-1">
+        <p className="line-clamp-1">
           {selected ? selected.label : placeholder}
         </p>
-        <IoIosArrowDown
-          className={`text-gray-600 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
-            }`}
-        />
+        {selected ? (
+          <button
+            type="button"
+            aria-label="Clear selection"
+            className="ml-2 cursor-pointer text-gray-600 focus:outline-none"
+            onClick={e => {
+              e.stopPropagation();
+              setSelected(null);
+              setSearch("");
+              onChange?.(null);
+            }}
+          >
+            <IoMdClose size={20} />
+          </button>
+        ) : (
+          <IoIosArrowDown
+            className={`text-gray-600 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+          />
+        )}
       </div>
 
       {isOpen && !disabled && (
