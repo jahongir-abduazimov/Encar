@@ -63,8 +63,8 @@ export async function generateMetadata({
     const description = `${car.name} ${car.year
       } года выпуска, ${russianBodyType}. ${russianFuelType} двигатель, ${russianTransmission} коробка передач, пробег ${car.miliage.toLocaleString(
         "ru-RU"
-      )} км. Цена: ${car.price.toLocaleString("ru-RU")} "₽"
-      }. Купить ${car.name.toLowerCase()} по всему миру.`;
+      )} км. Цена: ${car.price.toLocaleString("ru-RU")} ₽.
+      Купить ${car.name.toLowerCase()} по всему миру.`;
 
     // Russian SEO keywords
     const keywords = [
@@ -93,8 +93,7 @@ export async function generateMetadata({
     const openGraphDescription = `${car.name} ${car.year
       } года, ${russianBodyType}. ${russianFuelType} двигатель, ${car.miliage.toLocaleString(
         "ru-RU"
-      )} км пробега. Цена ${car.price.toLocaleString("ru-RU")} "₽"
-      }.`;
+      )} км пробега. Цена ${car.price.toLocaleString("ru-RU")} ₽.`;
 
     return {
       title,
@@ -211,7 +210,6 @@ function generateStructuredData(car: CarDetailType) {
     offers: {
       "@type": "Offer",
       price: car.price,
-      // priceCurrency: car.car_pricing?.currency || "₽",
       availability: "https://schema.org/InStock",
       seller: {
         "@type": "Organization",

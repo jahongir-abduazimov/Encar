@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     locale: "ru_RU",
     images: [
       {
-        url: "/images/intro-bg.jpg",
+        url: "/images/intro-bg.avif",
         width: 1200,
         height: 630,
         alt: "GM CAR - Автомобильный маркетплейс по всему миру",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "GM CAR - Купить автомобиль по всему миру",
     description: "GM CAR - крупнейший автомобильный маркетплейс по всему миру. Найдите и купите автомобиль своей мечты.",
-    images: ["/images/intro-bg.jpg"],
+    images: ["/images/intro-bg.avif"],
   },
   alternates: {
     canonical: "https://gm-car.vercel.app",
