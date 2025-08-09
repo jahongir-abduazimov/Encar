@@ -138,9 +138,9 @@ const Intro = () => {
   return (
     <section
       id="intro"
-      className="bg-[url('/images/intro-bg.jpg')] bg-cover bg-center relative border-b-[10px] border-primary"
+      className="bg-[url('/images/intro-bg.avif')] bg-cover bg-center relative border-b-[10px] border-primary"
     >
-      <div className="absolute w-full h-full bg-black/60" />
+      <div className="absolute w-full h-full bg-black/30" />
       <div className="relative z-10">
         <Container>
           <div className="py-10 md:py-16">
