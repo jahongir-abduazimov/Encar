@@ -115,7 +115,7 @@ const Detail = ({ data }: DetailProps) => {
                 <Image
                   className="w-full h-auto"
                   src={mainImage}
-                  alt="main-car"
+                  alt={data?.name || "main-img"}
                   width={800}
                   height={600}
                 />

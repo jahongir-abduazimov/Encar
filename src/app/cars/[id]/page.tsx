@@ -55,7 +55,7 @@ export async function generateMetadata({
 
     // Russian SEO optimized title
     const russianBodyType = getRussianBodyType(car.body_type.name);
-    const title = `${car.name} ${car.year} - ${russianBodyType} купить в России | GM CAR`;
+    const title = `${car.name} ${car.year} - ${russianBodyType} купить по всему миру | GM CAR`;
 
     // Russian SEO optimized description
     const russianFuelType = getRussianFuelType(car.fuel_type.name);
@@ -64,7 +64,7 @@ export async function generateMetadata({
       } года выпуска, ${russianBodyType}. ${russianFuelType} двигатель, ${russianTransmission} коробка передач, пробег ${car.miliage.toLocaleString(
         "ru-RU"
       )} км. Цена: ${car.price.toLocaleString("ru-RU")} "₽"
-      }. Купить ${car.name.toLowerCase()} в России.`;
+      }. Купить ${car.name.toLowerCase()} по всему миру.`;
 
     // Russian SEO keywords
     const keywords = [
@@ -84,7 +84,7 @@ export async function generateMetadata({
       "подержанные автомобили",
       "автосалон",
       "авторынок",
-      "автомобили в России",
+      "автомобили по всему миру",
       "GM CAR",
     ].join(", ");
 
@@ -119,7 +119,7 @@ export async function generateMetadata({
         description: openGraphDescription,
         type: "website",
         url: `https://gm-car.vercel.app/cars/${params.id}`,
-        siteName: "GM CAR - Автомобили в России",
+        siteName: "GM CAR - Автомобили по всему миру",
         locale: "ru_RU",
         images:
           car.car_medias.length > 0
@@ -164,9 +164,9 @@ export async function generateMetadata({
     };
   } catch (error) {
     return {
-      title: "Автомобиль | GM CAR - Купить машину в России",
+      title: "Автомобиль | GM CAR - Купить машину по всему миру",
       description:
-        "Подробная информация об автомобиле на GM CAR. Купить автомобиль в России.",
+        "Подробная информация об автомобиле на GM CAR. Купить автомобиль по всему миру.",
       keywords: "автомобиль, машина, купить авто, продажа автомобилей, GM CAR",
       robots: {
         index: true,

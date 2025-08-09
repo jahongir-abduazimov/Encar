@@ -13,10 +13,10 @@ const exo2 = Exo_2({
 
 export const metadata: Metadata = {
   title: {
-    default: "GM CAR - Купить автомобиль в России",
+    default: "GM CAR - Купить автомобиль по всему миру",
     template: "%s | GM CAR"
   },
-  description: "GM CAR - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты. Подробные характеристики, цены и отзывы о тысячах автомобилей.",
+  description: "GM CAR - крупнейший автомобильный маркетплейс по всему миру. Найдите и купите автомобиль своей мечты. Подробные характеристики, цены и отзывы о тысячах автомобилей.",
   keywords: [
     "купить автомобиль",
     "продажа автомобилей",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     "поиск автомобилей",
     "характеристики автомобилей",
     "цены на автомобили",
-    "автомобили в России",
+    "автомобили по всему миру",
     "б/у автомобили",
     "подержанные автомобили",
     "новые автомобили",
@@ -52,23 +52,23 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ru_RU",
     url: "https://gm-car.vercel.app",
-    siteName: "GM CAR - Автомобили в России",
-    title: "GM CAR - Купить автомобиль в России",
-    description: "GM CAR - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты с подробными характеристиками и ценами.",
+    siteName: "GM CAR - Автомобили по всему миру",
+    title: "GM CAR - Купить автомобиль по всему миру",
+    description: "GM CAR - крупнейший автомобильный маркетплейс по всему миру. Найдите и купите автомобиль своей мечты с подробными характеристиками и ценами.",
     images: [
       {
         url: "/images/logo.png",
         width: 1200,
         height: 630,
-        alt: "GM CAR - Автомобильный маркетплейс в России",
+        alt: "GM CAR - Автомобильный маркетплейс по всему миру",
         type: "image/png"
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "GM CAR - Купить автомобиль в России",
-    description: "GM CAR - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты.",
+    title: "GM CAR - Купить автомобиль по всему миру",
+    description: "GM CAR - крупнейший автомобильный маркетплейс по всему миру. Найдите и купите автомобиль своей мечты.",
     images: ["/images/logo.png"],
     creator: "@gm-car",
     site: "@gm-car"
@@ -94,8 +94,8 @@ export const metadata: Metadata = {
     'geo.placename': 'Russia',
     'geo.position': '55.7558;37.6176',
     'ICBM': '55.7558, 37.6176',
-    'DC.title': 'GM CAR - Купить автомобиль в России',
-    'DC.description': 'GM CAR - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты.',
+    'DC.title': 'GM CAR - Купить автомобиль по всему миру',
+    'DC.description': 'GM CAR - крупнейший автомобильный маркетплейс по всему миру. Найдите и купите автомобиль своей мечты.',
     'DC.subject': 'автомобили, купить автомобиль, продажа автомобилей, автомобильный маркетплейс',
     'DC.language': 'ru',
     'DC.publisher': 'GM CAR',
@@ -145,7 +145,7 @@ export default function RootLayout({
               name: 'GM CAR',
               url: 'https://gm-car.vercel.app',
               logo: 'https://gm-car.vercel.app/images/logo.png',
-              description: 'GM CAR - крупнейший автомобильный маркетплейс в России',
+              description: 'GM CAR - крупнейший автомобильный маркетплейс по всему миру',
               address: {
                 '@type': 'PostalAddress',
                 addressCountry: 'RU',
@@ -176,7 +176,7 @@ export default function RootLayout({
               '@type': 'WebSite',
               name: 'GM CAR',
               url: 'https://gm-car.vercel.app',
-              description: 'GM CAR - крупнейший автомобильный маркетплейс в России',
+              description: 'GM CAR - крупнейший автомобильный маркетплейс по всему миру',
               inLanguage: 'ru-RU',
             })
           }}
