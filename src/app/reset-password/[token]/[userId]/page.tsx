@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
-const page = () => {
+const ResetPasswordPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -97,4 +97,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default ResetPasswordPage;
