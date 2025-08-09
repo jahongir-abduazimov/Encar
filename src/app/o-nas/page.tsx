@@ -1,93 +1,80 @@
-import React from "react";
+"use client";
+
+import request from "@/components/config";
 import Container from "@/components/Container";
+import DOMPurify from "isomorphic-dompurify";
+import React, { useEffect, useState } from "react";
+
+interface SecureTransactionItem {
+  id: number;
+  title: string;
+  text: string; // HTML string from backend
+}
+
+const LINK_COLOR = "#5458FF"; // yoki '#2563eb' — xohlaganingizni qo'ying
+
+function sanitizeAndStyle(html: string) {
+  const clean = DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ["p", "strong", "em", "ul", "ol", "li", "br", "a"],
+    ALLOWED_ATTR: ["href", "target", "rel"],
+  });
+
+  // DOMParser ishlatish faqat brauzerda (client) mumkin — lekin komponentingizda "use client" bor.
+  if (typeof window === "undefined") return clean;
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(clean, "text/html");
+
+  doc.querySelectorAll("a").forEach((a) => {
+    a.setAttribute("target", "_blank");
+    a.setAttribute("rel", "noopener noreferrer");
+    // inline style — eng yuqori ustunlik
+    a.style.color = LINK_COLOR;
+    a.style.textDecoration = "underline";
+  });
+
+  return doc.body.innerHTML;
+}
 
 const About = () => {
+  const [data, setData] = useState<SecureTransactionItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      try {
+        const res = await request.get("/common/about_projects/");
+        setData(res.data);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
   return (
-    <section className="min-h-screen bg-white py-8 md:py-12">
+    <section className="min-h-[60vh] pt-5 pb-20">
       <Container>
-        <div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-6 font-montserrat">
-            О нас
-          </h1>
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 font-montserrat">
-            Наши услуги
-          </h2>
-          <div className="text-base md:text-lg leading-relaxed space-y-4">
-            <div>
-              <span className="font-bold">1. Подбор автомобиля под заказ</span>
-              <br />
-              Мы помогаем подобрать автомобиль с сайта encar.com в соответствии
-              с вашими критериями: марка, модель, год выпуска, пробег,
-              комплектация и состояние. Консультируем по текущему рынку,
-              рекомендуем оптимальные варианты.
-            </div>
-            <div>
-              <span className="font-bold">
-                2. Перевод информации и сопровождение сделки
-              </span>
-              <br />
-              Предоставляем переведённые данные об автомобиле с корейского на
-              русский язык, а также сопровождаем клиента на всех этапах покупки
-              — от выбора до оформления.
-            </div>
-            <div>
-              <span className="font-bold">3. Проверка автомобиля</span>
-              <br />
-              Организуем проверку технического состояния и юридической чистоты
-              автомобиля с привлечением корейских специалистов и официальных
-              проверяющих сервисов (Car History, KBC, etc.). фото- и видеоотчёты
-              по запросу.
-            </div>
-            <div>
-              <span className="font-bold">4. Переговоры с продавцом</span>
-              <br />
-              Выступаем в качестве посредника и ведём коммуникацию с дилером или
-              владельцем автомобиля на корейском языке.
-            </div>
-            <div>
-              <span className="font-bold">
-                5. Оформление договора и финансовое сопровождение
-              </span>
-              <br />
-              Заключаем агентский договор с клиентом. Оформляем безопасную
-              оплату через{" "}
-              <span className="font-bold">
-                безотзывный покрытый аккредитив
-              </span>{" "}
-              — это обеспечивает защиту ваших денежных средств до момента
-              получения автомобиля.
-            </div>
-            <div>
-              <span className="font-bold">6. Покупка и оформление в Корее</span>
-              <br />
-              Проводим осмотр, покупку (за свой счёт) и оформление автомобиля на
-              нашего корейского партнёра, с дальнейшей передачей для
-              транспортировки.
-            </div>
-            <div>
-              <span className="font-bold">7. Доставка в Россию</span>
-              <br />
-              Организуем доставку автомобиля в порт Владивостока. Работаем с
-              проверенными транспортными компаниями и таможенными брокерами.
-            </div>
-            <div>
-              <span className="font-bold">
-                8. Таможенное оформление и регистрация
-              </span>
-              <br />
-              Осуществляем таможенное оформление и получение электронный ПТС с
-              СБКТС.
-            </div>
-            <div>
-              <span className="font-bold">
-                9. Консультационная поддержка на всех этапах
-              </span>
-              <br />
-              От первого обращения до постановки автомобиля на учёт — вы
-              получаете поддержку и обратную связь от нашей команды.
-            </div>
+        <h1 className="text-[2rem] md:text-[2.5rem] font-bold leading-tight mb-3">
+          О нас
+        </h1>
+
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
           </div>
-        </div>
+        ) : (
+          data.map((item) => (
+            <div
+              className="mb-2"
+              key={item.id}
+              dangerouslySetInnerHTML={{
+                __html: sanitizeAndStyle(item.text),
+              }}
+            />
+          ))
+        )}
       </Container>
     </section>
   );

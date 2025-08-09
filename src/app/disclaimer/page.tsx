@@ -1,69 +1,80 @@
-import React from "react";
+"use client";
+
+import request from "@/components/config";
 import Container from "@/components/Container";
+import DOMPurify from "isomorphic-dompurify";
+import React, { useEffect, useState } from "react";
+
+interface SecureTransactionItem {
+  id: number;
+  title: string;
+  text: string; // HTML string from backend
+}
+
+const LINK_COLOR = "#5458FF"; // yoki '#2563eb' — xohlaganingizni qo'ying
+
+function sanitizeAndStyle(html: string) {
+  const clean = DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ["p", "strong", "em", "ul", "ol", "li", "br", "a"],
+    ALLOWED_ATTR: ["href", "target", "rel"],
+  });
+
+  // DOMParser ishlatish faqat brauzerda (client) mumkin — lekin komponentingizda "use client" bor.
+  if (typeof window === "undefined") return clean;
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(clean, "text/html");
+
+  doc.querySelectorAll("a").forEach((a) => {
+    a.setAttribute("target", "_blank");
+    a.setAttribute("rel", "noopener noreferrer");
+    // inline style — eng yuqori ustunlik
+    a.style.color = LINK_COLOR;
+    a.style.textDecoration = "underline";
+  });
+
+  return doc.body.innerHTML;
+}
 
 const Disclaimer = () => {
+  const [data, setData] = useState<SecureTransactionItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      try {
+        const res = await request.get("/common/disclaimer/");
+        setData(res.data);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
   return (
-    <section className="min-h-screen bg-white py-8 md:py-12">
+    <section className="min-h-[60vh] pt-5 pb-20">
       <Container>
-        <div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-6 font-montserrat">
-            Отказ от ответственности
-          </h1>
-          <div className="text-base md:text-lg mb-8 leading-relaxed">
-            <div className="mb-4">Уважаемые пользователи!</div>
-            <div className="mb-4">
-              Сайт{" "}
-              <span className="text-blue-700">https://encar-russia.ru</span>{" "}
-              является информационным ресурсом, предоставляющим переведённую на
-              русский язык информацию с официального южнокорейского сайта{" "}
-              <span className="font-bold">encar.com</span>. Наша цель —
-              упростить доступ российских пользователей к информации о продаже
-              автомобилей в Корее, представленной на encar.com.
-            </div>
-            <div className="font-semibold mb-2">Важное уведомление:</div>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>
-                Вся информация о транспортных средствах (включая, но не
-                ограничиваясь: описания, характеристики, пробег, техническое
-                состояние, история обслуживания и т.д.), опубликованная на сайте
-                encar.com и переведённая на русский язык для сайта
-                encar-russia.ru,{" "}
-                <span className="font-bold">
-                  предоставляется дилерами и продавцами, размещающими объявления
-                  на платформе encar.com.
-                </span>
-              </li>
-              <li>
-                <span className="font-bold">
-                  Мы не являемся продавцами или официальными представителями
-                  encar.com
-                </span>
-                , не участвуем в формировании описания транспортных средств и{" "}
-                <span className="font-bold">
-                  не несём ответственности за достоверность, полноту или
-                  актуальность информации
-                </span>
-                , предоставленной третьими лицами на исходном сайте.
-              </li>
-              <li>
-                Перевод может содержать неточности, обусловленные спецификой
-                языка, различиями в терминологии или автоматическим переводом.
-                Мы прилагаем усилия для корректной адаптации информации, однако{" "}
-                <span className="font-bold">
-                  не можем гарантировать точность перевода каждого элемента
-                  объявления.
-                </span>
-              </li>
-            </ul>
-            <div className="mt-4">
-              Используя сайт encar-russia.ru, вы подтверждаете своё согласие с
-              настоящим отказом от ответственности и понимаете, что вся
-              информация предоставляется{" "}
-              <span className="font-bold">«как есть»</span> без каких-либо
-              гарантий со стороны владельцев ресурса encar-russia.ru.
-            </div>
+        <h1 className="text-[2rem] md:text-[2.5rem] font-bold leading-tight mb-3">
+          Отказ от ответственности
+        </h1>
+
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
           </div>
-        </div>
+        ) : (
+          data.map((item) => (
+            <div
+              className="mb-2"
+              key={item.id}
+              dangerouslySetInnerHTML={{
+                __html: sanitizeAndStyle(item.text),
+              }}
+            />
+          ))
+        )}
       </Container>
     </section>
   );

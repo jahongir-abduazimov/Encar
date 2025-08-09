@@ -144,7 +144,7 @@ const Intro = () => {
       <div className="relative z-10">
         <Container>
           <div className="py-10 md:py-16">
-            <h1 className="text-white text-[28px] md:text-[35px] font-medium mb-5">
+            <h1 className="text-white text-[28px] md:text-[35px] font-medium mb-5 leading-[120%]">
               Мировой каталог автомобилей
             </h1>
 

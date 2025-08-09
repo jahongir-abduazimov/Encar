@@ -1,41 +1,85 @@
-import React from 'react'
-import Container from '@/components/Container'
+"use client";
 
+import request from "@/components/config";
+import Container from "@/components/Container";
+import DOMPurify from "isomorphic-dompurify";
+import React, { useEffect, useState } from "react";
 
-const Contact = () => {
+interface SecureTransactionItem {
+  id: number;
+  title: string;
+  text: string; // HTML string from backend
+}
+
+const LINK_COLOR = "#5458FF"; // yoki '#2563eb' — xohlaganingizni qo'ying
+
+function sanitizeAndStyle(html: string) {
+  const clean = DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ["p", "strong", "em", "ul", "ol", "li", "br", "a"],
+    ALLOWED_ATTR: ["href", "target", "rel"],
+  });
+
+  // DOMParser ishlatish faqat brauzerda (client) mumkin — lekin komponentingizda "use client" bor.
+  if (typeof window === "undefined") return clean;
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(clean, "text/html");
+
+  doc.querySelectorAll("a").forEach((a) => {
+    a.setAttribute("target", "_blank");
+    a.setAttribute("rel", "noopener noreferrer");
+    // inline style — eng yuqori ustunlik
+    a.style.color = LINK_COLOR;
+    a.style.textDecoration = "underline";
+  });
+
+  return doc.body.innerHTML;
+}
+
+const Contacts = () => {
+  const [data, setData] = useState<SecureTransactionItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      try {
+        const res = await request.get("/common/contracts/");
+        setData(res.data);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
   return (
-    <section className="min-h-screen bg-white py-8 md:py-12">
+    <section className="min-h-[60vh] pt-5 pb-20">
       <Container>
-        <div className="">
-          <h1 className="text-3xl md:text-4xl font-bold mb-6 font-montserrat">Контакты</h1>
+        <h1 className="text-[2rem] md:text-[2.5rem] font-bold leading-tight mb-3">
+          Контакты
+        </h1>
+
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
+        ) : (
           <div className="text-base md:text-lg mb-8 leading-relaxed space-y-3">
-            <div>
-              Бесплатный канал телеграмм, в котором публикуются все новые объявления с сайта gm-car — <b>перейти в канал <a href="https://t.me" target="_blank" rel="noopener noreferrer" className="text-blue-600 font-semibold hover:underline">Telegram</a></b>
-            </div>
-            <div>
-              Группа в телеграмм для публичного обсуждения автомобилей encar-russia.ru — <b>перейти в группу <a href="https://t.me" target="_blank" rel="noopener noreferrer" className="text-blue-600 font-semibold hover:underline">Telegram</a></b>
-            </div>
-            <div>
-              Любые вопросы по авто и доставке — <b>написать в <a href="https://t.me" target="_blank" rel="noopener noreferrer" className="text-blue-600 font-semibold hover:underline">Telegram</a></b>
-            </div>
-            <div>
-              Написать по ватсап <a href="https://wa.me" target="_blank" rel="noopener noreferrer" className="text-green-600 font-semibold hover:underline">Whatsapp</a>
-            </div>
-            <div>
-              Наш канал на Youtube <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" className="text-red-600 font-semibold hover:underline">encar-russia</a>
-            </div>
+            {data.map((item) => (
+              <div
+                key={item.id}
+                className="mb-2"
+                dangerouslySetInnerHTML={{
+                  __html: sanitizeAndStyle(item.text),
+                }}
+              />
+            ))}
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 font-montserrat">Наши контакты:</h2>
-          <div className="text-base md:text-lg leading-relaxed space-y-2">
-            <div>ИП Закиров Динар Гулемович</div>
-            <div>ОГРН ИП/ИНН 320028000011158/027809568709</div>
-            <div>Телефон: <a href="tel:+7" className="text-blue-600 font-semibold hover:underline">+7-XXX-XXX-XXXX</a></div>
-            <div>Режим работы: Пн.-Пт. 9:00 — 18:00</div>
-          </div>
-        </div>
+        )}
       </Container>
     </section>
   );
-}
+};
 
-export default Contact
+export default Contacts;

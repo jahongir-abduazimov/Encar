@@ -1,64 +1,80 @@
-import React from "react";
+"use client";
+
+import request from "@/components/config";
 import Container from "@/components/Container";
+import DOMPurify from "isomorphic-dompurify";
+import React, { useEffect, useState } from "react";
+
+interface SecureTransactionItem {
+  id: number;
+  title: string;
+  text: string; // HTML string from backend
+}
+
+const LINK_COLOR = "#5458FF"; // yoki '#2563eb' — xohlaganingizni qo'ying
+
+function sanitizeAndStyle(html: string) {
+  const clean = DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ["p", "strong", "em", "ul", "ol", "li", "br", "a"],
+    ALLOWED_ATTR: ["href", "target", "rel"],
+  });
+
+  // DOMParser ishlatish faqat brauzerda (client) mumkin — lekin komponentingizda "use client" bor.
+  if (typeof window === "undefined") return clean;
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(clean, "text/html");
+
+  doc.querySelectorAll("a").forEach((a) => {
+    a.setAttribute("target", "_blank");
+    a.setAttribute("rel", "noopener noreferrer");
+    // inline style — eng yuqori ustunlik
+    a.style.color = LINK_COLOR;
+    a.style.textDecoration = "underline";
+  });
+
+  return doc.body.innerHTML;
+}
 
 const RefundPolicy = () => {
+  const [data, setData] = useState<SecureTransactionItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      try {
+        const res = await request.get("/common/return_policy/");
+        setData(res.data);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
   return (
-    <section className="min-h-screen bg-white py-8 md:py-12">
+    <section className="min-h-[60vh] pt-5 pb-20">
       <Container>
-        <div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-6 font-montserrat">
-            Политика возврата
-          </h1>
-          <div className="text-base md:text-lg mb-8 leading-relaxed">
-            <div className="font-semibold mb-2">Отказ от услуги</div>
-            <div className="mb-4">
-              Право потребителя на расторжение договора об оказании услуги
-              регламентируется статьей 32 Закона РФ от 07.02.1992 N 2300-1 «О
-              защите прав потребителей»:
-            </div>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>
-                Потребитель вправе отказаться от исполнения договора о
-                выполнении работ (оказании услуг) в любое время, уплатив
-                исполнителю часть цены пропорционально части оказанной услуги до
-                получения извещения о расторжении указанного договора и
-                возместив исполнителю расходы, произведенные им до этого момента
-                в целях исполнения договора, если они не входят в указанную
-                часть цены услуги;
-              </li>
-              <li>
-                Потребитель при обнаружении недостатков оказанной услуги в
-                соответствии со статьей 29 Закона РФ от 07.02.1992 N 2300-1 «О
-                защите прав потребителей» вправе по своему выбору потребовать:
-                <ul className="list-disc pl-6 mt-2 space-y-1">
-                  <li>безвозмездного устранения недостатков;</li>
-                  <li>соответствующего уменьшения цены;</li>
-                  <li>
-                    безвозмездного изготовления другой вещи из однородного
-                    материала такого же качества или повторного выполнения
-                    работы;
-                  </li>
-                  <li>
-                    возмещения понесенных им расходов по устранению недостатков
-                    своими силами или третьими лицами;
-                  </li>
-                </ul>
-              </li>
-              <li>
-                Потребитель вправе предъявлять требования, связанные с
-                недостатками оказанной услуги, если они обнаружены в течение
-                гарантийного срока, а при его отсутствии в разумный срок, в
-                пределах двух лет со дня принятия оказанной услуги;
-              </li>
-              <li>
-                Исполнитель отвечает за недостатки услуги, на которую не
-                установлен гарантийный срок, если потребитель докажет, что они
-                возникли до ее принятия им или по причинам, возникшим до этого
-                момента.
-              </li>
-            </ul>
+        <h1 className="text-[2rem] md:text-[2.5rem] font-bold leading-tight mb-3">
+          Политика возврата
+        </h1>
+
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
           </div>
-        </div>
+        ) : (
+          data.map((item) => (
+            <div
+              className="mb-2"
+              key={item.id}
+              dangerouslySetInnerHTML={{
+                __html: sanitizeAndStyle(item.text),
+              }}
+            />
+          ))
+        )}
       </Container>
     </section>
   );
