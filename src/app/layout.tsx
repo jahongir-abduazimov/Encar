@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://encar-test.vercel.app"),
+  metadataBase: new URL("https://gm-car.vercel.app"),
   alternates: {
     canonical: "/",
     languages: {
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ru_RU",
-    url: "https://encar-test.vercel.app",
+    url: "https://gm-car.vercel.app",
     siteName: "GM CAR - Автомобили в России",
     title: "GM CAR - Купить автомобиль в России",
     description: "GM CAR - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты с подробными характеристиками и ценами.",
@@ -70,8 +70,8 @@ export const metadata: Metadata = {
     title: "GM CAR - Купить автомобиль в России",
     description: "GM CAR - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты.",
     images: ["/images/logo.png"],
-    creator: "@encar",
-    site: "@encar"
+    creator: "@gm-car",
+    site: "@gm-car"
   },
   robots: {
     index: true,
@@ -143,8 +143,8 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'Organization',
               name: 'GM CAR',
-              url: 'https://encar-test.vercel.app',
-              logo: 'https://encar-test.vercel.app/images/logo.png',
+              url: 'https://gm-car.vercel.app',
+              logo: 'https://gm-car.vercel.app/images/logo.png',
               description: 'GM CAR - крупнейший автомобильный маркетплейс в России',
               address: {
                 '@type': 'PostalAddress',
@@ -158,11 +158,11 @@ export default function RootLayout({
                 areaServed: 'RU',
                 availableLanguage: 'Russian'
               },
-              sameAs: [
-                'https://twitter.com/encar',
-                'https://facebook.com/encar',
-                'https://instagram.com/encar'
-              ]
+              // sameAs: [
+              //   'https://twitter.com/encar',
+              //   'https://facebook.com/encar',
+              //   'https://instagram.com/encar'
+              // ]
             })
           }}
         />
@@ -175,7 +175,7 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'WebSite',
               name: 'GM CAR',
-              url: 'https://encar-test.vercel.app',
+              url: 'https://gm-car.vercel.app',
               description: 'GM CAR - крупнейший автомобильный маркетплейс в России',
               inLanguage: 'ru-RU',
             })

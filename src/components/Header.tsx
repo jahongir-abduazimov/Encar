@@ -32,6 +32,10 @@ const Header = () => {
     setToken(authToken);
   }, []);
 
+  if (pathname.slice(0, 15) === "/reset-password") {
+    return null;
+  }
+
   return (
     <header className="bg-primary relative z-50">
       <LoginModal
@@ -42,11 +46,11 @@ const Header = () => {
       {/* Top Bar */}
       <div className="bg-[#282828]">
         <Container>
-          <div className="py-1.5 flex flex-row-reverse md:flex-row items-center justify-between">
-            <div className="flex gap-3 text-white text-xs md:text-sm">
+          <div className="py-1.5 flex items-center justify-end">
+            {/* <div className="flex gap-3 text-white text-xs md:text-sm">
               <p>Подписок создано: 255</p>
               <p>Отчетов заказано: 896</p>
-            </div>
+            </div> */}
             <button
               onClick={() => {
                 if (!token) {
@@ -69,7 +73,7 @@ const Header = () => {
         <nav className="h-[70px] md:h-[100px] flex items-center justify-between">
           <Link href={"/"}>
             <Image
-              className="w-[130px] md:w-[170px]"
+              className="w-[80px] md:w-[120px]"
               src={Logo}
               alt="gm-car logo"
             />
@@ -84,44 +88,50 @@ const Header = () => {
           <div className="hidden md:flex items-center gap-8 text-white text-lg">
             <Link
               href={"/search-auto"}
-              className={`${pathname.slice(0, 12) === "/search-auto" && "border-white"
-                } border-b-2 border-transparent hover:border-white`}
+              className={`${
+                pathname.slice(0, 12) === "/search-auto" && "border-white"
+              } border-b-2 border-transparent hover:border-white`}
             >
               Каталог авто из Кореи
             </Link>
             <Link
               href={"/poryadok-pokupki-avtomobilya"}
-              className={`${pathname === "/poryadok-pokupki-avtomobilya" && "border-white"
-                } border-b-2 border-transparent hover:border-white`}
+              className={`${
+                pathname === "/poryadok-pokupki-avtomobilya" && "border-white"
+              } border-b-2 border-transparent hover:border-white`}
             >
               Порядок покупки авто из Кореи
             </Link>
             <Link
               href={"/bezopasnaya-sdelka"}
-              className={`${pathname === "/bezopasnaya-sdelka" && "border-white"
-                } border-b-2 border-transparent hover:border-white`}
+              className={`${
+                pathname === "/bezopasnaya-sdelka" && "border-white"
+              } border-b-2 border-transparent hover:border-white`}
             >
               Безопасная сделка
             </Link>
             <Link
               href={"/chasto-zadavaemye-voprosy"}
-              className={`${pathname === "/chasto-zadavaemye-voprosy" && "border-white"
-                } border-b-2 border-transparent hover:border-white`}
+              className={`${
+                pathname === "/chasto-zadavaemye-voprosy" && "border-white"
+              } border-b-2 border-transparent hover:border-white`}
             >
               ЧаВо
             </Link>
             <Link
               href={"/partneram"}
-              className={`${pathname === "/partneram" && "border-white"
-                } border-b-2 border-transparent hover:border-white`}
+              className={`${
+                pathname === "/partneram" && "border-white"
+              } border-b-2 border-transparent hover:border-white`}
             >
               Партнерам
             </Link>
             <div className="relative group">
               <Link
                 href={"/o-nas"}
-                className={`${pathname === "/o-nas" && "border-white"
-                  } border-b-2 border-transparent hover:border-white`}
+                className={`${
+                  pathname === "/o-nas" && "border-white"
+                } border-b-2 border-transparent hover:border-white`}
               >
                 О нас
               </Link>
@@ -179,8 +189,7 @@ const Header = () => {
       {isOpenMenu && (
         <div className="fixed top-0 left-0 w-full h-full bg-white z-50 flex flex-col">
           {/* Header: Logo & Close Button */}
-          <div className="flex justify-between items-center px-6 py-4 border-b">
-            <Image src={Logo} alt="gm-car logo" className="w-[130px]" />
+          <div className="flex justify-end items-center px-6 py-4 border-b">
             <button onClick={() => setIsOpenMenu(false)}>
               <IoMdClose className="text-[30px] text-black" />
             </button>
@@ -191,43 +200,48 @@ const Header = () => {
             <Link
               href="/search-auto"
               onClick={() => setIsOpenMenu(false)}
-              className={`block border px-4 py-3 text-center text-black text-sm font-medium rounded ${pathname.slice(0, 12) === "/search-auto" &&
+              className={`block border px-4 py-3 text-center text-black text-sm font-medium rounded ${
+                pathname.slice(0, 12) === "/search-auto" &&
                 "bg-primary text-white"
-                }`}
+              }`}
             >
               Каталог авто из Кореи
             </Link>
             <Link
               href="/poryadok-pokupki-avtomobilya"
               onClick={() => setIsOpenMenu(false)}
-              className={`block border px-4 py-3 text-center text-black text-sm font-medium rounded ${pathname === "/poryadok-pokupki-avtomobilya" &&
+              className={`block border px-4 py-3 text-center text-black text-sm font-medium rounded ${
+                pathname === "/poryadok-pokupki-avtomobilya" &&
                 "bg-primary text-white"
-                }`}
+              }`}
             >
               Порядок покупки авто из Кореи
             </Link>
             <Link
               href="/bezopasnaya-sdelka"
               onClick={() => setIsOpenMenu(false)}
-              className={`block border px-4 py-3 text-center text-black text-sm font-medium rounded ${pathname === "/bezopasnaya-sdelka" && "bg-primary text-white"
-                }`}
+              className={`block border px-4 py-3 text-center text-black text-sm font-medium rounded ${
+                pathname === "/bezopasnaya-sdelka" && "bg-primary text-white"
+              }`}
             >
               Безопасная сделка
             </Link>
             <Link
               href="/chasto-zadavaemye-voprosy"
               onClick={() => setIsOpenMenu(false)}
-              className={`block border px-4 py-3 text-center text-black text-sm font-medium rounded ${pathname === "/chasto-zadavaemye-voprosy" &&
+              className={`block border px-4 py-3 text-center text-black text-sm font-medium rounded ${
+                pathname === "/chasto-zadavaemye-voprosy" &&
                 "bg-primary text-white"
-                }`}
+              }`}
             >
               ЧаВо
             </Link>
             <Link
               href="/partneram"
               onClick={() => setIsOpenMenu(false)}
-              className={`block border px-4 py-3 text-center text-black text-sm font-medium rounded ${pathname === "/partneram" && "bg-primary text-white"
-                }`}
+              className={`block border px-4 py-3 text-center text-black text-sm font-medium rounded ${
+                pathname === "/partneram" && "bg-primary text-white"
+              }`}
             >
               Партнерам
             </Link>

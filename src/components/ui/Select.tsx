@@ -112,7 +112,7 @@ const Select = ({
             type="button"
             aria-label="Clear selection"
             className="ml-2 cursor-pointer text-gray-600 focus:outline-none"
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation();
               setSelected(null);
               setSearch("");
@@ -123,7 +123,9 @@ const Select = ({
           </button>
         ) : (
           <IoIosArrowDown
-            className={`text-gray-600 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+            className={`text-gray-600 transition-transform duration-200 ${
+              isOpen ? "rotate-180" : ""
+            }`}
           />
         )}
       </div>
@@ -137,7 +139,6 @@ const Select = ({
               onChange={(e) => setSearch(e.target.value)}
               className="w-full px-3 py-1.5 border-b border-gray-400 outline-none"
               placeholder="Поиск..."
-              autoFocus
             />
           )}
           <ul
@@ -153,10 +154,11 @@ const Select = ({
                   role="option"
                   aria-selected={selected?.value === option.value}
                   onClick={() => handleSelect(option)}
-                  className={`px-4 py-1 hover:bg-primary hover:text-white cursor-pointer ${selected?.value === option.value
-                    ? "bg-primary text-white"
-                    : ""
-                    }`}
+                  className={`px-4 py-1 hover:bg-primary hover:text-white cursor-pointer ${
+                    selected?.value === option.value
+                      ? "bg-primary text-white"
+                      : ""
+                  }`}
                 >
                   {option.label}
                 </li>

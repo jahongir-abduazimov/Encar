@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     title: "GM CAR - Купить автомобиль в России",
     description: "GM CAR - крупнейший автомобильный маркетплейс в России. Найдите и купите автомобиль своей мечты.",
     type: "website",
-    url: "https://encar-test.vercel.app",
+    url: "https://gm-car.vercel.app",
     siteName: "GM CAR - Автомобили в России",
     locale: "ru_RU",
     images: [
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     images: ["/images/intro-bg.jpg"],
   },
   alternates: {
-    canonical: "https://encar-test.vercel.app",
+    canonical: "https://gm-car.vercel.app",
     languages: {
       'ru-RU': '/ru',
     },

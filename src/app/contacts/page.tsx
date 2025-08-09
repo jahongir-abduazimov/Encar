@@ -10,7 +10,7 @@ const Contact = () => {
           <h1 className="text-3xl md:text-4xl font-bold mb-6 font-montserrat">Контакты</h1>
           <div className="text-base md:text-lg mb-8 leading-relaxed space-y-3">
             <div>
-              Бесплатный канал телеграмм, в котором публикуются все новые объявления с сайта encar — <b>перейти в канал <a href="https://t.me" target="_blank" rel="noopener noreferrer" className="text-blue-600 font-semibold hover:underline">Telegram</a></b>
+              Бесплатный канал телеграмм, в котором публикуются все новые объявления с сайта gm-car — <b>перейти в канал <a href="https://t.me" target="_blank" rel="noopener noreferrer" className="text-blue-600 font-semibold hover:underline">Telegram</a></b>
             </div>
             <div>
               Группа в телеграмм для публичного обсуждения автомобилей encar-russia.ru — <b>перейти в группу <a href="https://t.me" target="_blank" rel="noopener noreferrer" className="text-blue-600 font-semibold hover:underline">Telegram</a></b>

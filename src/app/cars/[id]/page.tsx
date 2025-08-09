@@ -118,7 +118,7 @@ export async function generateMetadata({
         title: openGraphTitle,
         description: openGraphDescription,
         type: "website",
-        url: `https://encar-test.vercel.app/cars/${params.id}`,
+        url: `https://gm-car.vercel.app/cars/${params.id}`,
         siteName: "GM CAR - Автомобили в России",
         locale: "ru_RU",
         images:
@@ -139,13 +139,13 @@ export async function generateMetadata({
         title: openGraphTitle,
         description: openGraphDescription,
         images: car.car_medias.length > 0 ? [car.car_medias[0].media] : [],
-        creator: "@EnCar",
-        site: "@EnCar",
+        creator: "@gm-car",
+        site: "@gm-car",
       },
       alternates: {
-        canonical: `https://encar-test.vercel.app/cars/${params.id}`,
+        canonical: `https://gm-car.vercel.app/cars/${params.id}`,
         // languages: {
-        //   'ru-RU': `https://encar-test.vercel.app/ru/cars/${params.id}`,
+        //   'ru-RU': `https://gm-car.vercel.app/ru/cars/${params.id}`,
         // },
       },
       other: {
@@ -216,7 +216,7 @@ function generateStructuredData(car: CarDetailType) {
       seller: {
         "@type": "Organization",
         name: "GM CAR",
-        url: "https://encar-test.vercel.app",
+        url: "https://gm-car.vercel.app",
         address: {
           "@type": "PostalAddress",
           addressCountry: "RU",
@@ -285,19 +285,19 @@ function generateBreadcrumbData(car: CarDetailType) {
         "@type": "ListItem",
         position: 1,
         name: "Главная",
-        item: "https://encar-test.vercel.app",
+        item: "https://gm-car.vercel.app",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: russianBodyType,
-        item: `https://encar-test.vercel.app/cars?body_type=${car.body_type.name}`,
+        item: `https://gm-car.vercel.app/cars?body_type=${car.body_type.name}`,
       },
       {
         "@type": "ListItem",
         position: 4,
         name: `${car.name} ${car.year}`,
-        item: `https://encar-test.vercel.app/cars/${car.id}`,
+        item: `https://gm-car.vercel.app/cars/${car.id}`,
       },
     ],
   };

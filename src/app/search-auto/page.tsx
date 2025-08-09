@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     title: "Поиск автомобилей | GM CAR",
     description: "Поиск и фильтрация автомобилей в России. Найдите автомобиль своей мечты по различным параметрам.",
     type: "website",
-    url: "https://encar-test.vercel.app/search-auto",
+    url: "https://gm-car.vercel.app/search-auto",
     siteName: "GM CAR - Автомобили в России",
     locale: "ru_RU",
   },
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     description: "Поиск и фильтрация автомобилей в России. Найдите автомобиль своей мечты.",
   },
   alternates: {
-    canonical: "https://encar-test.vercel.app/search-auto",
+    canonical: "https://gm-car.vercel.app/search-auto",
     languages: {
       'ru-RU': '/ru/search-auto',
     },

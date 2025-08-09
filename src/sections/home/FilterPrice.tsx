@@ -1,9 +1,9 @@
 import React from "react";
 import Container from "@/components/Container";
-import EcoTypeImage from "../../../public/images/eco-type.png";
-import ComfortTypeImage from "../../../public/images/comfort-type.png";
-import BiznesTypeImage from "../../../public/images/biznes-type.png";
-import PremiumTypeImage from "../../../public/images/premium-type.png";
+import EcoTypeImage from "../../../public/images/eco-type.jpg";
+import ComfortTypeImage from "../../../public/images/comfort-type.jpg";
+import BiznesTypeImage from "../../../public/images/biznes-type.jpg";
+import PremiumTypeImage from "../../../public/images/premium-type.jpg";
 import Image from "next/image";
 import Link from "next/link";
 

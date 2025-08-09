@@ -33,7 +33,7 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: 'https://encar-test.vercel.app/sitemap.xml',
-    host: 'https://encar-test.vercel.app',
+    sitemap: 'https://gm-car.vercel.app/sitemap.xml',
+    host: 'https://gm-car.vercel.app',
   }
 } 

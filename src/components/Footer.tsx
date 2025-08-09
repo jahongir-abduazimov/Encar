@@ -8,8 +8,10 @@ import Image from "next/image";
 import { ImBullhorn } from "react-icons/im";
 import { FaCar, FaCircleQuestion, FaComments } from "react-icons/fa6";
 import request from "./config";
+import { usePathname } from "next/navigation";
 
 const Footer = () => {
+  const pathname = usePathname()
   const [brands, setBrands] = useState([]);
   const getBrands = async () => {
     try {
@@ -22,12 +24,17 @@ const Footer = () => {
   useEffect(() => {
     getBrands();
   }, []);
+
+  if (pathname.slice(0, 15) === "/reset-password") {
+    return null;
+  }
+
   return (
     <footer className="bg-[#282828] py-10">
       <Container>
         <div className="flex md:flex-row flex-col gap-y-14 items-start justify-between">
           <Link href={"/"}>
-            <Image src={Logo} alt="Logo" className="md:w-[300px]" />
+            <Image src={Logo} alt="Logo" className="w-[130px] md:w-[150px]" />
           </Link>
           <div className="ml-5">
             <p className="text-white font-medium text-xl">
@@ -136,7 +143,7 @@ const Footer = () => {
                   href={"/"}
                   className="text-white hover:text-primary hover:underline leading-[110%]"
                 >
-                  Канал с новыми объявлениями с сайта encar
+                  Канал с новыми объявлениями с сайта GM CAR
                 </Link>
               </div>
               <div className="flex items-start gap-3">
@@ -147,7 +154,7 @@ const Footer = () => {
                   href={"/"}
                   className="text-white hover:text-primary hover:underline leading-[110%]"
                 >
-                  Группа для обсуждения сайта encar-russia.ru
+                  Группа для обсуждения сайта GM CAR
                 </Link>
               </div>
               <div className="flex items-start gap-3">

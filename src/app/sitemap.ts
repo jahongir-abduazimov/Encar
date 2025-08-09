@@ -3,7 +3,7 @@ import request from '@/components/config'
 import { CarListItem } from '@/types'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://encar-test.vercel.app'
+  const baseUrl = 'https://gm-car.vercel.app'
 
   // Static pages with Russian SEO optimization
   const staticPages = [
