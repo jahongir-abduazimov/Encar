@@ -38,7 +38,7 @@ const Footer = () => {
           </Link>
           <div className="ml-5">
             <p className="text-white font-medium text-xl">
-              Каталог авто из Кореи
+              Мировой каталог автомобилей
             </p>
             <div className="flex flex-col gap-1.5 mt-4">
               {brands.slice(0, 5).map((item: any) => (
@@ -87,7 +87,7 @@ const Footer = () => {
               href={"/search-auto"}
               className="text-white hover:text-primary font-medium text-xl"
             >
-              Каталог авто из Кореи
+              Мировой каталог автомобилей
             </Link>
             {/* <Link
               href={"/"}

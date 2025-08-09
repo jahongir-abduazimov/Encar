@@ -1,135 +1,85 @@
+"use client";
+
+import request from "@/components/config";
 import Container from "@/components/Container";
-import Link from "next/link";
-import React from "react";
+import DOMPurify from "isomorphic-dompurify";
+import React, { useEffect, useState } from "react";
+
+interface SecureTransactionItem {
+  id: number;
+  title: string;
+  text: string; // HTML string from backend
+}
+
+const LINK_COLOR = "#5458FF"; // yoki '#2563eb' — xohlaganingizni qo'ying
+
+function sanitizeAndStyle(html: string) {
+  const clean = DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ["p", "strong", "em", "ul", "ol", "li", "br", "a"],
+    ALLOWED_ATTR: ["href", "target", "rel"],
+  });
+
+  // DOMParser ishlatish faqat brauzerda (client) mumkin — lekin komponentingizda "use client" bor.
+  if (typeof window === "undefined") return clean;
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(clean, "text/html");
+
+  doc.querySelectorAll("a").forEach((a) => {
+    a.setAttribute("target", "_blank");
+    a.setAttribute("rel", "noopener noreferrer");
+    // inline style — eng yuqori ustunlik
+    a.style.color = LINK_COLOR;
+    a.style.textDecoration = "underline";
+  });
+
+  return doc.body.innerHTML;
+}
 
 const SecureTransaction = () => {
+  const [data, setData] = useState<SecureTransactionItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      try {
+        const res = await request.get("/common/secure_transaction/");
+        setData(res.data);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
   return (
-    <section className="pt-5 pb-20">
+    <section className="min-h-[60vh] pt-5 pb-20">
       <Container>
         <h1 className="text-[2rem] md:text-[2.5rem] font-bold leading-tight mb-3">
           Безопасная сделка
         </h1>
-        <h2 className="text-lg md:text-xl font-semibold mb-4">
-          Покупайте автомобили из Кореи с уверенностью: безопасность сделок с
-          аккредитивом от Сбербанка
-        </h2>
-        <p className="mb-6 text-base md:text-lg text-gray-700">
-          Когда вы решаете купить автомобиль из Кореи, важно быть уверенным в
-          безопасности своей сделки. Мы понимаем, что покупка автомобиля — это
-          значительное вложение, и хотим, чтобы вы чувствовали себя защищённо на
-          каждом этапе. Именно поэтому мы предлагаем нашим клиентам возможность
-          использовать аккредитив от Сбербанка — одного из самых надёжных банков
-          России.
-        </p>
 
-        <h3 className="text-lg md:text-xl font-semibold mb-3">
-          Что такое аккредитив и как это работает?
-        </h3>
-        <p className="mb-4 text-base text-gray-700">
-          Аккредитив — это специальный банковский инструмент, который
-          гарантирует безопасность сделки для обеих сторон. Вот как это
-          работает:
-        </p>
-        <ol className="list-decimal pl-5 mb-6 space-y-2">
-          <li>
-            Вы выбираете автомобиль. После того как вы определились с моделью,
-            мы согласовываем все детали сделки, включая стоимость и условия
-            доставки.
-          </li>
-          <li>
-            Оформите аккредитив. Мы подписываем договор, все данные заносим в
-            аккредитив и отправляем его в Сбербанк. После этого вам приходит
-            смс, вы заходите в клиент-банк и переводите средства со своего счета
-            на счет аккредитива.
-          </li>
-          <li>
-            Мы готовим автомобиль к отправке. После открытия аккредитива мы
-            начинаем подготовку автомобиля к доставке: выкупаем за свой счёт,
-            оформляем все необходимые документы и организуем транспортировку во
-            Владивосток, а потом в ваш город.
-          </li>
-          <li>
-            Вы получаете автомобиль. Вы можете забрать свой автомобиль во
-            Владивостоке или ждать автовоз в своём городе.
-          </li>
-          <li>
-            Мы получаем оплату. После того как автомобиль будет оформлен на вас
-            в России, Сбербанк переводит средства на наш счёт. До этого момента
-            ваши деньги находятся под защитой банка.
-          </li>
-        </ol>
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
+        ) : (
+          data.map((item) => (
+            <div key={item.id} className="mb-5">
+              <h2 className="text-xl md:text-2xl font-semibold mb-2">
+                {item.title}
+              </h2>
 
-        <h3 className="text-lg md:text-xl font-semibold mb-3">
-          Почему это безопасно?
-        </h3>
-        <ul className="list-disc pl-5 mb-6 space-y-2">
-          <li>
-            <span className="font-semibold">Гарантия Сбербанка.</span> Сбербанк
-            выступает независимым гарантом сделки. Это значит, что ваши средства
-            защищены до тех пор, пока автомобиль не будет оформлен на вас в
-            России.
-          </li>
-          <li>
-            <span className="font-semibold">Прозрачность.</span> Все этапы
-            сделки чётко прописаны в договоре. Вы всегда знаете, на каком этапе
-            находится процесс, и можете быть уверены в честности сделки.
-          </li>
-          <li>
-            <span className="font-semibold">Защита от рисков.</span> Если по
-            какой-то причине сделка не состоится, ваши средства будут возвращены
-            вам в полном объёме.
-          </li>
-        </ul>
-
-        <h3 className="text-lg md:text-xl font-semibold mb-3">
-          Почему выбирают нас?
-        </h3>
-        <ul className="list-disc pl-5 mb-6 space-y-2">
-          <li>
-            <span className="font-semibold">Опыт и надёжность.</span> Мы много
-            лет работаем на рынке и заслужили репутацию надёжного партнёра. Наши
-            клиенты доверяют нам, потому что мы всегда выполняем свои
-            обязательства.
-          </li>
-          <li>
-            <span className="font-semibold">Широкий выбор автомобилей.</span> Мы
-            предлагаем автомобили из Кореи с разными характеристиками и в
-            различных ценовых категориях. Вы обязательно найдёте то, что
-            подходит именно вам.
-          </li>
-          <li>
-            <span className="font-semibold">Поддержка на всех этапах.</span>{" "}
-            Наши специалисты помогут вам с оформлением аккредитива, доставкой и
-            таможенным оформлением. Мы всегда на связи, чтобы ответить на ваши
-            вопросы.
-          </li>
-        </ul>
-
-        <h3 className="text-lg md:text-xl font-semibold mb-3">Как начать?</h3>
-        <ol className="list-decimal pl-5 mb-6 space-y-2">
-          <li>
-            Выберите автомобиль на нашем{" "}
-            <Link href="/search-auto" className="text-blue-600 underline">
-              сайте
-            </Link>{" "}
-            или свяжитесь с нашим{" "}
-            <span className="text-red-600 font-semibold">менеджером</span> для
-            консультации.
-          </li>
-          <li>Оформите аккредитив через Сбербанк.</li>
-          <li>Получите автомобиль.</li>
-          <li>Наслаждайтесь своим новым автомобилем!</li>
-        </ol>
-
-        <p className="mb-4 text-base text-gray-700">
-          Покупая у нас, вы можете быть уверены в безопасности своей сделки и
-          качестве автомобиля. Мы ценим ваше доверие и делаем всё возможное,
-          чтобы каждая сделка была комфортной и прозрачной.
-        </p>
-        <p className="text-base md:text-lg font-semibold text-gray-900">
-          Свяжитесь с нами сегодня, чтобы узнать больше и сделать первый шаг к
-          приобретению автомобиля вашей мечты!
-        </p>
+              <div
+                className="prose max-w-none text-gray-700"
+                dangerouslySetInnerHTML={{
+                  __html: sanitizeAndStyle(item.text),
+                }}
+              />
+            </div>
+          ))
+        )}
       </Container>
     </section>
   );
