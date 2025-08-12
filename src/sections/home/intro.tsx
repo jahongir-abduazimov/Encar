@@ -4,17 +4,17 @@ import React, { useEffect, useState } from "react";
 import Container from "@/components/Container";
 import Select from "@/components/ui/Select";
 import request from "@/components/config";
-import { useRouter } from "next/navigation";
 import {
   FilterForm,
   SelectOption,
   Brand,
   Model,
   Generation,
-  FilterItem
+  FilterItem,
 } from "@/types";
 
 const defaultForm: FilterForm = {
+  region: "",
   brand: "",
   model: "",
   generation: "",
@@ -34,6 +34,7 @@ const defaultForm: FilterForm = {
 
 const Intro = () => {
   const [brands, setBrands] = useState<Brand[]>([]);
+  const [region, setRegion] = useState([]);
   const [fuelType, setFuelType] = useState<FilterItem[]>([]);
   const [transmission, setTransmission] = useState<FilterItem[]>([]);
   const [bodyType, setBodyType] = useState<FilterItem[]>([]);
@@ -45,15 +46,17 @@ const Intro = () => {
 
   const fetchOptions = async () => {
     try {
-      const [brandRes, fuelRes, transRes, bodyRes, colorRes] =
+      const [brandRes, regionRes, fuelRes, transRes, bodyRes, colorRes] =
         await Promise.all([
           request.get("/cars/brand/list/"),
+          request.get("/cars/region/list/"),
           request.get("/cars/fuel_type/list/"),
           request.get("/cars/transmission/list/"),
           request.get("/cars/body_type/list/"),
           request.get("/cars/color/list/"),
         ]);
       setBrands(brandRes.data);
+      setRegion(regionRes.data);
       setFuelType(fuelRes.data);
       setTransmission(transRes.data);
       setBodyType(bodyRes.data);
@@ -147,6 +150,22 @@ const Intro = () => {
             <h1 className="text-white text-[28px] md:text-[35px] font-medium mb-5 leading-[120%]">
               Мировой каталог автомобилей
             </h1>
+
+            <div className="mb-2.5">
+              <Select
+                options={toSelectOptions(region)}
+                placeholder="Регион"
+                searchable
+                className="w-full md:w-64"
+                value={form.region}
+                onChange={(e) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    region: e?.value || "",
+                  }))
+                }
+              />
+            </div>
 
             {/* Brand, Model, Generation */}
             <div className="flex flex-col md:flex-row gap-2.5 mb-5">

@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'api.kasimovstudio.uz',
+        hostname: 'gmcar-backend.best-change-grozniy.ru',
         pathname: '/media/**',
       },
     ],

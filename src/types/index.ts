@@ -110,6 +110,7 @@ export interface PaginatedResponse<T> {
 
 // Filter types
 export interface FilterForm {
+  region: string;
   brand: string;
   model: string;
   generation: string;
@@ -140,6 +141,7 @@ export interface Model extends FilterItem {
 export type Generation = FilterItem;
 
 export interface FilterData {
+  region: any[]
   brands: Brand[];
   fuelType: FilterItem[];
   transmission: FilterItem[];

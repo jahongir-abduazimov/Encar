@@ -154,7 +154,7 @@ const Select = ({
                   role="option"
                   aria-selected={selected?.value === option.value}
                   onClick={() => handleSelect(option)}
-                  className={`px-4 py-1 hover:bg-primary hover:text-white cursor-pointer ${
+                  className={`px-4 py-1 hover:bg-primary hover:text-white cursor-pointer line-clamp-1 ${
                     selected?.value === option.value
                       ? "bg-primary text-white"
                       : ""

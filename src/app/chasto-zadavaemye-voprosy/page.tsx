@@ -66,7 +66,7 @@ const FAQ = () => {
           </div>
         ) : (
           <div className="space-y-8">
-            {data.map((item:any) => (
+            {data.map((item: any) => (
               <div key={item.id}>
                 <h2 className="text-lg md:text-xl font-semibold mb-2">
                   {item.question}

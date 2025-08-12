@@ -31,6 +31,7 @@ import {
 // Constants
 const PAGE_SIZE = 24;
 const INITIAL_FORM: FilterForm = {
+  region: "",
   brand: "",
   model: "",
   generation: "",
@@ -69,6 +70,7 @@ const Filters = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
   const [filterData, setFilterData] = useState<FilterData>({
+    region: [],
     brands: [],
     fuelType: [],
     transmission: [],
@@ -128,8 +130,9 @@ const Filters = () => {
   // API functions
   const fetchFilterData = useCallback(async () => {
     try {
-      const [brandsRes, fuelTypeRes, transmissionRes, bodyTypeRes, colorRes] =
+      const [regionRes, brandsRes, fuelTypeRes, transmissionRes, bodyTypeRes, colorRes] =
         await Promise.all([
+          request.get("/cars/region/list/"),
           request.get("/cars/brand/list/"),
           request.get("/cars/fuel_type/list/"),
           request.get("/cars/transmission/list/"),
@@ -138,6 +141,7 @@ const Filters = () => {
         ]);
 
       setFilterData({
+        region: regionRes.data,
         brands: brandsRes.data,
         fuelType: fuelTypeRes.data,
         transmission: transmissionRes.data,
@@ -300,6 +304,7 @@ const Filters = () => {
   useEffect(() => {
     if (searchParams && filterData.brands.length > 0) {
       const newForm = {
+        region: searchParams.get("region") || "",
         brand: searchParams.get("brand") || "",
         model: searchParams.get("model") || "",
         generation: searchParams.get("generation") || "",
@@ -566,16 +571,17 @@ const Filters = () => {
         {/* Desktop */}
         <div className="hidden md:grid grid-cols-4 items-start gap-8">
           <div className="flex flex-col gap-6">
+            {/* Region selection */}
             <Select
-              options={filterData.brands.map((brand: Brand) => ({
-                label: brand.name,
-                value: brand.id,
+              options={filterData.region.map((item: FilterItem) => ({
+                label: item.name,
+                value: item.id,
               }))}
-              placeholder="Бренд"
+              placeholder="Регион"
               searchable={true}
               className="w-full"
-              value={form.brand}
-              onChange={handleBrandChange}
+              value={form.region}
+              onChange={(e: SelectOption | null) => handleFormChange("region", e?.value || "")}
             />
             <div className="flex flex-col gap-2.5">
               <h2 className="text-xl font-medium text-primary">
@@ -619,18 +625,31 @@ const Filters = () => {
           </div>
 
           <div className="col-span-2 flex flex-col gap-6">
-            <Select
-              options={modelOptions.map((model: Model) => ({
-                label: model.name,
-                value: model.id,
-              }))}
-              placeholder="Модель"
-              searchable={true}
-              className="w-full"
-              disabled={!form.brand}
-              value={form.model}
-              onChange={handleModelChange}
-            />
+            <div className="flex gap-6">
+              <Select
+                options={filterData.brands.map((brand: Brand) => ({
+                  label: brand.name,
+                  value: brand.id,
+                }))}
+                placeholder="Бренд"
+                searchable={true}
+                className="w-full"
+                value={form.brand}
+                onChange={handleBrandChange}
+              />
+              <Select
+                options={modelOptions.map((model: Model) => ({
+                  label: model.name,
+                  value: model.id,
+                }))}
+                placeholder="Модель"
+                searchable={true}
+                className="w-full"
+                disabled={!form.brand}
+                value={form.model}
+                onChange={handleModelChange}
+              />
+            </div>
             <div className="flex flex-col gap-5.5">
               {renderYearMonthSection(
                 "Год выпуска",
@@ -708,6 +727,18 @@ const Filters = () => {
         {/* Mobile */}
         <div className="md:hidden">
           <div className="flex flex-col md:flex-row gap-2.5 mb-5">
+            {/* Region selection for mobile */}
+            <Select
+              options={filterData.region.map((item: FilterItem) => ({
+                label: item.name,
+                value: item.id,
+              }))}
+              placeholder="Регион"
+              searchable={true}
+              className="w-full md:w-64"
+              value={form.region}
+              onChange={(e: SelectOption | null) => handleFormChange("region", e?.value || "")}
+            />
             <Select
               options={filterData.brands.map((brand: Brand) => ({
                 label: brand.name,

@@ -29,6 +29,9 @@ const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [registerPassword2, setRegisterPassword2] = useState("");
+  const [forgotPasswordValue, setForgotPasswordValue] = useState("");
+  const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false);
+  const [forgotPasswordStatus, setForgotPasswordStatus]: any = useState();
 
   useEffect(() => {
     if (!isOpen) {
@@ -120,10 +123,34 @@ const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
     }
   };
 
-  const sendEmail = (e:any) => {
-    e.preventDefault()
-    console.log(e);
-  }
+  const sendEmail = async (e: any) => {
+    e.preventDefault();
+    setForgotPasswordLoading(true);
+    try {
+      await request.post("/auth/forgot-password/", {
+        email: forgotPasswordValue,
+      });
+      setForgotPasswordStatus(
+        <p className="text-green-500 bg-green-100 px-2">
+          На ваш адрес электронной почты была отправлена ссылка для сброса
+          пароля.
+        </p>
+      );
+      setForgotPasswordValue("");
+    } catch (e: any) {
+      if (e.response.data.email) {
+        setForgotPasswordStatus(
+          <p className="text-red-500 bg-red-100 px-2">
+            Такой адрес электронной почты не существует!
+          </p>
+        );
+      } else {
+        setForgotPasswordStatus(<p>Произошла ошибка!</p>);
+      }
+    } finally {
+      setForgotPasswordLoading(false);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -143,7 +170,15 @@ const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
 
         <div className="flex w-full border rounded-md my-5 overflow-hidden">
           <button
-            onClick={() => setInType("login")}
+            onClick={() => {
+              setInType("login");
+              setRegisterEmail("");
+              setRegisterPassword("");
+              setRegisterPassword2("");
+              setIsError("");
+              setForgotPasswordStatus();
+              setForgotPasswordValue("");
+            }}
             className={`w-[50%] cursor-pointer py-2 ${
               inType === "login" && "bg-black text-white"
             }`}
@@ -151,7 +186,14 @@ const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
             Вход на сайт
           </button>
           <button
-            onClick={() => setInType("register")}
+            onClick={() => {
+              setInType("register");
+              setLoginEmail("");
+              setLoginPassword("");
+              setIsError("");
+              setForgotPasswordStatus();
+              setForgotPasswordValue("");
+            }}
             className={`w-[50%] cursor-pointer py-2 ${
               inType === "register" && "bg-black text-white"
             }`}
@@ -218,7 +260,12 @@ const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
               </div> */}
               <div className="">
                 <button
-                  onClick={() => setInType("forgotPassword")}
+                  onClick={() => {
+                    setInType("forgotPassword");
+                    setLoginEmail("");
+                    setLoginPassword("");
+                    setIsError("");
+                  }}
                   type="button"
                   className="text-gray-600 cursor-pointer"
                 >
@@ -322,18 +369,19 @@ const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
         ) : (
           <form className="flex flex-col gap-4" onSubmit={sendEmail}>
             <p className="text-sm">
-              Забыли пароль? Пожалуйста, введите ваше адрес
-              электронной почты. Вы получите ссылку для создания нового пароля
-              по электронной почте.
+              Забыли пароль? Пожалуйста, введите ваше адрес электронной почты.
+              Вы получите ссылку для создания нового пароля по электронной
+              почте.
             </p>
+            {forgotPasswordStatus ? forgotPasswordStatus : null}
             <div className="w-full relative">
               <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
                 <LuAtSign size={20} />
               </div>
               <input
                 type="email"
-                value={registerEmail}
-                onChange={(e) => setRegisterEmail(e.target.value)}
+                value={forgotPasswordValue}
+                onChange={(e) => setForgotPasswordValue(e.target.value)}
                 required
                 placeholder="Email"
                 className="w-full border border-gray-400 focus:border-black rounded-md pl-11 pr-4 py-2 outline-none"
@@ -341,9 +389,9 @@ const LoginModal = ({ isOpen, handleClose }: LoginModalProps) => {
             </div>
             <button
               type="submit"
-              disabled={registerLoading}
+              disabled={forgotPasswordLoading}
               className={`duration-200 text-white rounded-md py-2 mt-2 ${
-                registerLoading
+                forgotPasswordLoading
                   ? "bg-gray-400"
                   : "bg-primary cursor-pointer hover:bg-primary/70"
               }`}
